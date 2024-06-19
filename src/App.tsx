@@ -19,8 +19,8 @@ function App() {
   const [tromboneAccidental, setTromboneAccidental] =
     useState<Accidental>("flat");
   const [trumpetAccidental, setTrumpetAccidental] =
-    useState<Accidental>("flat");
-  const [saxAccidental, setSaxAccidental] = useState<Accidental>("flat");
+    useState<Accidental>("sharp");
+  const [saxAccidental, setSaxAccidental] = useState<Accidental>("sharp");
 
   return (
     <div className={styles.container}>
