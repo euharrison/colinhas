@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Geral colando</title>
+    <style type="text/css">
+      body {
+        font-family: sans-serif;
+        margin: 0;
+      }
+      .container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto 1fr;
+        height: 100svh;
+      }
+      textarea {
+        font-family: inherit;
+        padding: 5px 10px;
+        box-sizing: border-box;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Trombone</h2>
+      <h2>Trompete Do</h2>
+      <h2>Sax Mib</h2>
+      <textarea id="trombone"></textarea>
+      <textarea id="trumpet"></textarea>
+      <textarea id="sax"></textarea>
+    </div>
+
+    <script>
+      // TODO accept multiple inputs and outputs
+      /*
+      const notesV2 = [
+        {
+          trombone: {
+            input: ["fa#", "solb", "sol♭"],
+            output: { sharp: "fa#", flat: "solb" },
+          },
+        },
+      ];
+      */
+
+      const tromboneNotes = ["mi", "fa", "fa#"];
+      const trumpetNotes = ["fa#", "sol", "sol#"];
+      const saxNotes = ["do#", "re", "re#"];
+
+      const indexTromboneDict = tromboneNotes.reduce((obj, note, index) => {
+        obj[note] = index;
+        return obj;
+      }, {});
+
+      const indexTrumpetDict = trumpetNotes.reduce((obj, note, index) => {
+        obj[note] = index;
+        return obj;
+      }, {});
+
+      const indexSaxDict = saxNotes.reduce((obj, note, index) => {
+        obj[note] = index;
+        return obj;
+      }, {});
+
+      const indexTrumpetRef = trumpetNotes.reduce((obj, note, index) => {
+        obj[note] = index;
+        return obj;
+      }, {});
+
+      const getIndexedSheet = (sheet, dictionary) =>
+        sheet.replaceAll(
+          /[\w|\#|\-]+/g,
+          (match) => dictionary[match] ?? `(${match}?)`,
+        );
+
+      const getOutputSheet = (indexedSheet, dictionary) =>
+        indexedSheet.replaceAll(
+          /\b(\d+)\b/g,
+          (match) => dictionary[match] ?? match,
+        );
+
+      const tromboneInput = document.querySelector("#trombone");
+      const trumpetInput = document.querySelector("#trumpet");
+      const saxInput = document.querySelector("#sax");
+
+      tromboneInput.addEventListener("input", (e) => {
+        const sheet = getIndexedSheet(e.currentTarget.value, indexTromboneDict);
+        console.log({ sheet });
+        trumpetInput.value = getOutputSheet(sheet, trumpetNotes);
+        saxInput.value = getOutputSheet(sheet, saxNotes);
+      });
+
+      trumpetInput.addEventListener("input", (e) => {
+        const sheet = getIndexedSheet(e.currentTarget.value, indexTrumpetDict);
+        tromboneInput.value = getOutputSheet(sheet, tromboneNotes);
+        saxInput.value = getOutputSheet(sheet, saxNotes);
+      });
+
+      saxInput.addEventListener("input", (e) => {
+        const sheet = getIndexedSheet(e.currentTarget.value, indexSaxDict);
+        tromboneInput.value = getOutputSheet(sheet, tromboneNotes);
+        trumpetInput.value = getOutputSheet(sheet, trumpetNotes);
+      });
+
+      // dev mode
+      //*
+      // tromboneInput.value = "mi fa fa fa# fa# mi";
+      // tromboneInput.dispatchEvent(new Event("input"));
+      //*/
+    </script>
+  </body>
+</html>
