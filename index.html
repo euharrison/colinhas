@@ -44,9 +44,109 @@
       ];
       */
 
-      const tromboneNotes = ["mi", "fa", "fa#"];
-      const trumpetNotes = ["fa#", "sol", "sol#"];
-      const saxNotes = ["do#", "re", "re#"];
+      const tromboneNotes = [
+        "mi",
+        "fa",
+        "solb",
+        "sol",
+        "lab",
+        "la",
+        "sib",
+        "si",
+        "Do",
+        "Reb",
+        "Re",
+        "Mib",
+        "Mi",
+        "Fa",
+        "Solb",
+        "Sol",
+        "Lab",
+        "La",
+        "Sib",
+        "Si",
+        "DO",
+        "REB",
+        "RE",
+        "MIB",
+        "MI",
+        "FA",
+        "SOLB",
+        "SOL",
+        "LAB",
+        "LA",
+        "SIB",
+        "SI",
+      ];
+      const trumpetNotes = [
+        "solb",
+        "sol",
+        "lab",
+        "la",
+        "sib",
+        "si",
+        "Do",
+        "Reb",
+        "Re",
+        "Mib",
+        "Mi",
+        "Fa",
+        "Solb",
+        "Sol",
+        "Lab",
+        "La",
+        "Sib",
+        "Si",
+        "DO",
+        "REB",
+        "RE",
+        "MIB",
+        "MI",
+        "FA",
+        "SOLB",
+        "SOL",
+        "LAB",
+        "LA",
+        "SIB",
+        "SI",
+      ];
+      const saxNotes = [
+        "reb",
+        "re",
+        "mib",
+        "mi",
+        "fa",
+        "solb",
+        "sol",
+        "lab",
+        "la",
+        "sib",
+        "si",
+        "Do",
+        "Reb",
+        "Re",
+        "Mib",
+        "Mi",
+        "Fa",
+        "Solb",
+        "Sol",
+        "Lab",
+        "La",
+        "Sib",
+        "Si",
+        "DO",
+        "REB",
+        "RE",
+        "MIB",
+        "MI",
+        "FA",
+        "SOLB",
+        "SOL",
+        "LAB",
+        "LA",
+        "SIB",
+        "SI",
+      ];
 
       const indexTromboneDict = tromboneNotes.reduce((obj, note, index) => {
         obj[note] = index;
@@ -86,7 +186,6 @@
 
       tromboneInput.addEventListener("input", (e) => {
         const sheet = getIndexedSheet(e.currentTarget.value, indexTromboneDict);
-        console.log({ sheet });
         trumpetInput.value = getOutputSheet(sheet, trumpetNotes);
         saxInput.value = getOutputSheet(sheet, saxNotes);
       });
