@@ -37,7 +37,7 @@ function App() {
         onChangeAccidental={setTromboneAccidental}
       />
       <Instrument
-        label="Trompete (Do)"
+        label="Trompete"
         accidental={trumpetAccidental}
         offset={trumpetOffset}
         value={getOutput(
@@ -49,7 +49,7 @@ function App() {
         onChangeAccidental={setTrumpetAccidental}
       />
       <Instrument
-        label="Sax (Mi♭)"
+        label="Sax"
         accidental={saxAccidental}
         offset={saxOffset}
         value={getOutput(
