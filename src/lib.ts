@@ -1,3 +1,5 @@
+import { Accidental } from "./types";
+
 const inputMap = {
   // starting on 15 means the note C2 saving space for future low octaves
   15: ["do"],
@@ -38,9 +40,9 @@ const inputMap = {
   50: ["SI"],
 };
 
-export const inputDictionary: Record<string, number> = {};
+const inputDictionary: Record<string, number> = {};
 
-export const outputDictionary: {
+const outputDictionary: {
   flat: Record<string, string>;
   sharp: Record<string, string>;
 } = {
@@ -48,21 +50,24 @@ export const outputDictionary: {
   sharp: {},
 };
 
-Object.entries(inputMap).forEach(([id, options]) => {
-  const index = Number(id);
+const buildDictionaries = () => {
+  Object.entries(inputMap).forEach(([id, options]) => {
+    const index = Number(id);
 
-  // input
-  options.forEach((option) => {
-    inputDictionary[option] = index;
+    // input
+    options.forEach((option) => {
+      inputDictionary[option] = index;
+    });
+
+    // output
+    outputDictionary.sharp[index] = options[0];
+    outputDictionary.flat[index] =
+      options.find((o) => o.includes("b")) || options[0];
   });
+};
+buildDictionaries();
 
-  // output
-  outputDictionary.sharp[index] = options[0];
-  outputDictionary.flat[index] =
-    options.find((o) => o.includes("b")) || options[0];
-});
-
-export const getIndexedSheet = (value: string, offset = 0) =>
+export const getSheet = (value: string, offset: number) =>
   value.replaceAll(/[a-zA-Z#♭]+/g, (match) => {
     return inputDictionary[match]
       ? String(inputDictionary[match] + offset)
@@ -70,11 +75,11 @@ export const getIndexedSheet = (value: string, offset = 0) =>
   });
 
 export const getOutput = (
-  indexedSheet: string,
-  dictionary: Record<string, string>,
-  offset = 0,
+  sheet: string,
+  offset: number,
+  accidental: Accidental,
 ) =>
-  indexedSheet.replaceAll(/\d+/g, (match) => {
+  sheet.replaceAll(/\d+/g, (match) => {
     const index = Number(match) - offset;
-    return dictionary[index] ?? match;
+    return outputDictionary[accidental][index] ?? match;
   });

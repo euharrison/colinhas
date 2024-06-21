@@ -1,8 +1,6 @@
-import { useState } from "react";
+import { useRef } from "react";
 import styles from "./App.module.css";
-import { Instrument } from "./Instrument";
-import { getOutput, outputDictionary } from "./lib";
-import { Accidental } from "./types";
+import { Instrument, InstrumentRef } from "./Instrument";
 
 // const testValue = `20 25 32 37 44 49 49
 // 24 19
@@ -14,51 +12,41 @@ const trumpetOffset = -2;
 const saxOffset = +3;
 
 function App() {
-  const [indexedSheet, setIndexedSheet] = useState("");
-
-  const [tromboneAccidental, setTromboneAccidental] =
-    useState<Accidental>("flat");
-  const [trumpetAccidental, setTrumpetAccidental] =
-    useState<Accidental>("sharp");
-  const [saxAccidental, setSaxAccidental] = useState<Accidental>("sharp");
+  const tromboneRef = useRef<InstrumentRef>(null);
+  const trumpetRef = useRef<InstrumentRef>(null);
+  const saxRef = useRef<InstrumentRef>(null);
 
   return (
     <div className={styles.container}>
       <Instrument
+        ref={tromboneRef}
         label="Trombone"
-        accidental={tromboneAccidental}
+        defaultAccidental="flat"
         offset={tromboneOffset}
-        value={getOutput(
-          indexedSheet,
-          outputDictionary[tromboneAccidental],
-          tromboneOffset,
-        )}
-        onInput={setIndexedSheet}
-        onChangeAccidental={setTromboneAccidental}
+        onChange={(sheet) => {
+          trumpetRef.current?.updateValue(sheet);
+          saxRef.current?.updateValue(sheet);
+        }}
       />
       <Instrument
+        ref={trumpetRef}
         label="Trompete"
-        accidental={trumpetAccidental}
+        defaultAccidental="sharp"
         offset={trumpetOffset}
-        value={getOutput(
-          indexedSheet,
-          outputDictionary[trumpetAccidental],
-          trumpetOffset,
-        )}
-        onInput={setIndexedSheet}
-        onChangeAccidental={setTrumpetAccidental}
+        onChange={(sheet) => {
+          tromboneRef.current?.updateValue(sheet);
+          saxRef.current?.updateValue(sheet);
+        }}
       />
       <Instrument
+        ref={saxRef}
         label="Sax"
-        accidental={saxAccidental}
+        defaultAccidental="sharp"
         offset={saxOffset}
-        value={getOutput(
-          indexedSheet,
-          outputDictionary[saxAccidental],
-          saxOffset,
-        )}
-        onInput={setIndexedSheet}
-        onChangeAccidental={setSaxAccidental}
+        onChange={(sheet) => {
+          tromboneRef.current?.updateValue(sheet);
+          trumpetRef.current?.updateValue(sheet);
+        }}
       />
     </div>
   );
