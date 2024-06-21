@@ -13,8 +13,8 @@ const inputMap = {
   23: ["sol#", "lab", "la♭"],
   24: ["la"],
   25: ["la#", "sib", "si♭"],
-  26: ["si"],
-  27: ["Do"],
+  26: ["si", "Dob", "Do♭"],
+  27: ["Do", "si#"],
   28: ["Do#", "Reb", "Re♭"],
   29: ["Re"],
   30: ["Re#", "Mib", "Mi♭"],
@@ -25,8 +25,8 @@ const inputMap = {
   35: ["Sol#", "Lab", "La♭"],
   36: ["La"],
   37: ["La#", "Sib", "Si♭"],
-  38: ["Si"],
-  39: ["DO"],
+  38: ["Si", "DOb", "DOB", "DO♭"],
+  39: ["DO", "Si#"],
   40: ["DO#", "REb", "REB", "RE♭"],
   41: ["RE"],
   42: ["RE#", "MIb", "MIB", "MI♭"],
@@ -61,8 +61,9 @@ const buildDictionaries = () => {
 
     // output
     outputDictionary.sharp[index] = options[0];
-    outputDictionary.flat[index] =
-      options.find((o) => o.includes("b")) || options[0];
+    outputDictionary.flat[index] = options[0].includes("#")
+      ? options[1]
+      : options[0];
   });
 };
 buildDictionaries();
