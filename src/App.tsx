@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import styles from "./App.module.css";
+import { View } from "react-native";
 import { Instrument, InstrumentRef } from "./Instrument";
 
 // const testValue = `20 25 32 37 44 49 49
@@ -11,13 +11,20 @@ const tromboneOffset = 0;
 const trumpetOffset = -2;
 const saxOffset = +3;
 
-function App() {
+export const App = () => {
   const tromboneRef = useRef<InstrumentRef>(null);
   const trumpetRef = useRef<InstrumentRef>(null);
   const saxRef = useRef<InstrumentRef>(null);
 
   return (
-    <div className={styles.container}>
+    <View
+      style={{
+        flexDirection: "row",
+        gap: 8,
+        padding: 8,
+        height: "100%",
+      }}
+    >
       <Instrument
         ref={tromboneRef}
         label="Trombone"
@@ -48,8 +55,6 @@ function App() {
           trumpetRef.current?.updateValue(sheet);
         }}
       />
-    </div>
+    </View>
   );
-}
-
-export default App;
+};

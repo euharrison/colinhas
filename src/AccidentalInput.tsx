@@ -1,3 +1,5 @@
+import { Text, View } from "react-native";
+import { RadioField } from "./RadioField";
 import { Accidental } from "./types";
 
 export const AccidentalInput = ({
@@ -8,23 +10,23 @@ export const AccidentalInput = ({
   onChange: (value: Accidental) => void;
 }) => {
   return (
-    <div>
-      <label>
-        <input
-          type="radio"
-          checked={value === "sharp"}
-          onChange={() => onChange("sharp")}
-        />{" "}
-        #
-      </label>
-      <label>
-        <input
-          type="radio"
-          checked={value === "flat"}
-          onChange={() => onChange("flat")}
-        />
-        ♭
-      </label>
-    </div>
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 4,
+        marginVertical: 4,
+      }}
+    >
+      <RadioField
+        checked={value === "sharp"}
+        onChange={() => onChange("sharp")}
+      >
+        <Text>#</Text>
+      </RadioField>
+      <RadioField checked={value === "flat"} onChange={() => onChange("flat")}>
+        <Text>♭</Text>
+      </RadioField>
+    </View>
   );
 };

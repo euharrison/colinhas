@@ -1,8 +1,8 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { AccidentalInput } from "./AccidentalInput";
-import styles from "./Instrument.module.css";
 import { getOutput, getSheet } from "./lib";
 import { Accidental } from "./types";
+import { Text, TextInput, View } from "react-native";
 
 export type InstrumentRef = {
   updateValue: (sheet: string) => void;
@@ -32,8 +32,8 @@ export const Instrument = forwardRef<
   );
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>{label}</h2>
+    <View style={{ flexGrow: 1, flexBasis: 1 }}>
+      <Text style={{ fontSize: 20 }}>{label}</Text>
       <AccidentalInput
         value={accidental}
         onChange={(newAccidental) => {
@@ -43,16 +43,22 @@ export const Instrument = forwardRef<
           setValue(output);
         }}
       />
-      <textarea
-        className={styles.textarea}
+      <TextInput
+        style={{
+          paddingHorizontal: 4,
+          paddingVertical: 8,
+          borderWidth: 1,
+          borderRadius: 4,
+          flexGrow: 1,
+        }}
+        multiline
         value={value}
-        onInput={(e) => {
-          const newValue = e.currentTarget.value;
+        onChangeText={(newValue) => {
           setValue(newValue);
           const sheet = getSheet(newValue, offset);
           onChange(sheet);
         }}
       />
-    </div>
+    </View>
   );
 });

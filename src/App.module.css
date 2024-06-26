@@ -1,8 +1,0 @@
-.container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  height: 100svh;
-  padding: 8px;
-  box-sizing: border-box;
-}
