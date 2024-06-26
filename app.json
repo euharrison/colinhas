@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "colinhas",
+    "slug": "colinhas",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "scheme": "colinhas",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.colinhas",
+      "associatedDomains": [
+        "applinks:colinhas.com",
+        "webcredentials:colinhas.com"
+      ]
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [{ "scheme": "https", "host": "colinhas.com" }],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
+      "package": "com.colinhas"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": ["expo-router"]
+  }
+}
