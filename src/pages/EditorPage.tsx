@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { NotesKeyboard } from "../components/NotesKeyboard";
 
-export const Editor = () => {
+export const EditorPage = () => {
   const [value, setValue] = useState("");
 
   const onPressNoteKeyboard = (value: string) => {

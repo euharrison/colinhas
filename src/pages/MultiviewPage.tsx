@@ -11,7 +11,7 @@ const tromboneOffset = 0;
 const trumpetOffset = -2;
 const saxOffset = +3;
 
-export const Home = () => {
+export const MultiviewPage = () => {
   const tromboneRef = useRef<InstrumentRef>(null);
   const trumpetRef = useRef<InstrumentRef>(null);
   const saxRef = useRef<InstrumentRef>(null);
