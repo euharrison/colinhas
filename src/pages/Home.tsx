@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { View } from "react-native";
-import { Instrument, InstrumentRef } from "./Instrument";
+import { Instrument, InstrumentRef } from "../components/Instrument";
 
 // const testValue = `20 25 32 37 44 49 49
 // 24 19
@@ -11,7 +11,7 @@ const tromboneOffset = 0;
 const trumpetOffset = -2;
 const saxOffset = +3;
 
-export const App = () => {
+export const Home = () => {
   const tromboneRef = useRef<InstrumentRef>(null);
   const trumpetRef = useRef<InstrumentRef>(null);
   const saxRef = useRef<InstrumentRef>(null);

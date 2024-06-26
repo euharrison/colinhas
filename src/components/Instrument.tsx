@@ -1,8 +1,8 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
-import { AccidentalInput } from "./AccidentalInput";
-import { getOutput, getSheet } from "./lib";
-import { Accidental } from "./types";
 import { Text, TextInput, View } from "react-native";
+import { getOutput, getSheet } from "../lib";
+import { Accidental } from "../types";
+import { AccidentalInput } from "./AccidentalInput";
 
 export type InstrumentRef = {
   updateValue: (sheet: string) => void;

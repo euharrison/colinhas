@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
+import { Accidental } from "../types";
 import { RadioField } from "./RadioField";
-import { Accidental } from "./types";
 
 export const AccidentalInput = ({
   value,
