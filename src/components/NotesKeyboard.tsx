@@ -21,7 +21,7 @@ const Key = ({
         backgroundColor: pressed ? "#ccc" : undefined,
       })}
     >
-      <Text>{children}</Text>
+      <Text selectable={false}>{children}</Text>
     </Pressable>
   );
 };
@@ -77,6 +77,7 @@ export const NotesKeyboard = ({
         <Key
           onPress={() => {
             setScaleIndex((s) => Math.max(s - 1, 0));
+            onPress("");
           }}
         >
           ↓ ♭
@@ -84,6 +85,7 @@ export const NotesKeyboard = ({
         <Key
           onPress={() => {
             setScaleIndex((s) => Math.min(s + 1, scales.length - 1));
+            onPress("");
           }}
         >
           ↑ #
