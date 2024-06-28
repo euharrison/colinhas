@@ -3,8 +3,8 @@ import { TextInput, View } from "react-native";
 import { KeyboardLayout } from "./KeyboardLayout";
 import { NotesKeyboard } from "./NotesKeyboard";
 
-export const Editor = () => {
-  const [value, setValue] = useState("");
+export const Editor = ({ defaultValue }: { defaultValue?: string }) => {
+  const [value, setValue] = useState(defaultValue ?? "");
   const inputRef = useRef<TextInput>(null);
 
   const onPressNoteKeyboard = (value: string) => {
