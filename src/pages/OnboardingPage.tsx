@@ -1,14 +1,15 @@
+import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 import { useModalPage } from "../hooks/useModalPage";
 
 export function OnboardingPage() {
-  useModalPage();
+  useModalPage({ gestureEnabled: false });
 
   return (
     <View style={{ padding: 20, gap: 20 }}>
       <View>
         <Text style={{ fontSize: 20 }}>Escolha seu instrumento</Text>
-        <Text>Você poderá trocar depois qualquer coisa</Text>
+        <Text>Você poderá trocar depois se preferir</Text>
       </View>
       <View style={{ gap: 8 }}>
         {["Trombone", "Trompete", "Sax"].map((item) => (
@@ -24,6 +25,7 @@ export function OnboardingPage() {
             })}
             onPress={() => {
               // TODO
+              router.back();
             }}
           >
             <Text>{item}</Text>
