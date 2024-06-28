@@ -1,3 +1,3 @@
-import { EditorPage } from "../pages/EditorPage";
+import { HomePage } from "../pages/HomePage";
 
-export default EditorPage;
+export default HomePage;
