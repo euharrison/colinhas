@@ -15,6 +15,9 @@ export const HomePage = () => {
       <Link href="/harri/anunciacao">
         <Text>Cola exemplo</Text>
       </Link>
+      <Link href="/onboarding">
+        <Text>Onboarding</Text>
+      </Link>
     </View>
   );
 };
