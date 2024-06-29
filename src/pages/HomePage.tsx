@@ -1,19 +1,9 @@
 import { Link } from "expo-router";
-import { useEffect, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
-import { getSheets } from "../database/getSheets";
-import { Sheet } from "../database/types";
+import { useSheetList } from "../hooks/useSheetList";
 
 export const HomePage = () => {
-  const [data, setData] = useState<Sheet[]>([]);
-
-  useEffect(() => {
-    const load = async () => {
-      const d = await getSheets();
-      setData(d);
-    };
-    load();
-  }, []);
+  const sheetList = useSheetList();
 
   return (
     <>
@@ -51,7 +41,7 @@ export const HomePage = () => {
       <FlatList
         style={{ borderTopWidth: 1 }}
         contentContainerStyle={{ paddingBottom: 100 }}
-        data={data}
+        data={sheetList}
         keyExtractor={(item, i) => item.id + i}
         renderItem={({ item }) => (
           <Link href={`/${item.id}`} asChild>

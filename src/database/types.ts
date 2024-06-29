@@ -4,6 +4,6 @@ export type Sheet = {
   data: string;
   instrumentId: string;
   userId: string;
-  updatedAt: string;
-  createdAt: string;
+  updatedAt: number;
+  createdAt: number;
 };

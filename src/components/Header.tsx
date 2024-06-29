@@ -6,7 +6,7 @@ export const Header = ({
   title,
   children,
 }: {
-  title: string;
+  title?: string;
   children?: ReactNode;
 }) => {
   return (
