@@ -3,16 +3,22 @@ import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { Header } from "../components/Header";
 import { getSheet } from "../database/getSheet";
+import { Sheet } from "../database/types";
 
 export const ViewPage = () => {
   const { user, sheet } = useLocalSearchParams();
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Sheet>();
 
   useEffect(() => {
     const load = async () => {
-      const d = await getSheet(String(sheet));
-      setData(d);
+      try {
+        const d = await getSheet(String(sheet));
+        setData(d);
+      } catch (error) {
+        // TODO
+        console.log(error);
+      }
     };
     load();
   }, []);
@@ -58,7 +64,7 @@ export const ViewPage = () => {
         </Pressable>
       </View>
       <View style={{ padding: 8 }}>
-        <Text style={{ fontSize: 20 }}>Tom: {data.possible_tone}</Text>
+        <Text style={{ fontSize: 20 }}>Tom: {data.tone}</Text>
       </View>
       <View style={{ padding: 8 }}>
         <Text style={{ fontSize: 20 }}>{data.data}</Text>

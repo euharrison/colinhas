@@ -1,19 +1,24 @@
+import { router } from "expo-router";
 import { useState } from "react";
 import { Modal, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createSheet } from "../database/createSheet";
+import { editSheet } from "../database/editSheet";
+import { Sheet } from "../database/types";
 
 export const SaveSheetModal = ({
+  sheet,
   data,
   visible,
   onRequestClose,
 }: {
+  sheet?: Sheet;
   data: string;
   visible: boolean;
   onRequestClose: () => void;
 }) => {
-  const [name, setName] = useState("");
-  const [slug, setSlug] = useState("");
+  const [name, setName] = useState(sheet?.name ?? "");
+  const [slug, setSlug] = useState(sheet?.slug ?? "");
 
   return (
     <Modal
@@ -76,9 +81,14 @@ export const SaveSheetModal = ({
                 })}
                 onPress={async () => {
                   try {
-                    const result = await createSheet({ name, slug, data });
+                    if (sheet?.id) {
+                      await editSheet(sheet.id, { name, slug, data });
+                    } else {
+                      await createSheet({ name, slug, data });
+                    }
                     // TODO
-                    console.log(result);
+                    console.log("sucesso");
+                    router.back();
                   } catch (error) {
                     // TODO
                     console.log(error);

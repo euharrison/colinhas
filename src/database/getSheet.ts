@@ -6,5 +6,8 @@ export async function getSheet(id: string) {
   // TODO
   // const docSnap = await getDocFromCache(docRef);
   const docSnap = await getDoc(docRef);
-  return docSnap.data();
+  return {
+    id: docSnap.id,
+    ...docSnap.data(),
+  };
 }

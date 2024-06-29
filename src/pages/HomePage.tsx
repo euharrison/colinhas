@@ -21,12 +21,15 @@ export const HomePage = () => {
       <Link href="/login">
         <Text>Login</Text>
       </Link>
+      <Text>-</Text>
       <Link href="/settings">
         <Text>Configuracoes</Text>
       </Link>
+      <Text>-</Text>
       <Link href="/create">
-        <Text>Criar cola</Text>
+        <Text>Nova cola</Text>
       </Link>
+      <Text>-</Text>
       <Link href="/onboarding">
         <Text>Onboarding</Text>
       </Link>

@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
+import { Sheet } from "../database/types";
 import { KeyboardLayout } from "./KeyboardLayout";
 import { NotesKeyboard } from "./NotesKeyboard";
 import { SaveSheetModal } from "./SaveModal";
 
-export const Editor = ({ defaultValue }: { defaultValue?: string }) => {
-  const [value, setValue] = useState(defaultValue ?? "");
+export const Editor = ({ sheet }: { sheet?: Sheet }) => {
+  const [value, setValue] = useState(sheet?.data ?? "");
   const [saveModalVisible, setSaveModalVisible] = useState(false);
   const inputRef = useRef<TextInput>(null);
 
@@ -71,6 +72,7 @@ export const Editor = ({ defaultValue }: { defaultValue?: string }) => {
         </View>
       </KeyboardLayout>
       <SaveSheetModal
+        sheet={sheet}
         data={value}
         visible={saveModalVisible}
         onRequestClose={() => setSaveModalVisible(false)}
