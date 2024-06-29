@@ -18,6 +18,9 @@ export const HomePage = () => {
     <View style={{ flex: 1, padding: 8, gap: 4 }}>
       <Text>Home</Text>
       <Text>-</Text>
+      <Link href="/login">
+        <Text>Login</Text>
+      </Link>
       <Link href="/settings">
         <Text>Configuracoes</Text>
       </Link>
