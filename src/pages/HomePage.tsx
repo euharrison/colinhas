@@ -1,6 +1,6 @@
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { getSheets } from "../database/getSheets";
 
 export const HomePage = () => {
@@ -24,19 +24,25 @@ export const HomePage = () => {
       <Link href="/create">
         <Text>Criar cola</Text>
       </Link>
-      <Link href="/harri/anunciacao">
-        <Text>Cola exemplo</Text>
-      </Link>
       <Link href="/onboarding">
         <Text>Onboarding</Text>
       </Link>
       <Text>-</Text>
       {data.map((item) => (
-        <View key={item.id} style={{ borderWidth: 1, padding: 4 }}>
-          <Text>{item.id}</Text>
-          <Text>{item.name}</Text>
-          <Text>{item.possible_tone}</Text>
-        </View>
+        <Link key={item.id} href={`/harri/${item.id}`} asChild>
+          <Pressable
+            style={{
+              borderColor: "black",
+              borderWidth: 1,
+              borderRadius: 4,
+              padding: 8,
+            }}
+          >
+            <Text>{item.id}</Text>
+            <Text>{item.name}</Text>
+            <Text>{item.possible_tone}</Text>
+          </Pressable>
+        </Link>
       ))}
     </View>
   );

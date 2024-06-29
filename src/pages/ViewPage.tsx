@@ -1,27 +1,29 @@
 import { Link, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { Header } from "../components/Header";
-
-// TODO
-const sampleData = `P trombone fica….
-
-Base.
-Do Do Re# Re#
-Repete até a segunda parte
-
-Do Do
-Sib Lab Sib Sib
-Lab Sib Do
-Sib Lab Sib Sib
-Lab Sib Do….
-
-Lab Sol Fa
-5x
-
-Volta tudo`;
+import { getSheet } from "../database/getSheet";
 
 export const ViewPage = () => {
   const { user, sheet } = useLocalSearchParams();
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const load = async () => {
+      const d = await getSheet(String(sheet));
+      setData(d);
+    };
+    load();
+  }, []);
+
+  if (!data) {
+    return (
+      <View style={{ flex: 1, padding: 8 }}>
+        <Text style={{ fontSize: 20 }}>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <>
@@ -55,8 +57,11 @@ export const ViewPage = () => {
           <Text>Share</Text>
         </Pressable>
       </View>
-      <View style={{ flex: 1, padding: 8 }}>
-        <Text style={{ fontSize: 20 }}>{sampleData}</Text>
+      <View style={{ padding: 8 }}>
+        <Text style={{ fontSize: 20 }}>Tom: {data.possible_tone}</Text>
+      </View>
+      <View style={{ padding: 8 }}>
+        <Text style={{ fontSize: 20 }}>{data.data}</Text>
       </View>
     </>
   );
