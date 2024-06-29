@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Modal, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { createSheet } from "../database/createSheet";
 
 export const SaveSheetModal = ({
-  sheet,
+  data,
   visible,
   onRequestClose,
 }: {
-  sheet: string;
+  data: string;
   visible: boolean;
   onRequestClose: () => void;
 }) => {
@@ -40,7 +41,7 @@ export const SaveSheetModal = ({
               <Text>X</Text>
             </Pressable>
             <Text style={{ fontSize: 20 }}>Salvar</Text>
-            <Text style={{ fontSize: 10, marginVertical: 20 }}>{sheet}</Text>
+            <Text style={{ fontSize: 10, marginVertical: 20 }}>{data}</Text>
 
             <View style={{ gap: 16 }}>
               <View>
@@ -56,6 +57,9 @@ export const SaveSheetModal = ({
                 <Text>Slug:</Text>
                 <TextInput
                   style={{ padding: 8, borderWidth: 1, borderRadius: 4 }}
+                  autoCapitalize="none"
+                  autoComplete="off"
+                  autoCorrect={false}
                   value={slug}
                   onChangeText={setSlug}
                 />
@@ -70,8 +74,15 @@ export const SaveSheetModal = ({
                   justifyContent: "center",
                   backgroundColor: pressed ? "#ccc" : undefined,
                 })}
-                onPress={() => {
-                  //
+                onPress={async () => {
+                  try {
+                    const result = await createSheet({ name, slug, data });
+                    // TODO
+                    console.log(result);
+                  } catch (error) {
+                    // TODO
+                    console.log(error);
+                  }
                 }}
               >
                 <Text>Salvar</Text>

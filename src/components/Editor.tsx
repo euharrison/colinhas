@@ -35,6 +35,7 @@ export const Editor = ({ defaultValue }: { defaultValue?: string }) => {
                 flex: 1,
               }}
               multiline
+              autoCapitalize="none"
               autoComplete="off"
               autoCorrect={false}
               autoFocus
@@ -70,7 +71,7 @@ export const Editor = ({ defaultValue }: { defaultValue?: string }) => {
         </View>
       </KeyboardLayout>
       <SaveSheetModal
-        sheet={value}
+        data={value}
         visible={saveModalVisible}
         onRequestClose={() => setSaveModalVisible(false)}
       />
