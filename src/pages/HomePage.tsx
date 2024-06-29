@@ -1,10 +1,11 @@
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
 import { getSheets } from "../database/getSheets";
+import { Sheet } from "../database/types";
 
 export const HomePage = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Sheet[]>([]);
 
   useEffect(() => {
     const load = async () => {
@@ -15,41 +16,60 @@ export const HomePage = () => {
   }, []);
 
   return (
-    <View style={{ flex: 1, padding: 8, gap: 4 }}>
-      <Text>Home</Text>
-      <Text>-</Text>
-      <Link href="/login">
-        <Text>Login</Text>
-      </Link>
-      <Text>-</Text>
-      <Link href="/settings">
-        <Text>Configuracoes</Text>
-      </Link>
-      <Text>-</Text>
-      <Link href="/create">
-        <Text>Nova cola</Text>
-      </Link>
-      <Text>-</Text>
-      <Link href="/onboarding">
-        <Text>Onboarding</Text>
-      </Link>
-      <Text>-</Text>
-      {data.map((item) => (
-        <Link key={item.id} href={`/harri/${item.id}`} asChild>
+    <>
+      <View style={{ padding: 20, gap: 20 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>Colinhas</Text>
+          {/* <Link href="/settings">
+            <Text>⚙️</Text>
+          </Link> */}
+        </View>
+        <Link href="/create" asChild>
           <Pressable
             style={{
               borderColor: "black",
               borderWidth: 1,
               borderRadius: 4,
-              padding: 8,
+              paddingVertical: 20,
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <Text>{item.id}</Text>
-            <Text>{item.name}</Text>
-            <Text>{item.possible_tone}</Text>
+            <Text style={{ fontWeight: "bold", textTransform: "uppercase" }}>
+              Nova cola ✏️
+            </Text>
           </Pressable>
         </Link>
-      ))}
-    </View>
+      </View>
+      <FlatList
+        style={{ borderTopWidth: 1 }}
+        contentContainerStyle={{ paddingBottom: 100 }}
+        data={data}
+        keyExtractor={(item, i) => item.id + i}
+        renderItem={({ item }) => (
+          <Link href={`/${item.id}`} asChild>
+            <Pressable
+              style={{
+                borderColor: "black",
+                borderBottomWidth: 1,
+                padding: 20,
+              }}
+            >
+              <Text>{item.name}</Text>
+              <Text style={{ color: "#999" }} numberOfLines={1}>
+                {item.data.replaceAll("\n", " ")}
+              </Text>
+            </Pressable>
+          </Link>
+        )}
+      ></FlatList>
+    </>
   );
 };

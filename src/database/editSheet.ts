@@ -5,13 +5,13 @@ import { Sheet } from "./types";
 
 export async function editSheet(
   id: string,
-  data: Pick<Sheet, "name" | "slug" | "data" | "tone">,
+  data: Pick<Sheet, "name" | "data">,
 ) {
   return await updateDoc(doc(db, "sheets", id), {
     ...data,
     userId: auth.currentUser?.uid,
     // TODO
-    instrumentId: "sax",
+    // instrumentId: "trombone",
     updatedAt: serverTimestamp(),
   });
 }

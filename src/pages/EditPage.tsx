@@ -34,7 +34,7 @@ export const EditPage = () => {
 
   return (
     <>
-      <Header title={String(sheet)} />
+      <Header title={data.name} />
       <Editor sheet={data} />
     </>
   );
