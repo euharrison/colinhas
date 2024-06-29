@@ -3,7 +3,7 @@ import { Pressable, ScrollView, Text } from "react-native";
 import { Header } from "../components/Header";
 import { NotFound } from "../components/NotFound";
 import { useSheet } from "../hooks/useSheet";
-import { auth } from "../services/auth";
+import { auth } from "../auth/auth";
 
 export const ViewPage = () => {
   const params = useLocalSearchParams();

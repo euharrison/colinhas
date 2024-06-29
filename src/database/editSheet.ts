@@ -1,5 +1,5 @@
 import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { auth } from "../services/auth";
+import { auth } from "../auth/auth";
 import { db } from "./db";
 import { Sheet } from "./types";
 
