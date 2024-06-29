@@ -26,6 +26,7 @@ export const SaveModal = ({
   onRequestClose: () => void;
 }) => {
   const [name, setName] = useState(sheet?.name ?? "");
+  const [saving, setSaving] = useState(false);
 
   return (
     <Modal
@@ -112,7 +113,9 @@ export const SaveModal = ({
                   justifyContent: "center",
                   backgroundColor: pressed ? "#ccc" : undefined,
                 })}
+                disabled={saving}
                 onPress={async () => {
+                  setSaving(true);
                   try {
                     if (sheet?.id) {
                       await editSheet(sheet.id, { name, data });
@@ -123,9 +126,10 @@ export const SaveModal = ({
                     Alert.alert(String(error));
                   }
                   router.back();
+                  setSaving(false);
                 }}
               >
-                <Text>Salvar</Text>
+                <Text>{saving ? "Salvando..." : "Salvar"}</Text>
               </Pressable>
             </View>
           </View>

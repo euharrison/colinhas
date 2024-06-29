@@ -6,4 +6,5 @@ export type Sheet = {
   userId: string;
   updatedAt: number;
   createdAt: number;
+  syncing?: boolean;
 };

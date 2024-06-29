@@ -56,6 +56,11 @@ export const HomePage = () => {
               <Text style={{ color: "#999" }} numberOfLines={1}>
                 {item.data.replaceAll("\n", " ")}
               </Text>
+              {item.syncing && (
+                <Text style={{ position: "absolute", top: 30, right: 20 }}>
+                  🔄
+                </Text>
+              )}
             </Pressable>
           </Link>
         )}
