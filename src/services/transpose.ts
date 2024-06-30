@@ -1,6 +1,3 @@
-const trumpetOffset = -2;
-const saxOffset = +3;
-
 const inputMap = {
   // starting on 15 means the note C2 saving space for future low octaves
   15: ["do"],
@@ -69,34 +66,22 @@ const buildDictionaries = () => {
 };
 buildDictionaries();
 
-const getOffset = (instrument: string) =>
-  ({
-    Trompete: trumpetOffset,
-    Sax: saxOffset,
-  }[instrument] ?? 0);
-
 export const transpose = (
   data: string,
-  inputInstrument: string,
-  outputIntrument: string,
+  offset: number,
   accidental: "sharp" | "flat",
 ) => {
-  if (inputInstrument === outputIntrument) {
+  if (offset === 0) {
     return data;
   }
 
-  const inputOffset = getOffset(inputInstrument);
-  const outputOffset = getOffset(outputIntrument);
-
   return data.replaceAll(/[a-zA-Z#♭]+/g, (match) => {
     const inputIndex = inputDictionary[match];
-
-    if (inputIndex !== undefined) {
-      const outputIndex = inputIndex + inputOffset - outputOffset;
-      const output = outputDictionary[accidental][outputIndex];
-      return output ?? `{${match}?}`;
+    if (inputIndex === undefined) {
+      return match;
     }
-
-    return match;
+    const outputIndex = inputIndex + offset;
+    const output = outputDictionary[accidental][outputIndex];
+    return output ?? `{${match}?}`;
   });
 };
