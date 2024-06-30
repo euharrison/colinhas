@@ -1,9 +1,11 @@
 import { Link } from "expo-router";
 import { FlatList, Pressable, Text, View } from "react-native";
+import { useInstrument } from "../hooks/useInstrument";
 import { useSheetList } from "../hooks/useSheetList";
 
 export const HomePage = () => {
   const sheetList = useSheetList();
+  const { instrument } = useInstrument();
 
   return (
     <>
@@ -16,9 +18,9 @@ export const HomePage = () => {
           }}
         >
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>Colinhas</Text>
-          {/* <Link href="/settings">
-            <Text>⚙️</Text>
-          </Link> */}
+          <Link href="/settings">
+            <Text>{instrument}</Text>
+          </Link>
         </View>
         <Link href="/create" asChild>
           <Pressable
