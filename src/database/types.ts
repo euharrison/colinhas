@@ -2,7 +2,7 @@ export type Sheet = {
   id: string;
   name: string;
   data: string;
-  instrumentId: string;
+  instrument: string;
   userId: string;
   updatedAt: number;
   createdAt: number;

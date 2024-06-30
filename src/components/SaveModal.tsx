@@ -13,6 +13,7 @@ import {
 import { createSheet } from "../database/createSheet";
 import { editSheet } from "../database/editSheet";
 import { Sheet } from "../database/types";
+import { useInstrument } from "../hooks/useInstrument";
 
 export const SaveModal = ({
   sheet,
@@ -27,6 +28,8 @@ export const SaveModal = ({
 }) => {
   const [name, setName] = useState(sheet?.name ?? "");
   const [saving, setSaving] = useState(false);
+
+  const { instrument } = useInstrument();
 
   return (
     <Modal
@@ -118,9 +121,9 @@ export const SaveModal = ({
                   setSaving(true);
                   try {
                     if (sheet?.id) {
-                      await editSheet(sheet.id, { name, data });
+                      await editSheet(sheet.id, { name, data, instrument });
                     } else {
-                      await createSheet({ name, data });
+                      await createSheet({ name, data, instrument });
                     }
                   } catch (error) {
                     Alert.alert(String(error));

@@ -15,7 +15,7 @@ export async function subscribeSheets(
           id: doc.id,
           name: data.name,
           data: data.data,
-          instrumentId: data.instrumentId,
+          instrument: data.instrument,
           userId: data.userId,
           updatedAt: data.updatedAt.seconds,
           createdAt: data.createdAt.seconds,
