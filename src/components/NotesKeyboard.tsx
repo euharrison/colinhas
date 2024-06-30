@@ -77,42 +77,39 @@ export const NotesKeyboard = ({
   const keys = scales[scaleIndex];
 
   return (
-    <KeyboardAvoidingView behavior="padding">
-      <View
-        style={{
-          padding: 8,
-          paddingBottom: Platform.OS === "ios" ? 28 : 8,
-          gap: 2,
-          backgroundColor: "#ddd",
-        }}
-      >
-        <View style={{ flexDirection: "row", gap: 2, height: 28 }}>
-          <Key onPress={() => onPress("♭ ")}>♭</Key>
-          <Key
-            onPress={() => {
-              setScaleIndex((s) => Math.max(s - 1, 0));
-              onPress("");
-            }}
-          >
-            ↓ ♭
-          </Key>
-          <Key
-            onPress={() => {
-              setScaleIndex((s) => Math.min(s + 1, scales.length - 1));
-              onPress("");
-            }}
-          >
-            ↑ #
-          </Key>
-          <Key onPress={() => onPress("# ")}>#</Key>
-        </View>
-        <NotesRow notes={keys.map((s) => s.toUpperCase())} onPress={onPress} />
-        <NotesRow
-          notes={keys.map((s) => s[0].toUpperCase() + s.slice(1))}
-          onPress={onPress}
-        />
-        <NotesRow notes={keys} onPress={onPress} />
+    <View
+      style={{
+        padding: 8,
+        gap: 2,
+        backgroundColor: "#ddd",
+      }}
+    >
+      <View style={{ flexDirection: "row", gap: 2, height: 28 }}>
+        <Key onPress={() => onPress("♭ ")}>♭</Key>
+        <Key
+          onPress={() => {
+            setScaleIndex((s) => Math.max(s - 1, 0));
+            onPress("");
+          }}
+        >
+          ↓ ♭
+        </Key>
+        <Key
+          onPress={() => {
+            setScaleIndex((s) => Math.min(s + 1, scales.length - 1));
+            onPress("");
+          }}
+        >
+          ↑ #
+        </Key>
+        <Key onPress={() => onPress("# ")}>#</Key>
       </View>
-    </KeyboardAvoidingView>
+      <NotesRow notes={keys.map((s) => s.toUpperCase())} onPress={onPress} />
+      <NotesRow
+        notes={keys.map((s) => s[0].toUpperCase() + s.slice(1))}
+        onPress={onPress}
+      />
+      <NotesRow notes={keys} onPress={onPress} />
+    </View>
   );
 };

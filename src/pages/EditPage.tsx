@@ -3,6 +3,7 @@ import { Alert, Pressable, Text } from "react-native";
 import { auth } from "../auth/auth";
 import { Editor } from "../components/Editor";
 import { Header } from "../components/Header";
+import { KeyboardLayout } from "../components/KeyboardLayout";
 import { NotFound } from "../components/NotFound";
 import { deleteSheet } from "../database/deleteSheet";
 import { useSheet } from "../hooks/useSheet";
@@ -16,7 +17,7 @@ export const EditPage = () => {
   }
 
   return (
-    <>
+    <KeyboardLayout>
       <Header title={sheet.name}>
         {sheet.userId === auth.currentUser?.uid && (
           <Pressable
@@ -57,6 +58,6 @@ export const EditPage = () => {
         )}
       </Header>
       <Editor sheet={sheet} />
-    </>
+    </KeyboardLayout>
   );
 };

@@ -22,7 +22,7 @@ export const Editor = ({ sheet }: { sheet?: Sheet }) => {
         <TextInput
           ref={inputRef}
           style={{
-            marginHorizontal: 20,
+            padding: 20,
             flex: 1,
             fontSize: 20,
           }}

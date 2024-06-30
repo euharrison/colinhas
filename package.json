@@ -9,6 +9,8 @@
     "web": "expo start --web",
     "run:android": "expo run:android",
     "run:ios": "expo run:ios",
+    "run:device:android": "npx expo run:android --device",
+    "run:device:ios": "expo run:ios",
     "eas:build:dev:android": "eas build -p android --profile development --local",
     "eas:build:dev:ios": "eas build -p ios --profile development --local",
     "eas:build:prod:android": "eas build -p android",

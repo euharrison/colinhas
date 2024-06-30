@@ -1,5 +1,6 @@
 import { Link } from "expo-router";
 import { FlatList, Pressable, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useInstrument } from "../hooks/useInstrument";
 import { useSheetList } from "../hooks/useSheetList";
@@ -11,7 +12,7 @@ export const HomePage = () => {
 
   return (
     <>
-      <View style={{ padding: 20, gap: 20 }}>
+      <SafeAreaView style={{ padding: 20, gap: 20 }}>
         <View
           style={{
             flexDirection: "row",
@@ -41,7 +42,7 @@ export const HomePage = () => {
             </Text>
           </Pressable>
         </Link>
-      </View>
+      </SafeAreaView>
       <FlatList
         style={{ borderTopWidth: 1 }}
         contentContainerStyle={{ paddingBottom: 100 }}
