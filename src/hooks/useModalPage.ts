@@ -11,5 +11,5 @@ export const useModalPage = (
       presentation: "modal",
       ...options,
     });
-  }, [navigation]);
+  }, [navigation, options]);
 };

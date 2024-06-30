@@ -13,15 +13,18 @@ export const InstrumentProvider = ({ children }: { children: ReactNode }) => {
 
   const updateAccidental = useUpdateAccidental();
 
-  const updateInstrument = useCallback((value: string) => {
-    setInstrument(value);
-    if (value === "Trombone") {
-      updateAccidental("flat");
-    } else {
-      updateAccidental("sharp");
-    }
-    AsyncStorage.setItem(key, value);
-  }, []);
+  const updateInstrument = useCallback(
+    (value: string) => {
+      setInstrument(value);
+      if (value === "Trombone") {
+        updateAccidental("flat");
+      } else {
+        updateAccidental("sharp");
+      }
+      AsyncStorage.setItem(key, value);
+    },
+    [updateAccidental],
+  );
 
   useEffect(() => {
     const load = async () => {

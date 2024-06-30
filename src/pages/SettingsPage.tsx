@@ -1,7 +1,7 @@
-import { Text, View } from "react-native";
+import { router } from "expo-router";
+import { View } from "react-native";
 import { Header } from "../components/Header";
 import { InstrumentSelector } from "../components/InstrumentSelector";
-import { router } from "expo-router";
 
 export const SettingsPage = () => {
   return (
