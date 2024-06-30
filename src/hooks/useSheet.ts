@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { DataContext } from "../database/context";
+import { SheetsContext } from "../contexts/SheetsContext";
 
 export const useSheet = (id: string) => {
-  const data = useContext(DataContext);
+  const data = useContext(SheetsContext);
   return data.find((item) => item.id === id);
 };
