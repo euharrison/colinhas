@@ -32,30 +32,15 @@ export const InstrumentProvider = ({ children }: { children: ReactNode }) => {
     return null;
   }
 
-  if (!instrument) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          padding: 20,
-          gap: 20,
-        }}
-      >
-        <View>
-          <Text style={{ fontSize: 20 }}>Escolha seu instrumento</Text>
-          <Text style={{ color: "#999" }}>
-            Você poderá trocar depois se preferir
-          </Text>
-        </View>
-        <InstrumentSelector onSelect={updateInstrument} />
-      </View>
-    );
-  }
-
   return (
     <InstrumentContext.Provider value={{ instrument, updateInstrument }}>
-      {children}
+      {instrument ? (
+        children
+      ) : (
+        <View style={{ flex: 1, padding: 20, justifyContent: "center" }}>
+          <InstrumentSelector />
+        </View>
+      )}
     </InstrumentContext.Provider>
   );
 };

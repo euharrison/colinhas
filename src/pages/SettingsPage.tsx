@@ -1,14 +1,19 @@
-import { Link } from "expo-router";
 import { Text, View } from "react-native";
+import { Header } from "../components/Header";
+import { InstrumentSelector } from "../components/InstrumentSelector";
+import { router } from "expo-router";
 
 export const SettingsPage = () => {
   return (
-    <View style={{ flex: 1, padding: 8, gap: 4 }}>
-      <Text>SettingsPage</Text>
-      <Text>-</Text>
-      <Link href="/">
-        <Text>Home (voltar)</Text>
-      </Link>
-    </View>
+    <>
+      <Header title="Configurações" />
+      <View style={{ padding: 20 }}>
+        <InstrumentSelector
+          onChange={() => {
+            router.back();
+          }}
+        />
+      </View>
+    </>
   );
 };
