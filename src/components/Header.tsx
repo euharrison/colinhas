@@ -32,7 +32,9 @@ export const Header = ({
             justifyContent: "center",
             backgroundColor: pressed ? "#ccc" : undefined,
           })}
-          onPress={() => router.back()}
+          onPress={() =>
+            router.canGoBack() ? router.back() : router.push("/")
+          }
         >
           <Text>{"<"}</Text>
         </Pressable>
