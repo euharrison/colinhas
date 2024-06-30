@@ -1,5 +1,5 @@
 import { FirestoreError, collection, onSnapshot } from "firebase/firestore";
-import { db } from "./db";
+import { db, sheetsCollection } from "./db";
 import { Sheet } from "./types";
 
 export async function subscribeSheets(
@@ -7,7 +7,7 @@ export async function subscribeSheets(
   onError: (error: FirestoreError) => void,
 ) {
   return onSnapshot(
-    collection(db, "sheets"),
+    collection(db, sheetsCollection),
     (snapshot) => {
       const sheets = snapshot.docs.map((doc) => {
         const data = doc.data({ serverTimestamps: "estimate" });
