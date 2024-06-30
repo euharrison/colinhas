@@ -5,7 +5,7 @@ import { useSheetList } from "../hooks/useSheetList";
 
 export const HomePage = () => {
   const sheetList = useSheetList();
-  const { instrument } = useInstrument();
+  const instrument = useInstrument();
 
   return (
     <>

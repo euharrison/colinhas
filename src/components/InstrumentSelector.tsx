@@ -1,8 +1,8 @@
 import { Pressable, Text, View } from "react-native";
-import { useInstrument } from "../hooks/useInstrument";
+import { useUpdateInstrument } from "../hooks/useUpdateInstrument";
 
 export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
-  const { updateInstrument } = useInstrument();
+  const updateInstrument = useUpdateInstrument();
 
   return (
     <View>

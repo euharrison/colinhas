@@ -29,7 +29,7 @@ export const SaveModal = ({
   const [name, setName] = useState(sheet?.name ?? "");
   const [saving, setSaving] = useState(false);
 
-  const { instrument } = useInstrument();
+  const instrument = useInstrument();
 
   return (
     <Modal

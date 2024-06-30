@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { InstrumentContext } from "../contexts/InstrumentContext";
 
-export const useInstrument = () => {
-  return useContext(InstrumentContext).instrument;
+export const useUpdateInstrument = () => {
+  return useContext(InstrumentContext).updateInstrument;
 };

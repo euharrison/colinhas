@@ -10,7 +10,7 @@ import { transpose } from "../services/transpose";
 export const ViewPage = () => {
   const params = useLocalSearchParams();
   const sheet = useSheet(String(params.sheet));
-  const { instrument } = useInstrument();
+  const instrument = useInstrument();
 
   if (!sheet) {
     return <NotFound />;
