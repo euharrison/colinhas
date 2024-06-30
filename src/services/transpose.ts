@@ -1,5 +1,3 @@
-export type Accidental = "sharp" | "flat";
-
 const trumpetOffset = -2;
 const saxOffset = +3;
 
@@ -81,7 +79,7 @@ export const transpose = (
   data: string,
   inputInstrument: string,
   outputIntrument: string,
-  accidental: Accidental,
+  accidental: "sharp" | "flat",
 ) => {
   if (inputInstrument === outputIntrument) {
     return data;

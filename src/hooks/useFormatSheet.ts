@@ -1,9 +1,12 @@
 import { Sheet } from "../database/types";
-import { Accidental, transpose } from "../services/transpose";
+import { transpose } from "../services/transpose";
+import { useAccidental } from "./useAccidental";
 import { useInstrument } from "./useInstrument";
 
 export const useFormatSheet = () => {
+  const accidental = useAccidental();
   const instrument = useInstrument();
-  return (sheet: Sheet, accidental: Accidental = "sharp") =>
+
+  return (sheet: Sheet) =>
     transpose(sheet.data, sheet.instrument, instrument, accidental);
 };

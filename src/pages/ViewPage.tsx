@@ -1,6 +1,7 @@
 import { Link, useLocalSearchParams } from "expo-router";
-import { Pressable, ScrollView, Text } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { auth } from "../auth/auth";
+import { AccidentalInput } from "../components/AccidentalInput";
 import { Header } from "../components/Header";
 import { NotFound } from "../components/NotFound";
 import { useFormatSheet } from "../hooks/useFormatSheet";
@@ -39,9 +40,12 @@ export const ViewPage = () => {
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 100 }}
       >
         {sheet.instrument !== instrument && (
-          <Text style={{ color: "#999", marginTop: 8, marginBottom: 16 }}>
-            Transposição automática. Original em {sheet.instrument}
-          </Text>
+          <View style={{ marginTop: 8, marginBottom: 16 }}>
+            <Text style={{ color: "#999" }}>
+              Transposição automática. Original em {sheet.instrument}
+            </Text>
+            <AccidentalInput />
+          </View>
         )}
         <Text style={{ fontSize: 20 }}>{formatSheet(sheet)}</Text>
       </ScrollView>
