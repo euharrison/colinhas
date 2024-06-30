@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 const scales = [
   ["do♭", "re♭", "mi♭", "fa♭", "sol♭", "la♭", "si♭"],

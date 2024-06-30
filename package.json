@@ -10,12 +10,12 @@
     "run:android": "expo run:android",
     "run:ios": "expo run:ios",
     "run:device:android": "npx expo run:android --device",
-    "run:device:ios": "expo run:ios",
-    "eas:build:dev:android": "eas build -p android --profile development --local",
-    "eas:build:dev:ios": "eas build -p ios --profile development --local",
-    "eas:build:prod:android": "eas build -p android",
-    "eas:build:prod:ios": "eas build -p ios",
-    "build:web": "expo export -p web",
+    "run:device:ios": "expo run:ios --device",
+    "build:dev:android": "eas build -p android --profile development --local",
+    "build:dev:ios": "eas build -p ios --profile development --local",
+    "build:prod:android": "eas build -p android",
+    "build:prod:ios": "eas build -p ios",
+    "build:prod:web": "expo export -p web",
     "lint": "eslint ."
   },
   "dependencies": {
