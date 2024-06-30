@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ReactNode, useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { ReactNode, useCallback, useEffect, useState } from "react";
+import { View } from "react-native";
 import { InstrumentContext } from "../contexts/InstrumentContext";
 import { InstrumentSelector } from "./InstrumentSelector";
 
@@ -10,10 +10,10 @@ export const InstrumentProvider = ({ children }: { children: ReactNode }) => {
   const [ready, setReady] = useState(false);
   const [instrument, setInstrument] = useState("");
 
-  const updateInstrument = (value: string) => {
+  const updateInstrument = useCallback((value: string) => {
     setInstrument(value);
     AsyncStorage.setItem(key, value);
-  };
+  }, []);
 
   useEffect(() => {
     const load = async () => {

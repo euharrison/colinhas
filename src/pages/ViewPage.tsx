@@ -1,13 +1,16 @@
 import { Link, useLocalSearchParams } from "expo-router";
 import { Pressable, ScrollView, Text } from "react-native";
+import { auth } from "../auth/auth";
 import { Header } from "../components/Header";
 import { NotFound } from "../components/NotFound";
+import { useInstrument } from "../hooks/useInstrument";
 import { useSheet } from "../hooks/useSheet";
-import { auth } from "../auth/auth";
+import { transpose } from "../services/transpose";
 
 export const ViewPage = () => {
   const params = useLocalSearchParams();
   const sheet = useSheet(String(params.sheet));
+  const { instrument } = useInstrument();
 
   if (!sheet) {
     return <NotFound />;
@@ -34,7 +37,14 @@ export const ViewPage = () => {
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 100 }}
       >
-        <Text style={{ fontSize: 20 }}>{sheet.data}</Text>
+        {sheet.instrument !== instrument && (
+          <Text style={{ color: "#999", marginTop: 8, marginBottom: 16 }}>
+            Transposição automática. Original em {sheet.instrument}
+          </Text>
+        )}
+        <Text style={{ fontSize: 20 }}>
+          {transpose(sheet.data, sheet.instrument, instrument)}
+        </Text>
       </ScrollView>
     </>
   );
