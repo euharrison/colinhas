@@ -1,11 +1,13 @@
 import { useRef, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { Sheet } from "../database/types";
+import { useFormatSheet } from "../hooks/useFormatSheet";
 import { NotesKeyboard } from "./NotesKeyboard";
 import { SaveModal } from "./SaveModal";
 
 export const Editor = ({ sheet }: { sheet?: Sheet }) => {
-  const [value, setValue] = useState(sheet?.data ?? "");
+  const formatSheet = useFormatSheet();
+  const [value, setValue] = useState(sheet ? formatSheet(sheet) : "");
   const [saveModalVisible, setSaveModalVisible] = useState(false);
   const inputRef = useRef<TextInput>(null);
 

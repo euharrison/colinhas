@@ -3,14 +3,15 @@ import { Pressable, ScrollView, Text } from "react-native";
 import { auth } from "../auth/auth";
 import { Header } from "../components/Header";
 import { NotFound } from "../components/NotFound";
+import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useInstrument } from "../hooks/useInstrument";
 import { useSheet } from "../hooks/useSheet";
-import { transpose } from "../services/transpose";
 
 export const ViewPage = () => {
   const params = useLocalSearchParams();
   const sheet = useSheet(String(params.sheet));
   const instrument = useInstrument();
+  const formatSheet = useFormatSheet();
 
   if (!sheet) {
     return <NotFound />;
@@ -42,9 +43,7 @@ export const ViewPage = () => {
             Transposição automática. Original em {sheet.instrument}
           </Text>
         )}
-        <Text style={{ fontSize: 20 }}>
-          {transpose(sheet.data, sheet.instrument, instrument)}
-        </Text>
+        <Text style={{ fontSize: 20 }}>{formatSheet(sheet)}</Text>
       </ScrollView>
     </>
   );

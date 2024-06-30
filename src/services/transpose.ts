@@ -81,7 +81,7 @@ export const transpose = (
   data: string,
   inputInstrument: string,
   outputIntrument: string,
-  accidental: Accidental = "sharp",
+  accidental: Accidental,
 ) => {
   if (inputInstrument === outputIntrument) {
     return data;

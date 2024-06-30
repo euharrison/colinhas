@@ -1,11 +1,13 @@
 import { Link } from "expo-router";
 import { FlatList, Pressable, Text, View } from "react-native";
+import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useInstrument } from "../hooks/useInstrument";
 import { useSheetList } from "../hooks/useSheetList";
 
 export const HomePage = () => {
   const sheetList = useSheetList();
   const instrument = useInstrument();
+  const formatSheet = useFormatSheet();
 
   return (
     <>
@@ -44,7 +46,7 @@ export const HomePage = () => {
         style={{ borderTopWidth: 1 }}
         contentContainerStyle={{ paddingBottom: 100 }}
         data={sheetList}
-        keyExtractor={(item, i) => item.id + i}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <Link href={`/${item.id}`} asChild>
             <Pressable
@@ -56,7 +58,7 @@ export const HomePage = () => {
             >
               <Text>{item.name}</Text>
               <Text style={{ color: "#999" }} numberOfLines={1}>
-                {item.data.replaceAll("\n", " ")}
+                {formatSheet(item).replaceAll("\n", "   ")}
               </Text>
               {item.syncing && (
                 <Text style={{ position: "absolute", top: 30, right: 20 }}>
