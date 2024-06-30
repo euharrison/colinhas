@@ -7,8 +7,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // TODO
-        // console.log("AuthProvider", user.uid);
+        // console.log(user.uid);
       }
     });
     login();
