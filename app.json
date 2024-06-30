@@ -29,7 +29,12 @@
         {
           "action": "VIEW",
           "autoVerify": true,
-          "data": [{ "scheme": "https", "host": "colinhas.com" }],
+          "data": [
+            {
+              "scheme": "https",
+              "host": "colinhas.com"
+            }
+          ],
           "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
@@ -39,6 +44,14 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": ["expo-router"]
+    "plugins": ["expo-router"],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "82a27804-b097-49f5-846e-f8139f5230e1"
+      }
+    }
   }
 }
