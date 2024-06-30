@@ -1,19 +1,11 @@
 import { router } from "expo-router";
 import { useState } from "react";
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  Pressable,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Alert, Modal, Pressable, Text, TextInput, View } from "react-native";
 import { createSheet } from "../database/createSheet";
 import { editSheet } from "../database/editSheet";
 import { Sheet } from "../database/types";
 import { useInstrument } from "../hooks/useInstrument";
+import { KeyboardLayout } from "./KeyboardLayout";
 
 export const SaveModal = ({
   sheet,
@@ -38,16 +30,12 @@ export const SaveModal = ({
       visible={visible}
       onRequestClose={onRequestClose}
     >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
+      <KeyboardLayout>
         <View
           style={{
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            marginTop: 22,
           }}
         >
           <Pressable
@@ -137,7 +125,7 @@ export const SaveModal = ({
             </View>
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardLayout>
     </Modal>
   );
 };
