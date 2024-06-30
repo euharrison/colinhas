@@ -128,7 +128,7 @@ export const SaveModal = ({
                   } catch (error) {
                     Alert.alert(String(error));
                   }
-                  router.back();
+                  router.dismissAll();
                   setSaving(false);
                 }}
               >
