@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { Pressable, Text } from "react-native";
 import { auth } from "../auth/auth";
 import { Editor } from "../components/Editor";
@@ -7,7 +7,7 @@ import { KeyboardLayout } from "../components/KeyboardLayout";
 import { NotFound } from "../components/NotFound";
 import { deleteSheet } from "../database/deleteSheet";
 import { useSheet } from "../hooks/useSheet";
-import { alert, Alert } from "../services/alert";
+import { alert } from "../services/alert";
 import { dismissAll } from "../services/navigation";
 
 export const EditPage = () => {

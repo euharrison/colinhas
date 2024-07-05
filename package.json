@@ -16,7 +16,8 @@
     "build:prod:android": "eas build -p android",
     "build:prod:ios": "eas build -p ios",
     "build:prod:web": "expo export -p web",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "tsc": "tsc"
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.1",
