@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Modal, Pressable, Text, TextInput, View } from "react-native";
+import {
+  Modal,
+  Platform,
+  Pressable,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { createSheet } from "../database/createSheet";
 import { editSheet } from "../database/editSheet";
 import { Sheet } from "../database/types";
@@ -20,7 +27,11 @@ export const SaveModal = ({
   visible: boolean;
   onRequestClose: () => void;
 }) => {
+  console.log(sheet);
   const [name, setName] = useState(sheet?.name ?? "");
+  const [keySignature, setKeySignature] = useState(sheet?.keySignature ?? "");
+  console.log({ keySignature });
+
   const [saving, setSaving] = useState(false);
 
   const instrument = useInstrument();
@@ -97,6 +108,36 @@ export const SaveModal = ({
                     onChangeText={setName}
                   />
                 </View>
+                {Platform.OS === "web" && (
+                  <View>
+                    <Text>Tom:</Text>
+                    <select
+                      value={keySignature}
+                      onChange={(e) => setKeySignature(e.currentTarget.value)}
+                    >
+                      {[
+                        { value: "Do", label: "Do" },
+                        { value: "Do♯", label: "Do♯" },
+                        { value: "Re♭", label: "Re♭" },
+                        { value: "Re", label: "Re" },
+                        { value: "Mi♭", label: "Mi♭" },
+                        { value: "Mi", label: "Mi" },
+                        { value: "Fa", label: "Fa" },
+                        { value: "Fa♯", label: "Fa♯" },
+                        { value: "Sol♭", label: "Sol♭" },
+                        { value: "Sol", label: "Sol" },
+                        { value: "La♭", label: "La♭" },
+                        { value: "La", label: "La" },
+                        { value: "Si♭", label: "Si♭" },
+                        { value: "Si", label: "Si" },
+                      ].map(({ value, label }) => (
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </View>
+                )}
                 <Pressable
                   style={({ pressed }) => ({
                     marginTop: 16,
@@ -111,10 +152,16 @@ export const SaveModal = ({
                   onPress={async () => {
                     setSaving(true);
                     try {
+                      const payload = {
+                        name,
+                        data,
+                        instrument,
+                        keySignature,
+                      };
                       if (sheet?.id) {
-                        await editSheet(sheet.id, { name, data, instrument });
+                        await editSheet(sheet.id, payload);
                       } else {
-                        await createSheet({ name, data, instrument });
+                        await createSheet(payload);
                       }
                     } catch (error) {
                       alert(String(error));
