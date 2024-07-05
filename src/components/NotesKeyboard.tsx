@@ -10,13 +10,13 @@ const scales = [
   ["do", "re", "mi♭", "fa", "sol", "la", "si♭"],
   ["do", "re", "mi", "fa", "sol", "la", "si♭"],
   ["do", "re", "mi", "fa", "sol", "la", "si"],
-  ["do", "re", "mi", "fa#", "sol", "la", "si"],
-  ["do#", "re", "mi", "fa#", "sol", "la", "si"],
-  ["do#", "re", "mi", "fa#", "sol#", "la", "si"],
-  ["do#", "re#", "mi", "fa#", "sol#", "la", "si"],
-  ["do#", "re#", "mi", "fa#", "sol#", "la#", "si"],
-  ["do#", "re#", "mi#", "fa#", "sol#", "la#", "si"],
-  ["do#", "re#", "mi#", "fa#", "sol#", "la#", "si#"],
+  ["do", "re", "mi", "fa♯", "sol", "la", "si"],
+  ["do♯", "re", "mi", "fa♯", "sol", "la", "si"],
+  ["do♯", "re", "mi", "fa♯", "sol♯", "la", "si"],
+  ["do♯", "re♯", "mi", "fa♯", "sol♯", "la", "si"],
+  ["do♯", "re♯", "mi", "fa♯", "sol♯", "la♯", "si"],
+  ["do♯", "re♯", "mi♯", "fa♯", "sol♯", "la♯", "si"],
+  ["do♯", "re♯", "mi♯", "fa♯", "sol♯", "la♯", "si♯"],
 ];
 
 const Key = ({
@@ -94,9 +94,9 @@ export const NotesKeyboard = ({
             onPress("");
           }}
         >
-          ↑ #
+          ↑ ♯
         </Key>
-        <Key onPress={() => onPress("# ")}>#</Key>
+        <Key onPress={() => onPress("♯ ")}>♯</Key>
       </View>
       <NotesRow notes={keys.map((s) => s.toUpperCase())} onPress={onPress} />
       <NotesRow
