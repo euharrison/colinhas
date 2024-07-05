@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { Alert, Pressable, Text } from "react-native";
+import { Pressable, Text } from "react-native";
 import { auth } from "../auth/auth";
 import { Editor } from "../components/Editor";
 import { Header } from "../components/Header";
@@ -7,6 +7,8 @@ import { KeyboardLayout } from "../components/KeyboardLayout";
 import { NotFound } from "../components/NotFound";
 import { deleteSheet } from "../database/deleteSheet";
 import { useSheet } from "../hooks/useSheet";
+import { alert, Alert } from "../services/alert";
+import { dismissAll } from "../services/navigation";
 
 export const EditPage = () => {
   const params = useLocalSearchParams();
@@ -28,28 +30,17 @@ export const EditPage = () => {
               justifyContent: "center",
             }}
             onPress={() => {
-              Alert.alert(
+              alert(
                 `Apagar a cola ${sheet.name}?`,
                 "Essa ação não poderá ser desfeita",
-                [
-                  {
-                    text: "Cancelar",
-                    style: "cancel",
-                  },
-                  {
-                    text: "Apagar",
-                    onPress: async () => {
-                      try {
-                        await deleteSheet(sheet.id);
-                        router.dismissAll();
-                      } catch (error) {
-                        Alert.alert(String(error));
-                      }
-                    },
-                    style: "destructive",
-                  },
-                ],
-                { cancelable: true },
+                async () => {
+                  try {
+                    await deleteSheet(sheet.id);
+                    dismissAll();
+                  } catch (error) {
+                    alert(String(error));
+                  }
+                },
               );
             }}
           >

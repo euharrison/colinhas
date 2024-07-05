@@ -1,8 +1,8 @@
 import { ReactNode, useEffect, useState } from "react";
-import { Alert } from "react-native";
 import { SheetsContext } from "../contexts/SheetsContext";
 import { subscribeSheets } from "../database/subscribeSheets";
 import { Sheet } from "../database/types";
+import { alert } from "../services/alert";
 
 export const SheetsProvider = ({ children }: { children: ReactNode }) => {
   const [sheets, setSheets] = useState<Sheet[]>([]);
@@ -14,7 +14,7 @@ export const SheetsProvider = ({ children }: { children: ReactNode }) => {
           setSheets(sheets);
         },
         (error) => {
-          Alert.alert("Erro ao carregar as colas", error.message);
+          alert("Erro ao carregar as colas", error.message);
         },
       );
     };

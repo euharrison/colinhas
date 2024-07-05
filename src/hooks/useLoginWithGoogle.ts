@@ -1,7 +1,7 @@
 import { AuthError } from "firebase/auth";
 import { useCallback } from "react";
-import { Alert } from "react-native";
 import { loginWithGoogle } from "../auth/loginWithGoogle";
+import { alert } from "../services/alert";
 
 export const useLoginWithGoogle = () => {
   return useCallback(async () => {
@@ -9,7 +9,7 @@ export const useLoginWithGoogle = () => {
       await loginWithGoogle();
     } catch (error) {
       if ((error as AuthError).code !== "auth/popup-closed-by-user") {
-        Alert.alert(String(error));
+        alert(String(error));
       }
     }
   }, []);

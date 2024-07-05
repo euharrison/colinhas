@@ -1,10 +1,11 @@
-import { router } from "expo-router";
-import { Alert, Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { logout } from "../auth/logout";
 import { Header } from "../components/Header";
 import { InstrumentSelector } from "../components/InstrumentSelector";
 import { useLoginWithGoogle } from "../hooks/useLoginWithGoogle";
 import { useUser } from "../hooks/useUser";
+import { alert } from "../services/alert";
+import { goBack } from "../services/navigation";
 
 export const SettingsPage = () => {
   const user = useUser();
@@ -22,7 +23,7 @@ export const SettingsPage = () => {
       >
         <InstrumentSelector
           onChange={() => {
-            router.back();
+            goBack();
           }}
         />
         {user ? (
@@ -35,7 +36,7 @@ export const SettingsPage = () => {
                 try {
                   await logout();
                 } catch (error) {
-                  Alert.alert(String(error));
+                  alert(String(error));
                 }
               }}
             >
