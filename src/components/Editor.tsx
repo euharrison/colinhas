@@ -12,7 +12,13 @@ export const Editor = ({ sheet }: { sheet?: Sheet }) => {
   const inputRef = useRef<TextInput>(null);
 
   const onPressNoteKeyboard = (value: string) => {
-    setValue((prev) => `${prev}${value}`);
+    setValue((prev) => {
+      if ((value === "♭" || value === "♯") && prev.endsWith(" ")) {
+        return `${prev.substring(0, prev.length - 1)}${value} `;
+      } else {
+        return `${prev}${value} `;
+      }
+    });
     inputRef.current?.focus();
   };
 
