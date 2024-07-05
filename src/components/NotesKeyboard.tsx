@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, View, ViewStyle } from "react-native";
 
 const scales = [
   ["do♭", "re♭", "mi♭", "fa♭", "sol♭", "la♭", "si♭"],
@@ -53,7 +53,7 @@ const NotesRow = ({
   return (
     <View style={{ flexDirection: "row", gap: 2, height: 32 }}>
       {notes.map((key) => (
-        <Key key={key} onPress={() => onPress(`${key} `)}>
+        <Key key={key} onPress={() => onPress(key)}>
           {key}
         </Key>
       ))}
@@ -79,11 +79,10 @@ export const NotesKeyboard = ({
       }}
     >
       <View style={{ flexDirection: "row", gap: 2, height: 28 }}>
-        <Key onPress={() => onPress("♭ ")}>♭</Key>
+        <Text style={{ padding: 4 }}>Tom:</Text>
         <Key
           onPress={() => {
             setScaleIndex((s) => Math.max(s - 1, 0));
-            onPress("");
           }}
         >
           ↓ ♭
@@ -91,12 +90,13 @@ export const NotesKeyboard = ({
         <Key
           onPress={() => {
             setScaleIndex((s) => Math.min(s + 1, scales.length - 1));
-            onPress("");
           }}
         >
           ↑ ♯
         </Key>
-        <Key onPress={() => onPress("♯ ")}>♯</Key>
+        <View style={{ width: 50 }} />
+        <Key onPress={() => onPress("♭")}>♭</Key>
+        <Key onPress={() => onPress("♯")}>♯</Key>
       </View>
       <NotesRow notes={keys.map((s) => s.toUpperCase())} onPress={onPress} />
       <NotesRow
