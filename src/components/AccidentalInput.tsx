@@ -13,16 +13,15 @@ export const AccidentalInput = () => {
         flexDirection: "row",
         alignItems: "center",
         gap: 4,
-        marginVertical: 4,
-        alignSelf: "flex-end",
         opacity: 0.5,
       }}
     >
+      <Text>Visualizar em: </Text>
       <RadioField
         checked={accidental === "sharp"}
         onChange={() => updateAccidental("sharp")}
       >
-        <Text>#</Text>
+        <Text>♯</Text>
       </RadioField>
       <RadioField
         checked={accidental === "flat"}

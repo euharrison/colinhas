@@ -75,7 +75,7 @@ export const transpose = (
     return data;
   }
 
-  return data.replaceAll(/[a-zA-Z#♭]+/g, (match) => {
+  return data.replaceAll(/[a-zA-Z#♯♭]+/g, (match) => {
     const inputIndex = inputDictionary[match];
     if (inputIndex === undefined) {
       return match;
