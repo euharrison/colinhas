@@ -39,14 +39,15 @@ export const ViewPage = () => {
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 100 }}
       >
-        {sheet.instrument !== instrument && (
-          <View style={{ marginTop: 8, marginBottom: 16 }}>
-            <Text style={{ color: "#999" }}>
-              Transposição automática. Original em {sheet.instrument}
-            </Text>
-            <AccidentalInput />
-          </View>
-        )}
+        <View style={{ marginTop: 8, marginBottom: 16, gap: 8 }}>
+          <Text style={{ color: "#999" }}>Original em {sheet.instrument}</Text>
+          {sheet.instrument !== instrument && (
+            <>
+              <Text style={{ color: "#999" }}>Transposição automática.</Text>
+              <AccidentalInput />
+            </>
+          )}
+        </View>
         <Text style={{ fontSize: 20 }}>{formatSheet(sheet)}</Text>
       </ScrollView>
     </>
