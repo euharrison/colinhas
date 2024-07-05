@@ -1,14 +1,14 @@
 import { router } from "expo-router";
-import { AuthError } from "firebase/auth";
 import { Alert, Pressable, ScrollView, Text, View } from "react-native";
-import { googleLogin } from "../auth/googleLogin";
 import { logout } from "../auth/logout";
 import { Header } from "../components/Header";
 import { InstrumentSelector } from "../components/InstrumentSelector";
+import { useLoginWithGoogle } from "../hooks/useLoginWithGoogle";
 import { useUser } from "../hooks/useUser";
 
 export const SettingsPage = () => {
   const user = useUser();
+  const loginWithGoogle = useLoginWithGoogle();
 
   return (
     <>
@@ -45,15 +45,7 @@ export const SettingsPage = () => {
         ) : (
           <Pressable
             style={{ alignSelf: "flex-start" }}
-            onPress={async () => {
-              try {
-                await googleLogin();
-              } catch (error) {
-                if ((error as AuthError).code !== "auth/popup-closed-by-user") {
-                  Alert.alert(String(error));
-                }
-              }
-            }}
+            onPress={loginWithGoogle}
           >
             <Text>Entrar com Google</Text>
           </Pressable>

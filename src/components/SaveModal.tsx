@@ -5,6 +5,7 @@ import { createSheet } from "../database/createSheet";
 import { editSheet } from "../database/editSheet";
 import { Sheet } from "../database/types";
 import { useInstrument } from "../hooks/useInstrument";
+import { AuthGate } from "./AuthGate";
 import { KeyboardLayout } from "./KeyboardLayout";
 
 export const SaveModal = ({
@@ -82,47 +83,56 @@ export const SaveModal = ({
                 <Text>X</Text>
               </Pressable>
             </View>
-            <View style={{ gap: 16 }}>
-              <View>
-                <Text>Nome:</Text>
-                <TextInput
-                  style={{ padding: 8, borderWidth: 1, borderRadius: 4 }}
-                  autoComplete="off"
-                  autoCorrect={false}
-                  autoFocus
-                  value={name}
-                  onChangeText={setName}
-                />
-              </View>
-              <Pressable
-                style={({ pressed }) => ({
-                  marginTop: 16,
-                  padding: 8,
-                  borderRadius: 4,
-                  borderWidth: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: pressed ? "#ccc" : undefined,
-                })}
-                disabled={saving}
-                onPress={async () => {
-                  setSaving(true);
-                  try {
-                    if (sheet?.id) {
-                      await editSheet(sheet.id, { name, data, instrument });
-                    } else {
-                      await createSheet({ name, data, instrument });
+            <AuthGate>
+              <View style={{ gap: 16 }}>
+                <View>
+                  <Text>Nome:</Text>
+                  <TextInput
+                    style={{ padding: 8, borderWidth: 1, borderRadius: 4 }}
+                    autoComplete="off"
+                    autoCorrect={false}
+                    autoFocus
+                    value={name}
+                    onChangeText={setName}
+                  />
+                </View>
+                <Pressable
+                  style={({ pressed }) => ({
+                    marginTop: 16,
+                    padding: 8,
+                    borderRadius: 4,
+                    borderWidth: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: pressed ? "#ccc" : undefined,
+                  })}
+                  disabled={saving}
+                  onPress={async () => {
+                    setSaving(true);
+
+                    try {
+                      if (sheet?.id) {
+                        await editSheet(sheet.id, { name, data, instrument });
+                      } else {
+                        await createSheet({ name, data, instrument });
+                      }
+                    } catch (error) {
+                      Alert.alert(String(error));
                     }
-                  } catch (error) {
-                    Alert.alert(String(error));
-                  }
-                  router.dismissAll();
-                  setSaving(false);
-                }}
-              >
-                <Text>{saving ? "Salvando..." : "Salvar"}</Text>
-              </Pressable>
-            </View>
+
+                    if (router.canDismiss()) {
+                      router.dismissAll();
+                    } else {
+                      router.replace("/");
+                    }
+
+                    setSaving(false);
+                  }}
+                >
+                  <Text>{saving ? "Salvando..." : "Salvar"}</Text>
+                </Pressable>
+              </View>
+            </AuthGate>
           </View>
         </View>
       </KeyboardLayout>

@@ -7,6 +7,6 @@ import { auth } from "./auth";
 
 const provider = new GoogleAuthProvider();
 
-export const googleLogin = () => {
+export const loginWithGoogle = () => {
   return signInWithPopup(auth, provider, browserPopupRedirectResolver);
 };
