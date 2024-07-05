@@ -27,10 +27,8 @@ export const SaveModal = ({
   visible: boolean;
   onRequestClose: () => void;
 }) => {
-  console.log(sheet);
   const [name, setName] = useState(sheet?.name ?? "");
   const [keySignature, setKeySignature] = useState(sheet?.keySignature ?? "");
-  console.log({ keySignature });
 
   const [saving, setSaving] = useState(false);
 
