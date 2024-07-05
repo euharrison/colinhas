@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { ReactNode } from "react";
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { goBack } from "../services/navigation";
 
 export const Header = ({
   title,
@@ -32,9 +33,9 @@ export const Header = ({
             justifyContent: "center",
             backgroundColor: pressed ? "#ccc" : undefined,
           })}
-          onPress={() =>
-            router.canGoBack() ? router.back() : router.push("/")
-          }
+          onPress={() => {
+            goBack();
+          }}
         >
           <Text>{"<"}</Text>
         </Pressable>

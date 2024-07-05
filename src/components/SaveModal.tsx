@@ -1,10 +1,11 @@
-import { router } from "expo-router";
 import { useState } from "react";
-import { Alert, Modal, Pressable, Text, TextInput, View } from "react-native";
+import { Modal, Pressable, Text, TextInput, View } from "react-native";
 import { createSheet } from "../database/createSheet";
 import { editSheet } from "../database/editSheet";
 import { Sheet } from "../database/types";
 import { useInstrument } from "../hooks/useInstrument";
+import { alert } from "../services/alert";
+import { dismissAll } from "../services/navigation";
 import { AuthGate } from "./AuthGate";
 import { KeyboardLayout } from "./KeyboardLayout";
 
@@ -109,7 +110,6 @@ export const SaveModal = ({
                   disabled={saving}
                   onPress={async () => {
                     setSaving(true);
-
                     try {
                       if (sheet?.id) {
                         await editSheet(sheet.id, { name, data, instrument });
@@ -117,15 +117,9 @@ export const SaveModal = ({
                         await createSheet({ name, data, instrument });
                       }
                     } catch (error) {
-                      Alert.alert(String(error));
+                      alert(String(error));
                     }
-
-                    if (router.canDismiss()) {
-                      router.dismissAll();
-                    } else {
-                      router.replace("/");
-                    }
-
+                    dismissAll();
                     setSaving(false);
                   }}
                 >
