@@ -1,6 +1,8 @@
+import { black } from "./colors";
+
 export const dropShadow = {
   elevation: 3,
-  shadowColor: "#000",
+  shadowColor: black,
   shadowOffset: {
     width: 0,
     height: 1,

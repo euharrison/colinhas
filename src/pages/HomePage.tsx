@@ -7,7 +7,8 @@ import { useInstrument } from "../hooks/useInstrument";
 import { useSheetList } from "../hooks/useSheetList";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
-import { headerHeight } from "../theme/size";
+import { black, textGray } from "../theme/colors";
+import { headerHeight } from "../theme/sizes";
 
 export const HomePage = () => {
   const sheetList = useSheetList();
@@ -29,7 +30,7 @@ export const HomePage = () => {
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>Colinhas</Text>
           <Link href="/profile" asChild>
             <Pressable style={{ flexDirection: "row", gap: 8 }}>
-              <InstrumentIcon instrument={instrument} fill="#999" />
+              <InstrumentIcon instrument={instrument} fill={textGray} />
               <ProfileIcon />
             </Pressable>
           </Link>
@@ -44,13 +45,13 @@ export const HomePage = () => {
           <Link href={`/${item.id}`} asChild>
             <Pressable
               style={{
-                borderColor: "black",
+                borderColor: black,
                 borderBottomWidth: 1,
                 padding: 20,
               }}
             >
               <Text>{item.name}</Text>
-              <Text style={{ color: "#999" }} numberOfLines={1}>
+              <Text style={{ color: textGray }} numberOfLines={1}>
                 {formatSheet(item).replaceAll("\n", "   ")}
               </Text>
               {item.syncing && (

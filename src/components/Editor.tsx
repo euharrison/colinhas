@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
+import { buttonFeedback, white } from "../theme/colors";
 import { NotesKeyboard } from "./NotesKeyboard";
 import { SaveModal } from "./SaveModal";
 
@@ -52,7 +53,7 @@ export const Editor = ({ sheet }: { sheet?: Sheet }) => {
             borderWidth: 1,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: pressed ? "#ccc" : "#ffffffaa",
+            backgroundColor: pressed ? buttonFeedback : white,
             position: "absolute",
             right: 8,
             bottom: 8,

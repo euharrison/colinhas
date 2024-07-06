@@ -3,7 +3,8 @@ import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { goBack } from "../services/navigation";
-import { headerHeight } from "../theme/size";
+import { buttonFeedback } from "../theme/colors";
+import { headerHeight } from "../theme/sizes";
 
 export const Header = ({
   title,
@@ -32,7 +33,7 @@ export const Header = ({
             height: headerHeight,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: pressed ? "#ccc" : undefined,
+            backgroundColor: pressed ? buttonFeedback : undefined,
           })}
           onPress={() => {
             goBack();

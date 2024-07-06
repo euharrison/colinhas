@@ -3,6 +3,7 @@ import { AccidentalProvider } from "../components/AccidentalProvider";
 import { AuthProvider } from "../components/AuthProvider";
 import { InstrumentProvider } from "../components/InstrumentProvider";
 import { SheetsProvider } from "../components/SheetsProvider";
+import { white } from "../theme/colors";
 
 export default function Layout() {
   return (
@@ -14,7 +15,7 @@ export default function Layout() {
               screenOptions={{
                 headerShown: false,
                 contentStyle: {
-                  backgroundColor: "white",
+                  backgroundColor: white,
                 },
               }}
             />
