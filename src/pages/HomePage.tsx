@@ -8,7 +8,7 @@ import { useSheetList } from "../hooks/useSheetList";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
 import { black, textGray } from "../theme/colors";
-import { headerHeight } from "../theme/sizes";
+import { headerHeight, pagePadding } from "../theme/sizes";
 
 export const HomePage = () => {
   const sheetList = useSheetList();
@@ -24,7 +24,7 @@ export const HomePage = () => {
             justifyContent: "space-between",
             alignItems: "center",
             height: headerHeight,
-            paddingHorizontal: 20,
+            paddingHorizontal: pagePadding,
           }}
         >
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>Colinhas</Text>
@@ -47,7 +47,7 @@ export const HomePage = () => {
               style={{
                 borderColor: black,
                 borderBottomWidth: 1,
-                padding: 20,
+                padding: pagePadding,
               }}
             >
               <Text>{item.name}</Text>
@@ -55,7 +55,9 @@ export const HomePage = () => {
                 {formatSheet(item).replaceAll("\n", "   ")}
               </Text>
               {item.syncing && (
-                <Text style={{ position: "absolute", top: 30, right: 20 }}>
+                <Text
+                  style={{ position: "absolute", top: 30, right: pagePadding }}
+                >
                   🔄
                 </Text>
               )}

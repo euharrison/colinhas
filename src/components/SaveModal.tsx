@@ -13,7 +13,8 @@ import { Sheet } from "../database/types";
 import { useInstrument } from "../hooks/useInstrument";
 import { alert } from "../services/alert";
 import { dismissAll } from "../services/navigation";
-import { modalOverlay, buttonFeedback, white } from "../theme/colors";
+import { buttonFeedback, modalOverlay, white } from "../theme/colors";
+import { pagePadding } from "../theme/sizes";
 import { AuthGate } from "./AuthGate";
 import { KeyboardLayout } from "./KeyboardLayout";
 
@@ -66,7 +67,7 @@ export const SaveModal = ({
               width: 300,
               backgroundColor: white,
               borderRadius: 8,
-              padding: 20,
+              padding: pagePadding,
               gap: 20,
             }}
           >
