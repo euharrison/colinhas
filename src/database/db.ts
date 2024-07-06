@@ -1,6 +1,17 @@
-import { getFirestore } from "firebase/firestore";
+import {
+  CACHE_SIZE_UNLIMITED,
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+} from "firebase/firestore";
 import { firebaseApp } from "../services/firebaseApp";
 
-export const db = getFirestore(firebaseApp);
+export const db = initializeFirestore(firebaseApp, {
+  localCache: persistentLocalCache({
+    cacheSizeBytes: CACHE_SIZE_UNLIMITED,
+    tabManager: persistentMultipleTabManager(),
+  }),
+});
 
-export const sheetsCollection = "sheets";
+// TODO
+export const sheetsCollection = "sheets-dev";

@@ -32,8 +32,6 @@ export const SaveModal = ({
   const [name, setName] = useState(sheet?.name ?? "");
   const [keySignature, setKeySignature] = useState(sheet?.keySignature ?? "");
 
-  const [saving, setSaving] = useState(false);
-
   const instrument = useInstrument();
 
   return (
@@ -148,9 +146,7 @@ export const SaveModal = ({
                     justifyContent: "center",
                     backgroundColor: pressed ? buttonFeedback : undefined,
                   })}
-                  disabled={saving}
                   onPress={async () => {
-                    setSaving(true);
                     try {
                       const payload = {
                         name,
@@ -159,18 +155,17 @@ export const SaveModal = ({
                         keySignature,
                       };
                       if (sheet?.id) {
-                        await editSheet(sheet.id, payload);
+                        editSheet(sheet.id, payload);
                       } else {
-                        await createSheet(payload);
+                        createSheet(payload);
                       }
+                      dismissAll();
                     } catch (error) {
                       alert(String(error));
                     }
-                    dismissAll();
-                    setSaving(false);
                   }}
                 >
-                  <Text>{saving ? "Salvando..." : "Salvar"}</Text>
+                  <Text>Salvar</Text>
                 </Pressable>
               </View>
             </AuthGate>
