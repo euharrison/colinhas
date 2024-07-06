@@ -10,6 +10,9 @@ import { ProfileIcon } from "../icons/ProfileIcon";
 import { black, textGray } from "../theme/colors";
 import { headerHeight, pagePadding } from "../theme/sizes";
 
+const itemHeight = 73;
+const separatorHeight = 1;
+
 export const HomePage = () => {
   const sheetList = useSheetList();
   const instrument = useInstrument();
@@ -41,13 +44,19 @@ export const HomePage = () => {
         contentContainerStyle={{ paddingBottom: 100 }}
         data={sheetList}
         keyExtractor={(item) => item.id}
+        getItemLayout={(data, index) => ({
+          length: itemHeight + separatorHeight,
+          offset: (itemHeight + separatorHeight) * index,
+          index,
+        })}
         renderItem={({ item }) => (
           <Link href={`/${item.id}`} asChild>
             <Pressable
               style={{
                 borderColor: black,
-                borderBottomWidth: 1,
+                borderBottomWidth: separatorHeight,
                 padding: pagePadding,
+                height: itemHeight,
               }}
             >
               <Text>{item.name}</Text>
