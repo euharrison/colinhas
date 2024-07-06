@@ -3,6 +3,7 @@ import { TextInput, View } from "react-native";
 import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { ArrowForwardIcon } from "../icons/ArrowForwardIcon";
+import { alert } from "../services/alert";
 import { pagePadding } from "../theme/sizes";
 import { FAB } from "./FAB";
 import { NotesKeyboard } from "./NotesKeyboard";
@@ -49,7 +50,11 @@ export const Editor = ({ sheet }: { sheet?: Sheet }) => {
         />
         <FAB
           onPress={() => {
-            setSaveModalVisible(true);
+            if (!value) {
+              alert("Escreva sua cola antes de salvar");
+            } else {
+              setSaveModalVisible(true);
+            }
           }}
         >
           <ArrowForwardIcon />
