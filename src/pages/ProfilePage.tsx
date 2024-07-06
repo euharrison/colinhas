@@ -7,7 +7,7 @@ import { useUser } from "../hooks/useUser";
 import { alert } from "../services/alert";
 import { goBack } from "../services/navigation";
 
-export const SettingsPage = () => {
+export const ProfilePage = () => {
   const user = useUser();
   const loginWithGoogle = useLoginWithGoogle();
 
