@@ -1,8 +1,9 @@
-import { router } from "expo-router";
 import { ReactNode } from "react";
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
 import { goBack } from "../services/navigation";
+import { headerHeight } from "../theme/size";
 
 export const Header = ({
   title,
@@ -15,7 +16,7 @@ export const Header = ({
     <SafeAreaView>
       <View
         style={{
-          height: 40,
+          height: headerHeight,
           alignItems: "center",
           justifyContent: "center",
           paddingHorizontal: 40,
@@ -28,7 +29,7 @@ export const Header = ({
             top: 0,
             left: 0,
             width: 40,
-            height: 40,
+            height: headerHeight,
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: pressed ? "#ccc" : undefined,
@@ -37,7 +38,7 @@ export const Header = ({
             goBack();
           }}
         >
-          <Text>{"<"}</Text>
+          <ArrowLeftIcon />
         </Pressable>
         <View
           style={{
@@ -45,7 +46,7 @@ export const Header = ({
             top: 0,
             right: 0,
             width: 40,
-            height: 40,
+            height: headerHeight,
             alignItems: "center",
             justifyContent: "center",
           }}
