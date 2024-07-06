@@ -4,10 +4,12 @@ import { Pressable, View } from "react-native";
 export const RadioField = ({
   children,
   checked,
+  color,
   onChange,
 }: {
   children: ReactNode;
   checked: boolean;
+  color?: string;
   onChange: (newValue: boolean) => void;
 }) => {
   return (
@@ -25,6 +27,7 @@ export const RadioField = ({
           width: 12,
           borderRadius: 6,
           borderWidth: 1,
+          borderColor: color,
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -35,7 +38,7 @@ export const RadioField = ({
               height: 6,
               width: 6,
               borderRadius: 6,
-              backgroundColor: "#000",
+              backgroundColor: color ?? "#000",
             }}
           />
         )}

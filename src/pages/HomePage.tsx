@@ -25,7 +25,7 @@ export const HomePage = () => {
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>Colinhas</Text>
           <Link href="/profile" asChild>
             <Pressable style={{ flexDirection: "row", gap: 8 }}>
-              <InstrumentIcon instrument={instrument} opacity={0.3} />
+              <InstrumentIcon instrument={instrument} fill="#999" />
               <ProfileIcon />
             </Pressable>
           </Link>

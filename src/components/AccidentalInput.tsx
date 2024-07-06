@@ -13,21 +13,22 @@ export const AccidentalInput = () => {
         flexDirection: "row",
         alignItems: "center",
         gap: 4,
-        opacity: 0.5,
       }}
     >
-      <Text>Visualizar em: </Text>
+      <Text style={{ color: "#999" }}>Visualizar em: </Text>
       <RadioField
+        color="#999"
         checked={accidental === "sharp"}
         onChange={() => updateAccidental("sharp")}
       >
-        <Text>♯</Text>
+        <Text style={{ color: "#999" }}>♯</Text>
       </RadioField>
       <RadioField
+        color="#999"
         checked={accidental === "flat"}
         onChange={() => updateAccidental("flat")}
       >
-        <Text>♭</Text>
+        <Text style={{ color: "#999" }}>♭</Text>
       </RadioField>
     </View>
   );
