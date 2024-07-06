@@ -6,16 +6,17 @@ export const alert = (
   onConfirm?: () => Promise<void>,
 ) => {
   if (Platform.OS === "web") {
+    const text = `${title}${message ? `\n${message}` : ""}`;
     if (onConfirm) {
       const result = window.prompt(
-        `${title}${message ? `\n${message}` : ""}\n\nDigite "sim" para confirmar`,
+        `${text}\n\nDigite "sim" para confirmar`,
         "sim",
       );
       if (result?.toLowerCase() === "sim") {
         onConfirm();
       }
     } else {
-      window.alert(`${title}\n${message}`);
+      window.alert(text);
     }
   } else {
     Alert.alert(
