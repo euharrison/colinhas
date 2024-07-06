@@ -1,11 +1,13 @@
 import { Link } from "expo-router";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { FAB } from "../components/FAB";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useInstrument } from "../hooks/useInstrument";
 import { useSheetList } from "../hooks/useSheetList";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
+import { headerHeight } from "../theme/size";
 
 export const HomePage = () => {
   const sheetList = useSheetList();
@@ -14,12 +16,14 @@ export const HomePage = () => {
 
   return (
     <>
-      <SafeAreaView style={{ padding: 20, gap: 20 }}>
+      <SafeAreaView>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            height: headerHeight,
+            paddingHorizontal: 20,
           }}
         >
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>Colinhas</Text>
@@ -30,23 +34,6 @@ export const HomePage = () => {
             </Pressable>
           </Link>
         </View>
-        <Link href="/create" asChild>
-          <Pressable
-            style={{
-              borderColor: "black",
-              borderWidth: 1,
-              borderRadius: 4,
-              paddingVertical: 20,
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text style={{ fontWeight: "bold", textTransform: "uppercase" }}>
-              Nova cola ✏️
-            </Text>
-          </Pressable>
-        </Link>
       </SafeAreaView>
       <FlatList
         style={{ borderTopWidth: 1 }}
@@ -75,6 +62,13 @@ export const HomePage = () => {
           </Link>
         )}
       ></FlatList>
+      <Link href="/create" asChild>
+        <FAB>
+          <Text style={{ fontWeight: "bold", textTransform: "uppercase" }}>
+            Nova cola ✏️
+          </Text>
+        </FAB>
+      </Link>
     </>
   );
 };
