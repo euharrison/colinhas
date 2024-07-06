@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Pressable, Text, View, ViewStyle } from "react-native";
+import { Pressable, Text, View } from "react-native";
+import { buttonFeedback, keyboardBackground, white } from "../theme/colors";
 
 const scales = [
   ["do♭", "re♭", "mi♭", "fa♭", "sol♭", "la♭", "si♭"],
@@ -35,7 +36,7 @@ const Key = ({
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 4,
-        backgroundColor: pressed ? "#ccc" : "white",
+        backgroundColor: pressed ? buttonFeedback : white,
       })}
     >
       <Text selectable={false}>{children}</Text>
@@ -75,7 +76,7 @@ export const NotesKeyboard = ({
       style={{
         padding: 8,
         gap: 2,
-        backgroundColor: "#ddd",
+        backgroundColor: keyboardBackground,
       }}
     >
       <View style={{ flexDirection: "row", gap: 2, height: 28 }}>

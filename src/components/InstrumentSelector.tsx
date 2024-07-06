@@ -4,6 +4,7 @@ import { SaxIcon } from "../icons/SaxIcon";
 import { TromboneIcon } from "../icons/TromboneIcon";
 import { TrumpetIcon } from "../icons/TrumpetIcon";
 import { TubaIcon } from "../icons/TubaIcon";
+import { buttonFeedback, textGray } from "../theme/colors";
 
 export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
   const updateInstrument = useUpdateInstrument();
@@ -11,7 +12,7 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
   return (
     <View>
       <Text style={{ fontSize: 20 }}>Escolha seu instrumento</Text>
-      <Text style={{ color: "#999" }}>
+      <Text style={{ color: textGray }}>
         Você poderá trocar depois se preferir
       </Text>
       <View style={{ marginTop: 20, gap: 8 }}>
@@ -43,7 +44,7 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
               alignItems: "center",
               paddingLeft: 20,
               gap: 20,
-              backgroundColor: pressed ? "#ccc" : undefined,
+              backgroundColor: pressed ? buttonFeedback : undefined,
             })}
             onPress={() => {
               updateInstrument(label);

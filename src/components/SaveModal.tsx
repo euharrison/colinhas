@@ -13,6 +13,7 @@ import { Sheet } from "../database/types";
 import { useInstrument } from "../hooks/useInstrument";
 import { alert } from "../services/alert";
 import { dismissAll } from "../services/navigation";
+import { modalOverlay, buttonFeedback, white } from "../theme/colors";
 import { AuthGate } from "./AuthGate";
 import { KeyboardLayout } from "./KeyboardLayout";
 
@@ -51,7 +52,7 @@ export const SaveModal = ({
         >
           <Pressable
             style={{
-              backgroundColor: "#00000077",
+              backgroundColor: modalOverlay,
               position: "absolute",
               top: 0,
               left: 0,
@@ -63,7 +64,7 @@ export const SaveModal = ({
           <View
             style={{
               width: 300,
-              backgroundColor: "white",
+              backgroundColor: white,
               borderRadius: 8,
               padding: 20,
               gap: 20,
@@ -86,7 +87,7 @@ export const SaveModal = ({
                   alignItems: "center",
                   justifyContent: "center",
                   alignSelf: "flex-end",
-                  backgroundColor: pressed ? "#ccc" : undefined,
+                  backgroundColor: pressed ? buttonFeedback : undefined,
                 })}
                 onPress={onRequestClose}
               >
@@ -144,7 +145,7 @@ export const SaveModal = ({
                     borderWidth: 1,
                     alignItems: "center",
                     justifyContent: "center",
-                    backgroundColor: pressed ? "#ccc" : undefined,
+                    backgroundColor: pressed ? buttonFeedback : undefined,
                   })}
                   disabled={saving}
                   onPress={async () => {

@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Pressable, View } from "react-native";
+import { black } from "../theme/colors";
 
 export const RadioField = ({
   children,
@@ -38,7 +39,7 @@ export const RadioField = ({
               height: 6,
               width: 6,
               borderRadius: 6,
-              backgroundColor: color ?? "#000",
+              backgroundColor: color ?? black,
             }}
           />
         )}

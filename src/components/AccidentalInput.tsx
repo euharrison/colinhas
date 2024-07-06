@@ -1,6 +1,7 @@
 import { Text, View } from "react-native";
 import { useAccidental } from "../hooks/useAccidental";
 import { useUpdateAccidental } from "../hooks/useUpdateAccidental";
+import { textGray } from "../theme/colors";
 import { RadioField } from "./RadioField";
 
 export const AccidentalInput = () => {
@@ -15,20 +16,20 @@ export const AccidentalInput = () => {
         gap: 4,
       }}
     >
-      <Text style={{ color: "#999" }}>Visualizar em: </Text>
+      <Text style={{ color: textGray }}>Visualizar em: </Text>
       <RadioField
-        color="#999"
+        color={textGray}
         checked={accidental === "sharp"}
         onChange={() => updateAccidental("sharp")}
       >
-        <Text style={{ color: "#999" }}>♯</Text>
+        <Text style={{ color: textGray }}>♯</Text>
       </RadioField>
       <RadioField
-        color="#999"
+        color={textGray}
         checked={accidental === "flat"}
         onChange={() => updateAccidental("flat")}
       >
-        <Text style={{ color: "#999" }}>♭</Text>
+        <Text style={{ color: textGray }}>♭</Text>
       </RadioField>
     </View>
   );

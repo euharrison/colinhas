@@ -8,6 +8,7 @@ import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useInstrument } from "../hooks/useInstrument";
 import { useSheet } from "../hooks/useSheet";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
+import { textGray } from "../theme/colors";
 
 export const ViewPage = () => {
   const params = useLocalSearchParams();
@@ -47,19 +48,19 @@ export const ViewPage = () => {
               alignItems: "center",
             }}
           >
-            <Text style={{ color: "#999" }}>
+            <Text style={{ color: textGray }}>
               Original em {sheet.instrument}{" "}
             </Text>
             <InstrumentIcon
               instrument={sheet.instrument}
               width={18}
               height={18}
-              fill="#999"
+              fill={textGray}
             />
           </View>
           {sheet.instrument !== instrument && (
             <View>
-              <Text style={{ color: "#999" }}>Transposição automática.</Text>
+              <Text style={{ color: textGray }}>Transposição automática.</Text>
               <AccidentalInput />
             </View>
           )}
