@@ -1,5 +1,9 @@
 import { Pressable, Text, View } from "react-native";
 import { useUpdateInstrument } from "../hooks/useUpdateInstrument";
+import { SaxIcon } from "../icons/SaxIcon";
+import { TromboneIcon } from "../icons/TromboneIcon";
+import { TrumpetIcon } from "../icons/TrumpetIcon";
+import { TubaIcon } from "../icons/TubaIcon";
 
 export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
   const updateInstrument = useUpdateInstrument();
@@ -11,23 +15,43 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
         Você poderá trocar depois se preferir
       </Text>
       <View style={{ marginTop: 20, gap: 8 }}>
-        {["Sax", "Trompete", "Trombone", "Tuba"].map((item) => (
+        {[
+          {
+            label: "Sax",
+            icon: <SaxIcon />,
+          },
+          {
+            label: "Trompete",
+            icon: <TrumpetIcon />,
+          },
+          {
+            label: "Trombone",
+            icon: <TromboneIcon />,
+          },
+          {
+            label: "Tuba",
+            icon: <TubaIcon />,
+          },
+        ].map(({ label, icon }) => (
           <Pressable
-            key={item}
+            key={label}
             style={({ pressed }) => ({
               borderRadius: 4,
               borderWidth: 1,
               paddingVertical: 20,
+              flexDirection: "row",
               alignItems: "center",
-              justifyContent: "center",
+              paddingLeft: 20,
+              gap: 20,
               backgroundColor: pressed ? "#ccc" : undefined,
             })}
             onPress={() => {
-              updateInstrument(item);
+              updateInstrument(label);
               onChange?.();
             }}
           >
-            <Text>{item}</Text>
+            {icon}
+            <Text style={{ fontSize: 20 }}>{label}</Text>
           </Pressable>
         ))}
       </View>
