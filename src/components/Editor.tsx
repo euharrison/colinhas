@@ -33,7 +33,7 @@ export const Editor = ({ sheet }: { sheet?: Sheet }) => {
           style={{
             padding: pagePadding,
             flex: 1,
-            fontSize: 20,
+            fontSize: 28,
           }}
           placeholder="Do Re Mi Fa..."
           multiline

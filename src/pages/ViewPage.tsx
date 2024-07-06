@@ -65,7 +65,7 @@ export const ViewPage = () => {
             </View>
           )}
         </View>
-        <Text style={{ fontSize: 20 }}>{formatSheet(sheet)}</Text>
+        <Text style={{ fontSize: 28 }}>{formatSheet(sheet)}</Text>
       </ScrollView>
     </>
   );
