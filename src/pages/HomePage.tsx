@@ -4,6 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useInstrument } from "../hooks/useInstrument";
 import { useSheetList } from "../hooks/useSheetList";
+import { InstrumentIcon } from "../icons/InstrumentIcon";
+import { ProfileIcon } from "../icons/ProfileIcon";
 
 export const HomePage = () => {
   const sheetList = useSheetList();
@@ -21,8 +23,11 @@ export const HomePage = () => {
           }}
         >
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>Colinhas</Text>
-          <Link href="/settings">
-            <Text>{instrument}</Text>
+          <Link href="/settings" asChild>
+            <Pressable style={{ flexDirection: "row", gap: 8 }}>
+              <InstrumentIcon instrument={instrument} opacity={0.3} />
+              <ProfileIcon />
+            </Pressable>
           </Link>
         </View>
         <Link href="/create" asChild>

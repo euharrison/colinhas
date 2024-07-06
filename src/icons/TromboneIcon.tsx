@@ -1,7 +1,7 @@
 import Svg, { G, Path, SvgProps } from "react-native-svg";
 
 export const TromboneIcon = (props: SvgProps) => (
-  <Svg viewBox="0 0 512 512" height="40" width="40" {...props}>
+  <Svg viewBox="0 0 512 512" height="24" width="24" {...props}>
     <G transform="translate(256,256)">
       <G transform="rotate(-90)">
         <Path
