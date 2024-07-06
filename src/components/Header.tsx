@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ArrowLeftIcon } from "../icons/ArrowLeftIcon";
+import { ArrowBackIcon } from "../icons/ArrowBackIcon";
 import { goBack } from "../services/navigation";
 import { buttonFeedback } from "../theme/colors";
 import { headerHeight } from "../theme/sizes";
@@ -39,7 +39,7 @@ export const Header = ({
             goBack();
           }}
         >
-          <ArrowLeftIcon />
+          <ArrowBackIcon />
         </Pressable>
         <View
           style={{
