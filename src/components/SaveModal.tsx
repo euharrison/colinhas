@@ -11,6 +11,7 @@ import { createSheet } from "../database/createSheet";
 import { editSheet } from "../database/editSheet";
 import { Sheet } from "../database/types";
 import { useInstrument } from "../hooks/useInstrument";
+import { CloseIcon } from "../icons/CloseIcon";
 import { alert } from "../services/alert";
 import { dismissAll } from "../services/navigation";
 import { buttonFeedback, modalOverlay, white } from "../theme/colors";
@@ -90,7 +91,7 @@ export const SaveModal = ({
                 })}
                 onPress={onRequestClose}
               >
-                <Text>X</Text>
+                <CloseIcon />
               </Pressable>
             </View>
             <AuthGate>
