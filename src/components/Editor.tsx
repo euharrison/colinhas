@@ -3,6 +3,7 @@ import { TextInput, View } from "react-native";
 import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { ArrowForwardIcon } from "../icons/ArrowForwardIcon";
+import { pagePadding } from "../theme/sizes";
 import { FAB } from "./FAB";
 import { NotesKeyboard } from "./NotesKeyboard";
 import { SaveModal } from "./SaveModal";
@@ -30,7 +31,7 @@ export const Editor = ({ sheet }: { sheet?: Sheet }) => {
         <TextInput
           ref={inputRef}
           style={{
-            padding: 20,
+            padding: pagePadding,
             flex: 1,
             fontSize: 20,
           }}
