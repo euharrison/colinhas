@@ -58,6 +58,7 @@ export const ViewPage = () => {
               fill={textGray}
             />
           </View>
+          <Text style={{ color: textGray }}>Tom: {sheet.keySignature}</Text>
           {sheet.instrument !== instrument && (
             <View>
               <Text style={{ color: textGray }}>Transposição automática.</Text>
