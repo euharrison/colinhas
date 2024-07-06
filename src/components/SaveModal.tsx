@@ -19,6 +19,23 @@ import { pagePadding } from "../theme/sizes";
 import { AuthGate } from "./AuthGate";
 import { KeyboardLayout } from "./KeyboardLayout";
 
+const keySignatures = [
+  { value: "Do", label: "Do" },
+  { value: "Do♯", label: "Do♯" },
+  { value: "Re♭", label: "Re♭" },
+  { value: "Re", label: "Re" },
+  { value: "Mi♭", label: "Mi♭" },
+  { value: "Mi", label: "Mi" },
+  { value: "Fa", label: "Fa" },
+  { value: "Fa♯", label: "Fa♯" },
+  { value: "Sol♭", label: "Sol♭" },
+  { value: "Sol", label: "Sol" },
+  { value: "La♭", label: "La♭" },
+  { value: "La", label: "La" },
+  { value: "Si♭", label: "Si♭" },
+  { value: "Si", label: "Si" },
+];
+
 export const SaveModal = ({
   sheet,
   data,
@@ -31,7 +48,9 @@ export const SaveModal = ({
   onRequestClose: () => void;
 }) => {
   const [name, setName] = useState(sheet?.name ?? "");
-  const [keySignature, setKeySignature] = useState(sheet?.keySignature ?? "");
+  const [keySignature, setKeySignature] = useState(
+    sheet?.keySignature ?? keySignatures[0].value,
+  );
 
   const instrument = useInstrument();
 
@@ -111,25 +130,11 @@ export const SaveModal = ({
                   <View>
                     <Text>Tom:</Text>
                     <select
+                      style={{ padding: 8 }}
                       value={keySignature}
                       onChange={(e) => setKeySignature(e.currentTarget.value)}
                     >
-                      {[
-                        { value: "Do", label: "Do" },
-                        { value: "Do♯", label: "Do♯" },
-                        { value: "Re♭", label: "Re♭" },
-                        { value: "Re", label: "Re" },
-                        { value: "Mi♭", label: "Mi♭" },
-                        { value: "Mi", label: "Mi" },
-                        { value: "Fa", label: "Fa" },
-                        { value: "Fa♯", label: "Fa♯" },
-                        { value: "Sol♭", label: "Sol♭" },
-                        { value: "Sol", label: "Sol" },
-                        { value: "La♭", label: "La♭" },
-                        { value: "La", label: "La" },
-                        { value: "Si♭", label: "Si♭" },
-                        { value: "Si", label: "Si" },
-                      ].map(({ value, label }) => (
+                      {keySignatures.map(({ value, label }) => (
                         <option key={value} value={value}>
                           {label}
                         </option>
