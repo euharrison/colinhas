@@ -62,7 +62,7 @@ export const HomePage = () => {
             </Pressable>
           </Link>
         )}
-      ></FlatList>
+      />
       <Link href="/create" asChild>
         <FAB>
           <Text style={{ fontWeight: "bold", textTransform: "uppercase" }}>

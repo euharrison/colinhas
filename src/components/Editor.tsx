@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { TextInput, View } from "react-native";
 import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
-import { buttonFeedback, white } from "../theme/colors";
+import { ArrowForwardIcon } from "../icons/ArrowForwardIcon";
+import { FAB } from "./FAB";
 import { NotesKeyboard } from "./NotesKeyboard";
 import { SaveModal } from "./SaveModal";
 
@@ -45,25 +46,13 @@ export const Editor = ({ sheet }: { sheet?: Sheet }) => {
             setValue(newValue);
           }}
         />
-        <Pressable
-          style={({ pressed }) => ({
-            height: 50,
-            width: 50,
-            borderRadius: 50,
-            borderWidth: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: pressed ? buttonFeedback : white,
-            position: "absolute",
-            right: 8,
-            bottom: 8,
-          })}
+        <FAB
           onPress={() => {
             setSaveModalVisible(true);
           }}
         >
-          <Text>{">"}</Text>
-        </Pressable>
+          <ArrowForwardIcon />
+        </FAB>
       </View>
       <NotesKeyboard onPress={onPressNoteKeyboard} />
       <SaveModal
