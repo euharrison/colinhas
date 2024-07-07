@@ -1,11 +1,12 @@
 import { Link } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FAB } from "../components/FAB";
+import { observeSheetList } from "../database/sheet";
+import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useInstrument } from "../hooks/useInstrument";
-import { useSheetList } from "../hooks/useSheetList";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
@@ -17,11 +18,26 @@ const itemHeight = 80;
 const separatorHeight = 1;
 
 export const HomePage = () => {
-  const [search, setSearch] = useState("");
-
-  const sheetList = useSheetList();
   const instrument = useInstrument();
   const formatSheet = useFormatSheet();
+
+  const [sheetList, setSheetList] = useState<Sheet[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    return observeSheetList(
+      (data) => {
+        setSheetList(data.sort((a, b) => b.updatedAt - a.updatedAt));
+        setIsLoading(false);
+      },
+      (error) => alert(error.message),
+    );
+  }, []);
+
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <>

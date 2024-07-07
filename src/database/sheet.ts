@@ -1,13 +1,15 @@
 import {
+  collection,
   doc,
   DocumentSnapshot,
   FirestoreError,
   onSnapshot,
 } from "firebase/firestore";
+import { nonNullable } from "../utils";
 import { db, sheetsCollection } from "./db";
 import { Sheet } from "./types";
 
-const snapshotToSheet = (snapshot: DocumentSnapshot): Sheet | undefined => {
+const docToSheet = (snapshot: DocumentSnapshot): Sheet | undefined => {
   const data = snapshot.data({ serverTimestamps: "estimate" });
   if (!data) {
     return undefined;
@@ -33,7 +35,20 @@ export const observeSheet = (
   return onSnapshot(
     doc(db, sheetsCollection, id),
     (snapshot) => {
-      onUpdate(snapshotToSheet(snapshot));
+      onUpdate(docToSheet(snapshot));
+    },
+    onError,
+  );
+};
+
+export const observeSheetList = (
+  onUpdate: (sheetList: Sheet[]) => void,
+  onError: (error: FirestoreError) => void,
+) => {
+  return onSnapshot(
+    collection(db, sheetsCollection),
+    (snapshot) => {
+      onUpdate(snapshot.docs.map((doc) => docToSheet(doc)).filter(nonNullable));
     },
     onError,
   );
