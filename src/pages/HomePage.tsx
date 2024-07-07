@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FlatList, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FAB } from "../components/FAB";
-import { observeSheetList } from "../database/sheet";
+import { observeSheetCollection } from "../database/sheet";
 import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useInstrument } from "../hooks/useInstrument";
@@ -21,14 +21,14 @@ export const HomePage = () => {
   const instrument = useInstrument();
   const formatSheet = useFormatSheet();
 
-  const [sheetList, setSheetList] = useState<Sheet[]>([]);
+  const [sheetCollection, setSheetCollection] = useState<Sheet[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    return observeSheetList(
+    return observeSheetCollection(
       (data) => {
-        setSheetList(data.sort((a, b) => b.updatedAt - a.updatedAt));
+        setSheetCollection(data);
         setIsLoading(false);
       },
       (error) => alert(error.message),
@@ -38,6 +38,30 @@ export const HomePage = () => {
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
+
+  const data = (() => {
+    if (!search) {
+      return sheetCollection.sort((a, b) => b.updatedAt - a.updatedAt);
+    }
+
+    const regexList = search.split(" ").map((word) => new RegExp(word, "i"));
+    const searchMatches = (value: string) => {
+      return regexList.find((regex) => value.match(regex));
+    };
+    return sheetCollection
+      .map((item) => {
+        let score = 0;
+        if (item.name.startsWith(search)) score += 1000;
+        if (item.name.includes(search)) score += 100;
+        if (searchMatches(item.name)) score += 10;
+        if (searchMatches(item.data)) score += 5;
+        if (searchMatches(item.instrument)) score += 2;
+        if (searchMatches(item.keySignature)) score += 1;
+        return { ...item, score };
+      })
+      .filter((item) => item.score > 0)
+      .sort((a, b) => b.score - a.score || b.updatedAt - a.updatedAt);
+  })();
 
   return (
     <>
@@ -88,7 +112,7 @@ export const HomePage = () => {
       <FlatList
         style={{ borderTopWidth: 1 }}
         contentContainerStyle={{ paddingBottom: 100 }}
-        data={sheetList}
+        data={data}
         keyExtractor={(item) => item.id}
         getItemLayout={(data, index) => ({
           length: itemHeight + separatorHeight,
