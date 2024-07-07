@@ -3,8 +3,7 @@ import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ArrowBackIcon } from "../icons/ArrowBackIcon";
 import { goBack } from "../services/navigation";
-import { buttonFeedback } from "../theme/colors";
-import { headerHeight } from "../theme/sizes";
+import { headerHeight, pagePadding } from "../theme/sizes";
 
 export const Header = ({
   title,
@@ -20,21 +19,20 @@ export const Header = ({
           height: headerHeight,
           alignItems: "center",
           justifyContent: "center",
-          paddingHorizontal: 40,
+          paddingHorizontal: 60,
         }}
       >
         <Text>{title}</Text>
         <Pressable
-          style={({ pressed }) => ({
+          style={{
             position: "absolute",
             top: 0,
             left: 0,
-            width: 40,
             height: headerHeight,
+            paddingHorizontal: pagePadding,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: pressed ? buttonFeedback : undefined,
-          })}
+          }}
           onPress={() => {
             goBack();
           }}
@@ -46,10 +44,6 @@ export const Header = ({
             position: "absolute",
             top: 0,
             right: 0,
-            width: 40,
-            height: headerHeight,
-            alignItems: "center",
-            justifyContent: "center",
           }}
         >
           {children}
