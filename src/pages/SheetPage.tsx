@@ -20,6 +20,7 @@ import { dismissAll } from "../services/navigation";
 import { black, buttonFeedback, white } from "../theme/colors";
 import { dropShadow } from "../theme/shadows";
 import { headerHeight, pagePadding } from "../theme/sizes";
+import { shareSheetUrl } from "../urls";
 import { nonNullable } from "../utils";
 
 export const SheetPage = () => {
@@ -94,9 +95,7 @@ export const SheetPage = () => {
               ? {
                   label: "Compartilhar",
                   icon: <ShareIcon width={18} />,
-                  onPress: () => {
-                    Share.share({ url: `https://colinhas.com/${id}` });
-                  },
+                  onPress: () => Share.share({ url: shareSheetUrl(sheet) }),
                 }
               : undefined,
             isEditMode
