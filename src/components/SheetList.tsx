@@ -40,20 +40,19 @@ export const SheetList = ({ search }: { search: string }) => {
     const containRegex = new RegExp(search, "i");
     const anyWordRegex = new RegExp(`${search.replaceAll(" ", "|")}`, "i");
 
-    const computeScore = (value: string, regex: RegExp, points: number) =>
+    const computeValue = (value: string, regex: RegExp, points: number) =>
       value.match(regex) ? points : 0;
 
+    const computeScore = (item: Sheet) =>
+      computeValue(item.name, startsWithRegex, 1000) +
+      computeValue(item.name, containRegex, 100) +
+      computeValue(item.name, anyWordRegex, 10) +
+      computeValue(item.data, anyWordRegex, 5) +
+      computeValue(item.instrument, anyWordRegex, 2) +
+      computeValue(item.keySignature, anyWordRegex, 1);
+
     return sheetCollection
-      .map((item) => {
-        let score = 0;
-        score += computeScore(item.name, startsWithRegex, 1000);
-        score += computeScore(item.name, containRegex, 100);
-        score += computeScore(item.name, anyWordRegex, 10);
-        score += computeScore(item.data, anyWordRegex, 5);
-        score += computeScore(item.instrument, anyWordRegex, 2);
-        score += computeScore(item.keySignature, anyWordRegex, 1);
-        return { ...item, score };
-      })
+      .map((item) => ({ ...item, score: computeScore(item) }))
       .filter((item) => item.score > 0)
       .sort((a, b) => b.score - a.score || b.updatedAt - a.updatedAt);
   })();
