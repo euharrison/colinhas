@@ -11,6 +11,7 @@ import { ProfileIcon } from "../icons/ProfileIcon";
 import { SearchIcon } from "../icons/SearchIcon";
 import { searchBackground, textGray } from "../theme/colors";
 import { headerHeight, pagePadding } from "../theme/sizes";
+import { createUrl, profileUrl } from "../urls";
 
 export const HomePage = () => {
   const instrument = useInstrument();
@@ -30,7 +31,7 @@ export const HomePage = () => {
           }}
         >
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>Colinhas</Text>
-          <Link href="/profile" asChild>
+          <Link href={profileUrl} asChild>
             <Pressable style={{ flexDirection: "row", gap: 8 }}>
               <InstrumentIcon instrument={instrument} fill={textGray} />
               <ProfileIcon />
@@ -65,7 +66,7 @@ export const HomePage = () => {
 
       <SheetList search={search} />
 
-      <Link href="/create" asChild>
+      <Link href={createUrl} asChild>
         <FAB>
           <View
             style={{

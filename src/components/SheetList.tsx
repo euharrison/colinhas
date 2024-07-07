@@ -8,6 +8,7 @@ import { InstrumentIcon } from "../icons/InstrumentIcon";
 import { SyncIcon } from "../icons/SyncIcon";
 import { black, textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
+import { sheetUrl } from "../urls";
 
 const itemHeight = 80;
 const separatorHeight = 1;
@@ -93,7 +94,7 @@ export const SheetList = ({ search }: { search: string }) => {
             borderBottomWidth: separatorHeight,
           }}
         >
-          <Link href={`/${item.id}`} asChild>
+          <Link href={sheetUrl(item)} asChild>
             <Pressable
               style={{
                 flex: 1,
