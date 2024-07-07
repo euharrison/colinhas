@@ -73,7 +73,7 @@ export const SheetList = ({ search }: { search: string }) => {
           alignItems: "center",
         }}
       >
-        <Text style={{ fontSize: 20 }}>Nenhum item encontrado 🤦</Text>
+        <Text style={{ fontSize: 16 }}>Nenhum item encontrado 🥲</Text>
       </View>
     );
   }
