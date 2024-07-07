@@ -13,7 +13,7 @@ import { Sheet } from "../database/types";
 import { alert } from "../services/alert";
 import { dismissAll } from "../services/navigation";
 
-export const ViewPage = () => {
+export const SheetPage = () => {
   const params = useLocalSearchParams();
 
   const [isEditMode, setIsEditMode] = useState(false);
