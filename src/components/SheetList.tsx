@@ -5,6 +5,7 @@ import { observeSheetCollection } from "../database/sheet";
 import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
+import { LoadingIcon } from "../icons/LoadingIcon";
 import { SyncIcon } from "../icons/SyncIcon";
 import { black, textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
@@ -30,7 +31,11 @@ export const SheetList = ({ search }: { search: string }) => {
   }, []);
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View style={{ alignItems: "center", marginTop: 20 }}>
+        <LoadingIcon />
+      </View>
+    );
   }
 
   const data = (() => {

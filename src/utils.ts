@@ -1,7 +1,7 @@
 export const nonNullable = <T>(value: T): value is NonNullable<T> =>
   value !== null && value !== undefined;
 
-export function slugify(value: string) {
+export const slugify = (value: string) => {
   return value
     .toLowerCase()
     .trim()
@@ -10,4 +10,4 @@ export function slugify(value: string) {
     .replace(/[^a-z0-9\s-]/g, " ")
     .trim()
     .replace(/[\s-]+/g, "-");
-}
+};
