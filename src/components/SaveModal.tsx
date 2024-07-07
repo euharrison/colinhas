@@ -7,6 +7,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { KeySignatures } from "../config";
 import { createSheet } from "../database/createSheet";
 import { editSheet } from "../database/editSheet";
 import { Sheet } from "../database/types";
@@ -18,23 +19,6 @@ import { buttonFeedback, modalOverlay, white } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
 import { AuthGate } from "./AuthGate";
 import { KeyboardLayout } from "./KeyboardLayout";
-
-const keySignatures = [
-  { value: "Do", label: "Do" },
-  { value: "Do♯", label: "Do♯" },
-  { value: "Re♭", label: "Re♭" },
-  { value: "Re", label: "Re" },
-  { value: "Mi♭", label: "Mi♭" },
-  { value: "Mi", label: "Mi" },
-  { value: "Fa", label: "Fa" },
-  { value: "Fa♯", label: "Fa♯" },
-  { value: "Sol♭", label: "Sol♭" },
-  { value: "Sol", label: "Sol" },
-  { value: "La♭", label: "La♭" },
-  { value: "La", label: "La" },
-  { value: "Si♭", label: "Si♭" },
-  { value: "Si", label: "Si" },
-];
 
 export const SaveModal = ({
   sheet,
@@ -49,7 +33,7 @@ export const SaveModal = ({
 }) => {
   const [name, setName] = useState(sheet?.name ?? "");
   const [keySignature, setKeySignature] = useState(
-    sheet?.keySignature ?? keySignatures[0].value,
+    sheet?.keySignature ?? KeySignatures.Do,
   );
 
   const instrument = useInstrument();
@@ -134,7 +118,22 @@ export const SaveModal = ({
                       value={keySignature}
                       onChange={(e) => setKeySignature(e.currentTarget.value)}
                     >
-                      {keySignatures.map(({ value, label }) => (
+                      {[
+                        { value: KeySignatures["Do#"], label: "Do♯ - ♯♯♯♯♯♯♯" },
+                        { value: KeySignatures["Fa#"], label: "Fa♯ - ♯♯♯♯♯♯" },
+                        { value: KeySignatures.Si, label: "Si - ♯♯♯♯♯" },
+                        { value: KeySignatures.Mi, label: "Mi - ♯♯♯♯" },
+                        { value: KeySignatures.La, label: "La - ♯♯♯" },
+                        { value: KeySignatures.Re, label: "Re - ♯♯" },
+                        { value: KeySignatures.Sol, label: "Sol - ♯" },
+                        { value: KeySignatures.Do, label: "Do" },
+                        { value: KeySignatures.Fa, label: "Fa - ♭" },
+                        { value: KeySignatures.Sib, label: "Si♭ - ♭♭" },
+                        { value: KeySignatures.Mib, label: "Mi♭ - ♭♭♭" },
+                        { value: KeySignatures.Lab, label: "La♭ - ♭♭♭♭" },
+                        { value: KeySignatures.Reb, label: "Re♭ - ♭♭♭♭♭" },
+                        { value: KeySignatures.Solb, label: "Sol♭ - ♭♭♭♭♭♭" },
+                      ].map(({ value, label }) => (
                         <option key={value} value={value}>
                           {label}
                         </option>
