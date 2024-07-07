@@ -75,13 +75,63 @@ export const transpose = (
     return data;
   }
 
+  const transposeNote = (note: string) => {
+    const index = inputDictionary[note];
+    if (index) {
+      const outputIndex = index + offset;
+      const output = outputDictionary[accidental][outputIndex];
+      return output ?? `{${note}?}`;
+    }
+    return undefined;
+  };
+
   return data.replaceAll(/[a-zA-Z#♯♭]+/g, (match) => {
-    const inputIndex = inputDictionary[match];
-    if (inputIndex === undefined) {
+    // tenta localizar o match com a nota, é o caso mais comum e mais rápido para a CPU
+    let output = transposeNote(match);
+    if (output) {
+      return output;
+    }
+
+    // a palavra é complexa, então vamos analisar ela em blocos
+    // de quatro (Sol♯,Sol♭...) a dois caracteres (Do,Re,Mi...)
+    const maxNoteLength = 4;
+    const minNoteLength = 2;
+
+    let charSequence = match;
+    let counter = maxNoteLength;
+    output = "";
+
+    // se os caracteres forem menor que o mínimo de duas notas
+    // é uma palavra comum, possivelmente "2x", então retorna antes
+    if (charSequence.length < minNoteLength * 2) {
       return match;
     }
-    const outputIndex = inputIndex + offset;
-    const output = outputDictionary[accidental][outputIndex];
-    return output ?? `{${match}?}`;
+
+    while (charSequence.length) {
+      // se o bloco for menor que o mínimo necessário para compor uma nota
+      if (counter < minNoteLength) {
+        // interrompe o fluxo e retorna a palavra normalmente
+        // pois não há notas com essa sequencia de caracteres
+        return match;
+      }
+
+      // fatia os primeiros caracteres
+      const subWord = charSequence.substring(0, counter);
+      // e tenta localizar uma nota com eles
+      const subOutput = transposeNote(subWord);
+      // se achar uma nota
+      if (subOutput) {
+        // salva ela para o output
+        output += subOutput;
+        // fatia o restante dos caracteres para descartar a primeira nota
+        charSequence = charSequence.substring(counter);
+        // reseta o contador para reiniciar a analise com a string restante
+        counter = maxNoteLength + 1;
+      }
+
+      counter--;
+    }
+
+    return output;
   });
 };
