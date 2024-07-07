@@ -5,7 +5,6 @@ import { auth } from "../auth/auth";
 import { EditSheet } from "../components/EditSheet";
 import { Header } from "../components/Header";
 import { KeyboardLayout } from "../components/KeyboardLayout";
-import { NotFound } from "../components/NotFound";
 import { ViewSheet } from "../components/ViewSheet";
 import { deleteSheet } from "../database/deleteSheet";
 import { observeSheet } from "../database/sheet";
@@ -23,6 +22,7 @@ import { dropShadow } from "../theme/shadows";
 import { headerHeight, pagePadding } from "../theme/sizes";
 import { shareSheetUrl } from "../urls";
 import { nonNullable } from "../utils";
+import { NotFoundPage } from "./NotFoundPage";
 
 export const SheetPage = () => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -53,7 +53,7 @@ export const SheetPage = () => {
   }
 
   if (!sheet) {
-    return <NotFound />;
+    return <NotFoundPage />;
   }
 
   const showShareButton = Platform.OS !== "web";
