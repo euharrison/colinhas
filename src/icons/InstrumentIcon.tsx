@@ -1,4 +1,5 @@
 import { SvgProps } from "react-native-svg";
+import { Instrument } from "../config";
 import { SaxIcon } from "./SaxIcon";
 import { TromboneIcon } from "./TromboneIcon";
 import { TrumpetIcon } from "./TrumpetIcon";
@@ -9,13 +10,13 @@ export const InstrumentIcon = ({
   ...props
 }: { instrument: string } & SvgProps) => {
   switch (instrument) {
-    case "Sax":
+    case Instrument.Sax:
       return <SaxIcon {...props} />;
-    case "Trompete":
+    case Instrument.Trumpet:
       return <TrumpetIcon {...props} />;
-    case "Trombone":
+    case Instrument.Trombone:
       return <TromboneIcon {...props} />;
-    case "Tuba":
+    case Instrument.Tuba:
       return <TubaIcon {...props} />;
   }
   return null;

@@ -22,7 +22,7 @@ export const Header = ({
           paddingHorizontal: 60,
         }}
       >
-        <Text>{title}</Text>
+        <Text style={{ fontSize: 16 }}>{title}</Text>
         <Pressable
           style={{
             position: "absolute",
@@ -32,6 +32,7 @@ export const Header = ({
             paddingHorizontal: pagePadding,
             alignItems: "center",
             justifyContent: "center",
+            marginLeft: -6,
           }}
           onPress={() => {
             goBack();

@@ -1,3 +1,4 @@
+import { Instrument } from "../config";
 import { Sheet } from "../database/types";
 import { transpose } from "../services/transpose";
 import { useAccidental } from "./useAccidental";
@@ -8,8 +9,8 @@ const saxOffset = +3;
 
 const getOffset = (instrument: string) =>
   ({
-    Trompete: trumpetOffset,
-    Sax: saxOffset,
+    [Instrument.Trumpet]: trumpetOffset,
+    [Instrument.Sax]: saxOffset,
   })[instrument] ?? 0;
 
 export const useFormatSheet = () => {
