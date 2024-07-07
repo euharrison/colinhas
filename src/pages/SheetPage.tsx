@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Platform, Pressable, Share, Text, View } from "react-native";
 import { auth } from "../auth/auth";
 import { EditSheet } from "../components/EditSheet";
 import { Header } from "../components/Header";
@@ -13,12 +13,14 @@ import { Sheet } from "../database/types";
 import { OptionsIcon } from "../icons/OptionsIcons";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ResetIcon } from "../icons/ResetIcon";
+import { ShareIcon } from "../icons/ShareIcon";
 import { TrashIcon } from "../icons/TrashIcon";
 import { alert } from "../services/alert";
 import { dismissAll } from "../services/navigation";
 import { black, buttonFeedback, white } from "../theme/colors";
 import { dropShadow } from "../theme/shadows";
 import { headerHeight, pagePadding } from "../theme/sizes";
+import { nonNullable } from "../utils";
 
 export const SheetPage = () => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -48,10 +50,14 @@ export const SheetPage = () => {
     return <NotFound />;
   }
 
+  const showShareButton = Platform.OS !== "web";
+  const showOptionsMenu =
+    showShareButton || sheet.userId === auth.currentUser?.uid;
+
   return (
     <KeyboardLayout>
       <Header title={sheet.name}>
-        {sheet.userId === auth.currentUser?.uid && (
+        {showOptionsMenu && (
           <Pressable
             style={{
               height: headerHeight,
@@ -79,10 +85,20 @@ export const SheetPage = () => {
             borderColor: black,
             borderRadius: 8,
             paddingVertical: 8,
+            backgroundColor: white,
             ...dropShadow,
           }}
         >
           {[
+            showShareButton
+              ? {
+                  label: "Compartilhar",
+                  icon: <ShareIcon width={18} />,
+                  onPress: () => {
+                    Share.share({ url: `https://colinhas.com/${id}` });
+                  },
+                }
+              : undefined,
             isEditMode
               ? {
                   label: "Cancelar edição",
@@ -111,26 +127,28 @@ export const SheetPage = () => {
                   },
                 ),
             },
-          ].map(({ label, icon, onPress }) => (
-            <Pressable
-              key={label}
-              style={({ pressed }) => ({
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 8,
-                paddingHorizontal: 20,
-                paddingVertical: 8,
-                backgroundColor: pressed ? buttonFeedback : white,
-              })}
-              onPress={() => {
-                onPress();
-                setIsOptionVisible(false);
-              }}
-            >
-              <View>{icon}</View>
-              <Text style={{ fontSize: 16 }}>{label}</Text>
-            </Pressable>
-          ))}
+          ]
+            .filter(nonNullable)
+            .map(({ label, icon, onPress }) => (
+              <Pressable
+                key={label}
+                style={({ pressed }) => ({
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 8,
+                  paddingHorizontal: 20,
+                  paddingVertical: 8,
+                  backgroundColor: pressed ? buttonFeedback : white,
+                })}
+                onPress={() => {
+                  onPress();
+                  setIsOptionVisible(false);
+                }}
+              >
+                <View>{icon}</View>
+                <Text style={{ fontSize: 16 }}>{label}</Text>
+              </Pressable>
+            ))}
         </View>
       )}
     </KeyboardLayout>
