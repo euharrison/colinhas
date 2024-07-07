@@ -1,20 +1,41 @@
 import { Link, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { auth } from "../auth/auth";
 import { AccidentalInput } from "../components/AccidentalInput";
 import { Header } from "../components/Header";
 import { NotFound } from "../components/NotFound";
+import { observeSheet } from "../database/sheet";
+import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useInstrument } from "../hooks/useInstrument";
-import { useSheet } from "../hooks/useSheet";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
+import { alert } from "../services/alert";
 import { textGray } from "../theme/colors";
 
 export const ViewPage = () => {
   const params = useLocalSearchParams();
-  const sheet = useSheet(String(params.sheet));
   const instrument = useInstrument();
   const formatSheet = useFormatSheet();
+
+  const [sheet, setSheet] = useState<Sheet | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const id = String(params.sheet);
+  useEffect(() => {
+    return observeSheet(
+      id,
+      (data) => {
+        setSheet(data);
+        setIsLoading(false);
+      },
+      (error) => alert(error.message),
+    );
+  }, [id]);
+
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
 
   if (!sheet) {
     return <NotFound />;
