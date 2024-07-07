@@ -1,5 +1,6 @@
 import { Link } from "expo-router";
-import { FlatList, Pressable, Text, View } from "react-native";
+import { useState } from "react";
+import { FlatList, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FAB } from "../components/FAB";
 import { useFormatSheet } from "../hooks/useFormatSheet";
@@ -8,13 +9,16 @@ import { useSheetList } from "../hooks/useSheetList";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
-import { black, textGray } from "../theme/colors";
+import { SearchIcon } from "../icons/SearchIcon";
+import { black, searchBackground, textGray } from "../theme/colors";
 import { headerHeight, pagePadding } from "../theme/sizes";
 
 const itemHeight = 80;
 const separatorHeight = 1;
 
 export const HomePage = () => {
+  const [search, setSearch] = useState("");
+
   const sheetList = useSheetList();
   const instrument = useInstrument();
   const formatSheet = useFormatSheet();
@@ -40,6 +44,31 @@ export const HomePage = () => {
           </Link>
         </View>
       </SafeAreaView>
+
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginHorizontal: pagePadding,
+          paddingHorizontal: 16,
+          marginBottom: 16,
+          gap: 8,
+          backgroundColor: searchBackground,
+          borderRadius: 999,
+        }}
+      >
+        <SearchIcon />
+        <TextInput
+          style={{ paddingVertical: 12, width: "100%" }}
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholderTextColor={textGray}
+          placeholder="Busca"
+          value={search}
+          onChangeText={setSearch}
+        />
+      </View>
+
       <FlatList
         style={{ borderTopWidth: 1 }}
         contentContainerStyle={{ paddingBottom: 100 }}
