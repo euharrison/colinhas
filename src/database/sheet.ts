@@ -41,7 +41,7 @@ export const observeSheet = (
   );
 };
 
-export const observeSheetList = (
+export const observeSheetCollection = (
   onUpdate: (sheetList: Sheet[]) => void,
   onError: (error: FirestoreError) => void,
 ) => {
