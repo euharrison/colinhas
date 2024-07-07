@@ -48,7 +48,7 @@ export const HomePage = () => {
           marginBottom: 16,
           gap: 8,
           backgroundColor: searchBackground,
-          borderRadius: 999,
+          borderRadius: 12,
         }}
       >
         <SearchIcon />
@@ -67,7 +67,14 @@ export const HomePage = () => {
 
       <Link href="/create" asChild>
         <FAB>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 4,
+              marginHorizontal: 8,
+            }}
+          >
             <Text style={{ fontWeight: "bold", textTransform: "uppercase" }}>
               Nova cola
             </Text>
