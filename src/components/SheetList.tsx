@@ -5,6 +5,7 @@ import { observeSheetCollection } from "../database/sheet";
 import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
+import { SyncIcon } from "../icons/SyncIcon";
 import { black, textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
 
@@ -83,43 +84,47 @@ export const SheetList = ({ search }: { search: string }) => {
         index,
       })}
       renderItem={({ item }) => (
-        <Link href={`/${item.id}`} asChild>
-          <Pressable
-            style={{
-              borderColor: black,
-              borderBottomWidth: separatorHeight,
-              padding: pagePadding,
-              height: itemHeight,
-              gap: 4,
-            }}
-          >
-            <Text>
-              {item.name} {item.score}
-            </Text>
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+        <View
+          style={{
+            height: itemHeight,
+            flexDirection: "row",
+            alignItems: "center",
+            borderColor: black,
+            borderBottomWidth: separatorHeight,
+          }}
+        >
+          <Link href={`/${item.id}`} asChild>
+            <Pressable
+              style={{
+                flex: 1,
+                gap: 4,
+                padding: pagePadding,
+              }}
             >
-              <View>
-                <InstrumentIcon
-                  instrument={item.instrument}
-                  width={18}
-                  height={18}
-                  fill={textGray}
-                />
-              </View>
-              <Text style={{ color: textGray }} numberOfLines={1}>
-                {formatSheet(item).replaceAll("\n", "   ")}
-              </Text>
-            </View>
-            {item.syncing && (
-              <Text
-                style={{ position: "absolute", top: 30, right: pagePadding }}
+              <Text>{item.name}</Text>
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
               >
-                🔄
-              </Text>
-            )}
-          </Pressable>
-        </Link>
+                <View>
+                  <InstrumentIcon
+                    instrument={item.instrument}
+                    width={18}
+                    height={18}
+                    fill={textGray}
+                  />
+                </View>
+                <Text style={{ color: textGray }} numberOfLines={1}>
+                  {formatSheet(item).replaceAll("\n", "   ")}
+                </Text>
+              </View>
+            </Pressable>
+          </Link>
+          {item.syncing && (
+            <View style={{ marginRight: pagePadding }}>
+              <SyncIcon />
+            </View>
+          )}
+        </View>
       )}
     />
   );
