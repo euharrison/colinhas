@@ -4,6 +4,7 @@ import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { ArrowForwardIcon } from "../icons/ArrowForwardIcon";
 import { alert } from "../services/alert";
+import { textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
 import { FAB } from "./FAB";
 import { NotesKeyboard } from "./NotesKeyboard";
@@ -37,6 +38,7 @@ export const Editor = ({ sheet }: { sheet?: Sheet }) => {
             fontSize: 20,
           }}
           placeholder="Do Re Mi Fa..."
+          placeholderTextColor={textGray}
           multiline
           autoCapitalize="none"
           autoComplete="off"
