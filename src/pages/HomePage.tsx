@@ -6,6 +6,7 @@ import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useInstrument } from "../hooks/useInstrument";
 import { useSheetList } from "../hooks/useSheetList";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
+import { PencilIcon } from "../icons/PencilIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
 import { black, textGray } from "../theme/colors";
 import { headerHeight, pagePadding } from "../theme/sizes";
@@ -87,11 +88,15 @@ export const HomePage = () => {
           </Link>
         )}
       />
+
       <Link href="/create" asChild>
         <FAB>
-          <Text style={{ fontWeight: "bold", textTransform: "uppercase" }}>
-            Nova cola ✏️
-          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+            <Text style={{ fontWeight: "bold", textTransform: "uppercase" }}>
+              Nova cola
+            </Text>
+            <PencilIcon width={18} />
+          </View>
         </FAB>
       </Link>
     </>
