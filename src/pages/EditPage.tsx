@@ -1,4 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { Pressable, Text } from "react-native";
 import { auth } from "../auth/auth";
 import { Editor } from "../components/Editor";
@@ -6,13 +7,32 @@ import { Header } from "../components/Header";
 import { KeyboardLayout } from "../components/KeyboardLayout";
 import { NotFound } from "../components/NotFound";
 import { deleteSheet } from "../database/deleteSheet";
-import { useSheet } from "../hooks/useSheet";
+import { observeSheet } from "../database/sheet";
+import { Sheet } from "../database/types";
 import { alert } from "../services/alert";
 import { dismissAll } from "../services/navigation";
 
 export const EditPage = () => {
   const params = useLocalSearchParams();
-  const sheet = useSheet(String(params.sheet));
+
+  const [sheet, setSheet] = useState<Sheet | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const id = String(params.sheet);
+  useEffect(() => {
+    return observeSheet(
+      id,
+      (data) => {
+        setSheet(data);
+        setIsLoading(false);
+      },
+      (error) => alert(error.message),
+    );
+  }, [id]);
+
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
 
   if (!sheet) {
     return <NotFound />;
