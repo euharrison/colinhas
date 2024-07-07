@@ -10,7 +10,7 @@ import { FAB } from "./FAB";
 import { NotesKeyboard } from "./NotesKeyboard";
 import { SaveModal } from "./SaveModal";
 
-export const Editor = ({ sheet }: { sheet?: Sheet }) => {
+export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
   const formatSheet = useFormatSheet();
   const [value, setValue] = useState(sheet ? formatSheet(sheet) : "");
   const [saveModalVisible, setSaveModalVisible] = useState(false);
