@@ -10,6 +10,7 @@ import { ViewSheet } from "../components/ViewSheet";
 import { deleteSheet } from "../database/deleteSheet";
 import { observeSheet } from "../database/sheet";
 import { Sheet } from "../database/types";
+import { LoadingIcon } from "../icons/LoadingIcon";
 import { OptionsIcon } from "../icons/OptionsIcons";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ResetIcon } from "../icons/ResetIcon";
@@ -44,7 +45,11 @@ export const SheetPage = () => {
   }, [id]);
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <LoadingIcon />
+      </View>
+    );
   }
 
   if (!sheet) {
