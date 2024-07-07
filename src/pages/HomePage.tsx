@@ -10,7 +10,7 @@ import { ProfileIcon } from "../icons/ProfileIcon";
 import { black, textGray } from "../theme/colors";
 import { headerHeight, pagePadding } from "../theme/sizes";
 
-const itemHeight = 73;
+const itemHeight = 80;
 const separatorHeight = 1;
 
 export const HomePage = () => {
@@ -57,12 +57,25 @@ export const HomePage = () => {
                 borderBottomWidth: separatorHeight,
                 padding: pagePadding,
                 height: itemHeight,
+                gap: 4,
               }}
             >
               <Text>{item.name}</Text>
-              <Text style={{ color: textGray }} numberOfLines={1}>
-                {formatSheet(item).replaceAll("\n", "   ")}
-              </Text>
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+              >
+                <View>
+                  <InstrumentIcon
+                    instrument={item.instrument}
+                    width={18}
+                    height={18}
+                    fill={textGray}
+                  />
+                </View>
+                <Text style={{ color: textGray }} numberOfLines={1}>
+                  {formatSheet(item).replaceAll("\n", "   ")}
+                </Text>
+              </View>
               {item.syncing && (
                 <Text
                   style={{ position: "absolute", top: 30, right: pagePadding }}
