@@ -3,9 +3,9 @@ export type Sheet = {
   name: string;
   data: string;
   instrument: string;
-  keySignature?: string;
+  keySignature: string;
   userId: string;
   updatedAt: number;
   createdAt: number;
-  syncing?: boolean;
+  syncing: boolean;
 };
