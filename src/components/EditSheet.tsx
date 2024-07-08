@@ -16,10 +16,13 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
   const myInstrument = useInstrument();
 
   const [value, setValue] = useState(sheet?.data ?? "");
+  const [keySignature, setKeySignature] = useState(
+    sheet?.keySignature || KeySignatures.Do,
+  );
   const [saveModalVisible, setSaveModalVisible] = useState(false);
   const inputRef = useRef<TextInput>(null);
 
-  const onPressNoteKeyboard = (value: string) => {
+  const onPressNote = (value: string) => {
     setValue((prev) => {
       if ((value === "♭" || value === "♯") && prev.endsWith(" ")) {
         return `${prev.substring(0, prev.length - 1)}${value} `;
@@ -27,6 +30,11 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
         return `${prev}${value} `;
       }
     });
+    inputRef.current?.focus();
+  };
+
+  const onChangeKeySignature = (value: string) => {
+    setKeySignature(value);
     inputRef.current?.focus();
   };
 
@@ -65,7 +73,11 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
           <ArrowForwardIcon />
         </FAB>
       </View>
-      <NotesKeyboard onPress={onPressNoteKeyboard} />
+      <NotesKeyboard
+        keySignature={keySignature}
+        onChangeKeySignature={onChangeKeySignature}
+        onPressNote={onPressNote}
+      />
       <Dialog
         title="Salvar"
         visible={saveModalVisible}
@@ -75,7 +87,7 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
           id={sheet?.id}
           defaultValues={{
             ...sheet,
-            keySignature: sheet?.keySignature ?? KeySignatures.Do,
+            keySignature,
             instrument: sheet?.instrument ?? myInstrument,
             data: value,
           }}
