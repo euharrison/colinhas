@@ -8,8 +8,7 @@ import {
   View,
 } from "react-native";
 import { Instrument, KeySignatures } from "../config";
-import { createSheet } from "../database/createSheet";
-import { editSheet } from "../database/editSheet";
+import { createSheet, editSheet } from "../database/sheet";
 import { Sheet } from "../database/types";
 import { useInstrument } from "../hooks/useInstrument";
 import { CloseIcon } from "../icons/CloseIcon";
