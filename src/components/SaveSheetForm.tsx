@@ -58,7 +58,6 @@ export const SaveSheetForm = ({
                 { value: Instrument.Trumpet, label: "Trompete" },
                 { value: Instrument.Trombone, label: "Trombone" },
                 { value: Instrument.Tuba, label: "Tuba" },
-                { value: "", label: "Não especificado" },
               ].map(({ value, label }) => (
                 <option key={value} value={value}>
                   {label}
