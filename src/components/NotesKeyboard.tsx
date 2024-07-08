@@ -1,45 +1,44 @@
-import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
+import { KeySignatures } from "../config";
 import { buttonFeedback, keyboardBackground, white } from "../theme/colors";
+import { KeySignatureSelect } from "./KeySignatureSelect";
 
-const scales = [
-  ["do♭", "re♭", "mi♭", "fa♭", "sol♭", "la♭", "si♭"],
-  ["do♭", "re♭", "mi♭", "fa", "sol♭", "la♭", "si♭"],
-  ["do", "re♭", "mi♭", "fa", "sol♭", "la♭", "si♭"],
-  ["do", "re♭", "mi♭", "fa", "sol", "la♭", "si♭"],
-  ["do", "re", "mi♭", "fa", "sol", "la♭", "si♭"],
-  ["do", "re", "mi♭", "fa", "sol", "la", "si♭"],
-  ["do", "re", "mi", "fa", "sol", "la", "si♭"],
-  ["do", "re", "mi", "fa", "sol", "la", "si"],
-  ["do", "re", "mi", "fa♯", "sol", "la", "si"],
-  ["do♯", "re", "mi", "fa♯", "sol", "la", "si"],
-  ["do♯", "re", "mi", "fa♯", "sol♯", "la", "si"],
-  ["do♯", "re♯", "mi", "fa♯", "sol♯", "la", "si"],
-  ["do♯", "re♯", "mi", "fa♯", "sol♯", "la♯", "si"],
-  ["do♯", "re♯", "mi♯", "fa♯", "sol♯", "la♯", "si"],
-  ["do♯", "re♯", "mi♯", "fa♯", "sol♯", "la♯", "si♯"],
-];
+const notesMapByKeySignature: Record<string, string[]> = {
+  [KeySignatures["Do#"]]: ["do♯", "re♯", "mi♯", "fa♯", "sol♯", "la♯", "si♯"],
+  [KeySignatures["Fa#"]]: ["do♯", "re♯", "mi♯", "fa♯", "sol♯", "la♯", "si"],
+  [KeySignatures.Si]: ["do♯", "re♯", "mi", "fa♯", "sol♯", "la♯", "si"],
+  [KeySignatures.Mi]: ["do♯", "re♯", "mi", "fa♯", "sol♯", "la", "si"],
+  [KeySignatures.La]: ["do♯", "re", "mi", "fa♯", "sol♯", "la", "si"],
+  [KeySignatures.Re]: ["do♯", "re", "mi", "fa♯", "sol", "la", "si"],
+  [KeySignatures.Sol]: ["do", "re", "mi", "fa♯", "sol", "la", "si"],
+  [KeySignatures.Do]: ["do", "re", "mi", "fa", "sol", "la", "si"],
+  [KeySignatures.Fa]: ["do", "re", "mi", "fa", "sol", "la", "si♭"],
+  [KeySignatures.Sib]: ["do", "re", "mi♭", "fa", "sol", "la", "si♭"],
+  [KeySignatures.Mib]: ["do", "re", "mi♭", "fa", "sol", "la♭", "si♭"],
+  [KeySignatures.Lab]: ["do", "re♭", "mi♭", "fa", "sol", "la♭", "si♭"],
+  [KeySignatures.Reb]: ["do", "re♭", "mi♭", "fa", "sol♭", "la♭", "si♭"],
+  [KeySignatures.Solb]: ["do♭", "re♭", "mi♭", "fa", "sol♭", "la♭", "si♭"],
+};
 
 const Key = ({
-  children,
+  value,
   onPress,
 }: {
-  children: string;
+  value: string;
   onPress: (value: string) => void;
 }) => {
   return (
     <Pressable
-      onPress={() => onPress(children)}
+      onPress={() => onPress(value)}
       style={({ pressed }) => ({
-        flexGrow: 1,
-        flexBasis: 1,
+        flex: 1,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 4,
         backgroundColor: pressed ? buttonFeedback : white,
       })}
     >
-      <Text selectable={false}>{children}</Text>
+      <Text selectable={false}>{value}</Text>
     </Pressable>
   );
 };
@@ -54,22 +53,22 @@ const NotesRow = ({
   return (
     <View style={{ flexDirection: "row", gap: 2, height: 32 }}>
       {notes.map((key) => (
-        <Key key={key} onPress={() => onPress(key)}>
-          {key}
-        </Key>
+        <Key key={key} value={key} onPress={() => onPress(key)} />
       ))}
     </View>
   );
 };
 
 export const NotesKeyboard = ({
-  onPress,
+  keySignature,
+  onChangeKeySignature,
+  onPressNote,
 }: {
-  onPress: (value: string) => void;
+  keySignature: string;
+  onChangeKeySignature: (value: string) => void;
+  onPressNote: (value: string) => void;
 }) => {
-  const [scaleIndex, setScaleIndex] = useState(7);
-
-  const keys = scales[scaleIndex];
+  const keys = notesMapByKeySignature[keySignature] ?? [];
 
   return (
     <View
@@ -79,32 +78,30 @@ export const NotesKeyboard = ({
         backgroundColor: keyboardBackground,
       }}
     >
-      <View style={{ flexDirection: "row", gap: 2, height: 28 }}>
-        <Text style={{ padding: 4 }}>Tom:</Text>
-        <Key
-          onPress={() => {
-            setScaleIndex((s) => Math.max(s - 1, 0));
-          }}
-        >
-          ↓ ♭
-        </Key>
-        <Key
-          onPress={() => {
-            setScaleIndex((s) => Math.min(s + 1, scales.length - 1));
-          }}
-        >
-          ↑ ♯
-        </Key>
-        <View style={{ width: 50 }} />
-        <Key onPress={() => onPress("♭")}>♭</Key>
-        <Key onPress={() => onPress("♯")}>♯</Key>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          gap: 2,
+        }}
+      >
+        <KeySignatureSelect
+          value={keySignature}
+          onChange={onChangeKeySignature}
+        />
+        <View style={{ width: 160 }}>
+          <NotesRow notes={["♯", "♭"]} onPress={onPressNote} />
+        </View>
       </View>
-      <NotesRow notes={keys.map((s) => s.toUpperCase())} onPress={onPress} />
+      <NotesRow
+        notes={keys.map((s) => s.toUpperCase())}
+        onPress={onPressNote}
+      />
       <NotesRow
         notes={keys.map((s) => s[0].toUpperCase() + s.slice(1))}
-        onPress={onPress}
+        onPress={onPressNote}
       />
-      <NotesRow notes={keys} onPress={onPress} />
+      <NotesRow notes={keys} onPress={onPressNote} />
     </View>
   );
 };

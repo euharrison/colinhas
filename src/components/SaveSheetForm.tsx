@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Platform, Pressable, Text, TextInput, View } from "react-native";
-import { Instrument, KeySignatures } from "../config";
+import { Instrument } from "../config";
 import { createSheet, editSheet } from "../database/sheet";
 import { Sheet } from "../database/types";
 import { alert } from "../services/alert";
 import { dismissAll } from "../services/navigation";
 import { buttonFeedback } from "../theme/colors";
 import { AuthGate } from "./AuthGate";
+import { KeySignatureSelect } from "./KeySignatureSelect";
 
 export const SaveSheetForm = ({
   id,
@@ -38,33 +39,10 @@ export const SaveSheetForm = ({
         {Platform.OS === "web" && (
           <View>
             <Text>Tom:</Text>
-            <select
-              style={{ padding: 8 }}
+            <KeySignatureSelect
               value={keySignature}
-              onChange={(e) => setKeySignature(e.currentTarget.value)}
-            >
-              {[
-                { value: KeySignatures["Do#"], label: "Do♯ - ♯♯♯♯♯♯♯" },
-                { value: KeySignatures["Fa#"], label: "Fa♯ - ♯♯♯♯♯♯" },
-                { value: KeySignatures.Si, label: "Si - ♯♯♯♯♯" },
-                { value: KeySignatures.Mi, label: "Mi - ♯♯♯♯" },
-                { value: KeySignatures.La, label: "La - ♯♯♯" },
-                { value: KeySignatures.Re, label: "Re - ♯♯" },
-                { value: KeySignatures.Sol, label: "Sol - ♯" },
-                { value: KeySignatures.Do, label: "Do" },
-                { value: KeySignatures.Fa, label: "Fa - ♭" },
-                { value: KeySignatures.Sib, label: "Si♭ - ♭♭" },
-                { value: KeySignatures.Mib, label: "Mi♭ - ♭♭♭" },
-                { value: KeySignatures.Lab, label: "La♭ - ♭♭♭♭" },
-                { value: KeySignatures.Reb, label: "Re♭ - ♭♭♭♭♭" },
-                { value: KeySignatures.Solb, label: "Sol♭ - ♭♭♭♭♭♭" },
-                { value: "", label: "Não especificado" },
-              ].map(({ value, label }) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
+              onChange={(v) => setKeySignature(v)}
+            />
           </View>
         )}
         {Platform.OS === "web" && (
