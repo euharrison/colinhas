@@ -69,11 +69,11 @@ const docToSheet = (snapshot: DocumentSnapshot): Sheet | undefined => {
   }
   return {
     id: snapshot.id,
-    name: data.name ?? "",
-    data: data.data ?? "",
-    instrument: data.instrument ?? "",
-    keySignature: data.keySignature ?? "",
-    userId: data.userId ?? "",
+    name: data.name,
+    data: data.data,
+    instrument: data.instrument,
+    keySignature: data.keySignature,
+    userId: data.userId,
     updatedAt: data.updatedAt.seconds ?? Date.now(),
     createdAt: data.createdAt.seconds ?? Date.now(),
     syncing: snapshot.metadata.hasPendingWrites,

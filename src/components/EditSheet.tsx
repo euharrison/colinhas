@@ -1,15 +1,20 @@
 import { useRef, useState } from "react";
 import { TextInput, View } from "react-native";
+import { KeySignatures } from "../config";
 import { Sheet } from "../database/types";
+import { useInstrument } from "../hooks/useInstrument";
 import { ArrowForwardIcon } from "../icons/ArrowForwardIcon";
 import { alert } from "../services/alert";
 import { textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
+import { Dialog } from "./Dialog";
 import { FAB } from "./FAB";
 import { NotesKeyboard } from "./NotesKeyboard";
-import { SaveModal } from "./SaveModal";
+import { SaveSheetForm } from "./SaveSheetForm";
 
 export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
+  const myInstrument = useInstrument();
+
   const [value, setValue] = useState(sheet?.data ?? "");
   const [saveModalVisible, setSaveModalVisible] = useState(false);
   const inputRef = useRef<TextInput>(null);
@@ -61,12 +66,21 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
         </FAB>
       </View>
       <NotesKeyboard onPress={onPressNoteKeyboard} />
-      <SaveModal
-        sheet={sheet}
-        data={value}
+      <Dialog
+        title="Salvar"
         visible={saveModalVisible}
         onRequestClose={() => setSaveModalVisible(false)}
-      />
+      >
+        <SaveSheetForm
+          id={sheet?.id}
+          defaultValues={{
+            ...sheet,
+            keySignature: sheet?.keySignature ?? KeySignatures.Do,
+            instrument: sheet?.instrument ?? myInstrument,
+            data: value,
+          }}
+        />
+      </Dialog>
     </>
   );
 };
