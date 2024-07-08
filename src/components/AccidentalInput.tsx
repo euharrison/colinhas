@@ -16,7 +16,7 @@ export const AccidentalInput = () => {
         gap: 4,
       }}
     >
-      <Text style={{ color: textGray }}>Visualizar em: </Text>
+      <Text style={{ color: textGray }}>Visualizar acidentes como: </Text>
       <RadioField
         color={textGray}
         checked={accidental === "sharp"}

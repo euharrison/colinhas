@@ -7,7 +7,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { KeySignatures } from "../config";
+import { Instrument, KeySignatures } from "../config";
 import { createSheet } from "../database/createSheet";
 import { editSheet } from "../database/editSheet";
 import { Sheet } from "../database/types";
@@ -31,12 +31,15 @@ export const SaveModal = ({
   visible: boolean;
   onRequestClose: () => void;
 }) => {
-  const [name, setName] = useState(sheet?.name ?? "");
-  const [keySignature, setKeySignature] = useState(
-    sheet?.keySignature ?? KeySignatures.Do,
-  );
+  const defaultInstrument = useInstrument();
 
-  const instrument = useInstrument();
+  const [name, setName] = useState(sheet?.name || "");
+  const [keySignature, setKeySignature] = useState(
+    sheet?.keySignature || KeySignatures.Do,
+  );
+  const [instrument, setInstrument] = useState(
+    sheet?.instrument || defaultInstrument,
+  );
 
   return (
     <Modal
@@ -133,6 +136,27 @@ export const SaveModal = ({
                         { value: KeySignatures.Lab, label: "La♭ - ♭♭♭♭" },
                         { value: KeySignatures.Reb, label: "Re♭ - ♭♭♭♭♭" },
                         { value: KeySignatures.Solb, label: "Sol♭ - ♭♭♭♭♭♭" },
+                      ].map(({ value, label }) => (
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </View>
+                )}
+                {Platform.OS === "web" && (
+                  <View>
+                    <Text>Instrumento:</Text>
+                    <select
+                      style={{ padding: 8 }}
+                      value={instrument}
+                      onChange={(e) => setInstrument(e.currentTarget.value)}
+                    >
+                      {[
+                        { value: Instrument.Sax, label: "Sax" },
+                        { value: Instrument.Trumpet, label: "Trompete" },
+                        { value: Instrument.Trombone, label: "Trombone" },
+                        { value: Instrument.Tuba, label: "Tuba" },
                       ].map(({ value, label }) => (
                         <option key={value} value={value}>
                           {label}

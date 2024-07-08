@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { observeSheetCollection } from "../database/sheet";
 import { Sheet } from "../database/types";
-import { useFormatSheet } from "../hooks/useFormatSheet";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
 import { LoadingIcon } from "../icons/LoadingIcon";
 import { SyncIcon } from "../icons/SyncIcon";
@@ -15,8 +14,6 @@ const itemHeight = 80;
 const separatorHeight = 1;
 
 export const SheetList = ({ search }: { search: string }) => {
-  const formatSheet = useFormatSheet();
-
   const [sheetCollection, setSheetCollection] = useState<Sheet[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -120,7 +117,7 @@ export const SheetList = ({ search }: { search: string }) => {
                   />
                 </View>
                 <Text style={{ color: textGray }} numberOfLines={1}>
-                  {formatSheet(item).replaceAll("\n", "   ")}
+                  {item.data.replaceAll("\n", "   ")}
                 </Text>
               </View>
             </Pressable>
