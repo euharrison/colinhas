@@ -14,7 +14,7 @@ export const FAB = forwardRef<View, PressableProps>((props, ref) => {
         right: 20,
         borderColor: black,
         borderWidth: 1,
-        borderRadius: 12,
+        borderRadius: 999,
         height: 48,
         paddingHorizontal: 12,
         alignItems: "center",
