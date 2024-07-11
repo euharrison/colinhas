@@ -60,6 +60,7 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
             padding: pagePadding,
             flex: 1,
             fontSize: 20,
+            fontWeight: 500,
           }}
           placeholder="Do Re Mi Fa..."
           placeholderTextColor={textGray}
