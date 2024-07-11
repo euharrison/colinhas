@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { observeSheetCollection } from "../database/sheet";
 import { Sheet } from "../database/types";
-import { InstrumentIcon } from "../icons/InstrumentIcon";
+import { useFormatSheet } from "../hooks/useFormatSheet";
 import { LoadingIcon } from "../icons/LoadingIcon";
 import { SyncIcon } from "../icons/SyncIcon";
 import { black, textGray } from "../theme/colors";
@@ -14,6 +14,7 @@ const itemHeight = 80;
 const separatorHeight = 1;
 
 export const SheetList = ({ search }: { search: string }) => {
+  const formatSheet = useFormatSheet();
   const [sheetCollection, setSheetCollection] = useState<Sheet[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -105,21 +106,9 @@ export const SheetList = ({ search }: { search: string }) => {
               }}
             >
               <Text>{item.name}</Text>
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-              >
-                <View>
-                  <InstrumentIcon
-                    instrument={item.instrument}
-                    width={18}
-                    height={18}
-                    fill={textGray}
-                  />
-                </View>
-                <Text style={{ color: textGray }} numberOfLines={1}>
-                  {item.data.replaceAll("\n", "   ")}
-                </Text>
-              </View>
+              <Text style={{ color: textGray }} numberOfLines={1}>
+                {formatSheet(item).replaceAll("\n", "   ")}
+              </Text>
             </Pressable>
           </Link>
           {item.syncing && (

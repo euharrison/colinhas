@@ -1,23 +1,21 @@
 import { Instrument } from "../config";
 import { Sheet } from "../database/types";
-import { transpose } from "../services/transpose";
-import { useAccidental } from "./useAccidental";
+import { transposeKey } from "../services/transposeKey";
 import { useInstrument } from "./useInstrument";
 
 const getInstrumentOffset = (instrument: string) =>
   ({
-    [Instrument.Sax]: -3,
+    [Instrument.Sax]: +3,
     [Instrument.Trumpet]: +2,
   })[instrument] ?? 0;
 
-export const useFormatSheet = () => {
-  const accidental = useAccidental();
+export const useFormatKey = () => {
   const instrument = useInstrument();
   const myOffset = getInstrumentOffset(instrument);
 
   return (sheet: Sheet) => {
     const sheetOffset = getInstrumentOffset(sheet.instrument);
     const offset = -sheetOffset + myOffset;
-    return transpose(sheet.data, offset, accidental);
+    return transposeKey(sheet.keySignature, offset);
   };
 };

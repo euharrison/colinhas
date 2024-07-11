@@ -6,6 +6,7 @@ export const Instrument = {
 };
 
 export const KeySignatures = {
+  Dob: "Do♭",
   Do: "Do",
   "Do#": "Do♯",
   Reb: "Re♭",
