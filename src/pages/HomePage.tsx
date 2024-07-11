@@ -6,6 +6,7 @@ import { FAB } from "../components/FAB";
 import { SheetList } from "../components/SheetList";
 import { useInstrument } from "../hooks/useInstrument";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
+import { LogoIcon } from "../icons/LogoIcon";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
 import { SearchIcon } from "../icons/SearchIcon";
@@ -24,13 +25,16 @@ export const HomePage = () => {
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "space-between",
             alignItems: "center",
+            gap: 8,
             height: headerHeight,
             paddingHorizontal: pagePadding,
           }}
         >
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>Colinhas</Text>
+          <LogoIcon />
+          <Text style={{ fontSize: 20, fontWeight: 600, flex: 1 }}>
+            Colinhas
+          </Text>
           <Link href={profileUrl} asChild>
             <Pressable style={{ flexDirection: "row", gap: 8 }}>
               <InstrumentIcon instrument={instrument} fill={textGray} />
