@@ -15,6 +15,7 @@
     "build:prod:android": "eas build -p android",
     "build:prod:ios": "eas build -p ios",
     "build:prod:web": "expo export -p web",
+    "test": "lint && tsc",
     "lint": "eslint .",
     "tsc": "tsc"
   },
@@ -44,6 +45,7 @@
     "eslint-config-expo": "^7.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
+    "firebase-tools": "^13.13.1",
     "prettier": "^3.3.2",
     "typescript": "^5.1.3"
   },
