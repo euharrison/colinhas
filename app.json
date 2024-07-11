@@ -45,7 +45,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "bundler": "metro"
+      "bundler": "metro",
+      "lang": "pt-BR"
     },
     "plugins": ["expo-router"],
     "extra": {
