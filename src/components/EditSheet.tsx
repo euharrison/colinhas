@@ -19,19 +19,30 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
   const formatSheet = useFormatSheet();
   const formatKey = useFormatKey();
 
-  const [value, setValue] = useState(sheet?.data ? formatSheet(sheet) : "");
   const [key, setKey] = useState(sheet?.key ? formatKey(sheet) : Key.Do);
+  const [value, setValue] = useState(sheet?.data ? formatSheet(sheet) : "");
+  const [selection, setSelection] = useState({ start: 0, end: 0 });
+
   const [saveModalVisible, setSaveModalVisible] = useState(false);
+
   const inputRef = useRef<TextInput>(null);
 
-  const onPressNote = (value: string) => {
-    setValue((prev) => {
-      if ((value === "♭" || value === "♯") && prev.endsWith(" ")) {
-        return `${prev.substring(0, prev.length - 1)}${value} `;
+  const onPressNote = (note: string) => {
+    const { start, end } = selection;
+    const isCursorAtTheEnd = end - start === 0 && end === value.length;
+
+    if (isCursorAtTheEnd) {
+      if ((note === "♭" || note === "♯") && value.endsWith(" ")) {
+        setValue(`${value.slice(0, -1)}${note} `);
       } else {
-        return `${prev}${value} `;
+        setValue(`${value}${note} `);
       }
-    });
+    } else {
+      setValue(`${value.slice(0, start)}${note}${value.slice(end)}`);
+      const newPosition = start + note.length;
+      setSelection({ start: newPosition, end: newPosition });
+    }
+
     inputRef.current?.focus();
   };
 
@@ -59,6 +70,10 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
           autoFocus
           textAlignVertical="top"
           value={value}
+          selection={selection}
+          onSelectionChange={(e) => {
+            setSelection(e.nativeEvent.selection);
+          }}
           onChangeText={(newValue) => {
             setValue(newValue);
           }}
