@@ -1,21 +1,21 @@
-import { KeySignatures } from "../config";
+import { Key } from "../config";
 
 const orderedKeys = [
-  KeySignatures.Dob,
-  KeySignatures.Solb,
-  KeySignatures.Reb,
-  KeySignatures.Lab,
-  KeySignatures.Mib,
-  KeySignatures.Sib,
-  KeySignatures.Fa,
-  KeySignatures.Do,
-  KeySignatures.Sol,
-  KeySignatures.Re,
-  KeySignatures.La,
-  KeySignatures.Mi,
-  KeySignatures.Si,
-  KeySignatures["Fa#"],
-  KeySignatures["Do#"],
+  Key.Dob,
+  Key.Solb,
+  Key.Reb,
+  Key.Lab,
+  Key.Mib,
+  Key.Sib,
+  Key.Fa,
+  Key.Do,
+  Key.Sol,
+  Key.Re,
+  Key.La,
+  Key.Mi,
+  Key.Si,
+  Key["Fa#"],
+  Key["Do#"],
 ];
 
 export const transposeKey = (key: string, offset: number) => {

@@ -5,7 +5,7 @@ export const Instrument = {
   Tuba: "Tuba",
 };
 
-export const KeySignatures = {
+export const Key = {
   Dob: "Do♭",
   Do: "Do",
   "Do#": "Do♯",

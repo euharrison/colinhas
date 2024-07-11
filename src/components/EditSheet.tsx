@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { TextInput, View } from "react-native";
-import { KeySignatures } from "../config";
+import { Key } from "../config";
 import { Sheet } from "../database/types";
 import { useInstrument } from "../hooks/useInstrument";
 import { ArrowForwardIcon } from "../icons/ArrowForwardIcon";
@@ -16,9 +16,7 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
   const myInstrument = useInstrument();
 
   const [value, setValue] = useState(sheet?.data ?? "");
-  const [keySignature, setKeySignature] = useState(
-    sheet?.keySignature || KeySignatures.Do,
-  );
+  const [key, setKey] = useState(sheet?.key || Key.Do);
   const [saveModalVisible, setSaveModalVisible] = useState(false);
   const inputRef = useRef<TextInput>(null);
 
@@ -33,8 +31,8 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
     inputRef.current?.focus();
   };
 
-  const onChangeKeySignature = (value: string) => {
-    setKeySignature(value);
+  const onChangeKey = (value: string) => {
+    setKey(value);
     inputRef.current?.focus();
   };
 
@@ -74,8 +72,8 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
         </FAB>
       </View>
       <NotesKeyboard
-        keySignature={keySignature}
-        onChangeKeySignature={onChangeKeySignature}
+        keyValue={key}
+        onChangeKey={onChangeKey}
         onPressNote={onPressNote}
       />
       <Dialog
@@ -87,7 +85,7 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
           id={sheet?.id}
           defaultValues={{
             ...sheet,
-            keySignature,
+            key: key,
             instrument: sheet?.instrument ?? myInstrument,
             data: value,
           }}

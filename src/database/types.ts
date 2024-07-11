@@ -3,7 +3,7 @@ export type Sheet = {
   name: string;
   data: string;
   instrument: string;
-  keySignature: string;
+  key: string;
   userId: string;
   updatedAt: number;
   createdAt: number;

@@ -72,7 +72,7 @@ const docToSheet = (snapshot: DocumentSnapshot): Sheet | undefined => {
     name: data.name ?? "",
     data: data.data ?? "",
     instrument: data.instrument ?? "",
-    keySignature: data.keySignature ?? "",
+    key: data.key ?? data.keySignature ?? "", // TODO remover o keySignature legado
     userId: data.userId ?? "",
     updatedAt: data.updatedAt.seconds ?? Date.now(),
     createdAt: data.createdAt.seconds ?? Date.now(),
