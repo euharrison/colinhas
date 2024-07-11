@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Platform, Pressable, Text, TextInput, View } from "react-native";
-import { Instrument } from "../config";
 import { createSheet, editSheet } from "../database/sheet";
 import { Sheet } from "../database/types";
 import { alert } from "../services/alert";
@@ -18,7 +17,6 @@ export const SaveSheetForm = ({
 }) => {
   const [name, setName] = useState(defaultValues?.name ?? "");
   const [key, setKey] = useState(defaultValues?.key ?? "");
-  const [instrument, setInstrument] = useState(defaultValues?.instrument ?? "");
 
   return (
     <AuthGate>
@@ -55,7 +53,6 @@ export const SaveSheetForm = ({
               const payload = {
                 ...defaultValues,
                 name,
-                instrument,
                 key,
               };
               if (id) {

@@ -4,7 +4,7 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FAB } from "../components/FAB";
 import { SheetList } from "../components/SheetList";
-import { useInstrument } from "../hooks/useInstrument";
+import { useLocalSettings } from "../hooks/useLocalSettings";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
 import { LogoIcon } from "../icons/LogoIcon";
 import { PencilIcon } from "../icons/PencilIcon";
@@ -15,7 +15,7 @@ import { headerHeight, pagePadding } from "../theme/sizes";
 import { createUrl, profileUrl } from "../urls";
 
 export const HomePage = () => {
-  const instrument = useInstrument();
+  const { settings } = useLocalSettings();
 
   const [search, setSearch] = useState("");
 
@@ -37,7 +37,10 @@ export const HomePage = () => {
           </Text>
           <Link href={profileUrl} asChild>
             <Pressable style={{ flexDirection: "row", gap: 8 }}>
-              <InstrumentIcon instrument={instrument} fill={textGray} />
+              <InstrumentIcon
+                instrument={settings.instrument}
+                fill={textGray}
+              />
               <ProfileIcon />
             </Pressable>
           </Link>

@@ -1,11 +1,10 @@
 import { Pressable, Text, View } from "react-native";
-import { Instrument } from "../config";
-import { useUpdateInstrument } from "../hooks/useUpdateInstrument";
+import { useLocalSettings } from "../hooks/useLocalSettings";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
 import { buttonFeedback, textGray } from "../theme/colors";
 
 export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
-  const updateInstrument = useUpdateInstrument();
+  const { updateSettings } = useLocalSettings();
 
   return (
     <View>
@@ -14,26 +13,9 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
         Você poderá trocar depois se preferir
       </Text>
       <View style={{ marginTop: 20, gap: 8 }}>
-        {[
-          {
-            label: "Sax",
-            value: Instrument.Sax,
-          },
-          {
-            label: "Trompete",
-            value: Instrument.Trumpet,
-          },
-          {
-            label: "Trombone",
-            value: Instrument.Trombone,
-          },
-          {
-            label: "Tuba",
-            value: Instrument.Tuba,
-          },
-        ].map(({ value, label }) => (
+        {(["Sax", "Trompete", "Trombone", "Tuba"] as const).map((item) => (
           <Pressable
-            key={value}
+            key={item}
             style={({ pressed }) => ({
               borderRadius: 4,
               borderWidth: 1,
@@ -45,12 +27,17 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
               backgroundColor: pressed ? buttonFeedback : undefined,
             })}
             onPress={() => {
-              updateInstrument(value);
+              updateSettings({ instrument: item });
+              if (item === "Trombone" || item === "Tuba") {
+                updateSettings({ accidental: "flat" });
+              } else {
+                updateSettings({ accidental: "sharp" });
+              }
               onChange?.();
             }}
           >
-            <InstrumentIcon instrument={value} />
-            <Text style={{ fontSize: 20 }}>{label}</Text>
+            <InstrumentIcon instrument={item} />
+            <Text style={{ fontSize: 20 }}>{item}</Text>
           </Pressable>
         ))}
       </View>
