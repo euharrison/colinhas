@@ -1,12 +1,10 @@
 import { Text, View } from "react-native";
-import { useAccidental } from "../hooks/useAccidental";
-import { useUpdateAccidental } from "../hooks/useUpdateAccidental";
+import { useLocalSettings } from "../hooks/useLocalSettings";
 import { textGray } from "../theme/colors";
 import { RadioField } from "./RadioField";
 
 export const AccidentalInput = () => {
-  const accidental = useAccidental();
-  const updateAccidental = useUpdateAccidental();
+  const { settings, updateSettings } = useLocalSettings();
 
   return (
     <View
@@ -19,15 +17,15 @@ export const AccidentalInput = () => {
       <Text style={{ color: textGray }}>Visualizar acidentes como: </Text>
       <RadioField
         color={textGray}
-        checked={accidental === "sharp"}
-        onChange={() => updateAccidental("sharp")}
+        checked={settings.accidental === "sharp"}
+        onChange={() => updateSettings({ accidental: "sharp" })}
       >
         <Text style={{ color: textGray }}>♯</Text>
       </RadioField>
       <RadioField
         color={textGray}
-        checked={accidental === "flat"}
-        onChange={() => updateAccidental("flat")}
+        checked={settings.accidental === "flat"}
+        onChange={() => updateSettings({ accidental: "flat" })}
       >
         <Text style={{ color: textGray }}>♭</Text>
       </RadioField>

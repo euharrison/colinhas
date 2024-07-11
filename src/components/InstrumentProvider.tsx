@@ -2,8 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 import { InstrumentContext } from "../contexts/InstrumentContext";
-import { useUpdateAccidental } from "../hooks/useUpdateAccidental";
 import { InstrumentSelector } from "./InstrumentSelector";
+import { useLocalSettings } from "../hooks/useLocalSettings";
 
 const key = "colinhas:instrument";
 
@@ -11,19 +11,19 @@ export const InstrumentProvider = ({ children }: { children: ReactNode }) => {
   const [ready, setReady] = useState(false);
   const [instrument, setInstrument] = useState("");
 
-  const updateAccidental = useUpdateAccidental();
+  const { updateSettings } = useLocalSettings();
 
   const updateInstrument = useCallback(
     (value: string) => {
       setInstrument(value);
-      if (value === "Trombone") {
-        updateAccidental("flat");
+      if (value === "Trombone" || value === "Tuba") {
+        updateSettings({ accidental: "flat" });
       } else {
-        updateAccidental("sharp");
+        updateSettings({ accidental: "sharp" });
       }
       AsyncStorage.setItem(key, value);
     },
-    [updateAccidental],
+    [updateSettings],
   );
 
   useEffect(() => {
