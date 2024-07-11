@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { TextInput, View } from "react-native";
 import { Key } from "../config";
 import { Sheet } from "../database/types";
+import { useFormatKey } from "../hooks/useFormatKey";
+import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useInstrument } from "../hooks/useInstrument";
 import { ArrowForwardIcon } from "../icons/ArrowForwardIcon";
 import { alert } from "../services/alert";
@@ -13,10 +15,12 @@ import { NotesKeyboard } from "./NotesKeyboard";
 import { SaveSheetForm } from "./SaveSheetForm";
 
 export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
-  const myInstrument = useInstrument();
+  const instrument = useInstrument();
+  const formatSheet = useFormatSheet();
+  const formatKey = useFormatKey();
 
-  const [value, setValue] = useState(sheet?.data ?? "");
-  const [key, setKey] = useState(sheet?.key || Key.Do);
+  const [value, setValue] = useState(sheet?.data ? formatSheet(sheet) : "");
+  const [key, setKey] = useState(sheet?.key ? formatKey(sheet) : Key.Do);
   const [saveModalVisible, setSaveModalVisible] = useState(false);
   const inputRef = useRef<TextInput>(null);
 
@@ -85,8 +89,8 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
           id={sheet?.id}
           defaultValues={{
             ...sheet,
-            key: key,
-            instrument: sheet?.instrument ?? myInstrument,
+            key,
+            instrument,
             data: value,
           }}
         />

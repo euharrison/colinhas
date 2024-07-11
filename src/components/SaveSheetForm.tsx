@@ -40,27 +40,6 @@ export const SaveSheetForm = ({
             <KeySelector value={key} onChange={(v) => setKey(v)} />
           </View>
         )}
-        {Platform.OS === "web" && (
-          <View>
-            <Text>Instrumento:</Text>
-            <select
-              style={{ padding: 8 }}
-              value={instrument}
-              onChange={(e) => setInstrument(e.currentTarget.value)}
-            >
-              {[
-                { value: Instrument.Sax, label: "Sax" },
-                { value: Instrument.Trumpet, label: "Trompete" },
-                { value: Instrument.Trombone, label: "Trombone" },
-                { value: Instrument.Tuba, label: "Tuba" },
-              ].map(({ value, label }) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </View>
-        )}
         <Pressable
           style={({ pressed }) => ({
             marginTop: 16,
