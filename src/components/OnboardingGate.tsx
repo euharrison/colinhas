@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { useLocalSettings } from "../hooks/useLocalSettings";
 import { InstrumentSelector } from "./InstrumentSelector";
 
-export const InstrumentProvider = ({ children }: { children: ReactNode }) => {
+export const OnboardingGate = ({ children }: { children: ReactNode }) => {
   const { settings } = useLocalSettings();
 
   if (!settings.instrument) {

@@ -1,8 +1,8 @@
 import { Stack } from "expo-router/stack";
 import { Platform } from "react-native";
 import { AuthProvider } from "../components/AuthProvider";
-import { InstrumentProvider } from "../components/InstrumentProvider";
 import { LocalSettingsProvider } from "../components/LocalSettingsProvider";
+import { OnboardingGate } from "../components/OnboardingGate";
 import { white } from "../theme/colors";
 
 if (Platform.OS === "web") {
@@ -13,7 +13,7 @@ export default function Layout() {
   return (
     <AuthProvider>
       <LocalSettingsProvider>
-        <InstrumentProvider>
+        <OnboardingGate>
           <Stack
             screenOptions={{
               headerShown: false,
@@ -22,7 +22,7 @@ export default function Layout() {
               },
             }}
           />
-        </InstrumentProvider>
+        </OnboardingGate>
       </LocalSettingsProvider>
     </AuthProvider>
   );
