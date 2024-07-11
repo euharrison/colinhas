@@ -5,10 +5,10 @@ import { auth } from "../auth/auth";
 import { EditSheet } from "../components/EditSheet";
 import { Header } from "../components/Header";
 import { KeyboardLayout } from "../components/KeyboardLayout";
+import { LoadingPage } from "../components/LoadingPage";
 import { ViewSheet } from "../components/ViewSheet";
 import { deleteSheet, observeSheet } from "../database/sheet";
 import { Sheet } from "../database/types";
-import { LoadingIcon } from "../icons/LoadingIcon";
 import { OptionsIcon } from "../icons/OptionsIcons";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ResetIcon } from "../icons/ResetIcon";
@@ -44,11 +44,7 @@ export const SheetPage = () => {
   }, [id]);
 
   if (isLoading) {
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <LoadingIcon />
-      </View>
-    );
+    return <LoadingPage />;
   }
 
   if (!sheet) {

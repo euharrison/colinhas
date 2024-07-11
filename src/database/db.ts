@@ -12,6 +12,3 @@ export const db = initializeFirestore(firebaseApp, {
     tabManager: persistentMultipleTabManager(),
   }),
 });
-
-// TODO
-export const sheetsCollection = "sheets-dev";

@@ -11,8 +11,14 @@ import {
 } from "firebase/firestore";
 import { auth } from "../auth/auth";
 import { nonNullable } from "../utils";
-import { db, sheetsCollection } from "./db";
+import { db } from "./db";
 import { Sheet } from "./types";
+
+let sheetsCollection = "musics";
+
+export const updateToDevEnv = () => {
+  sheetsCollection = "sheets-dev";
+};
 
 export async function createSheet(data: Partial<Sheet>) {
   return await addDoc(collection(db, sheetsCollection), {
