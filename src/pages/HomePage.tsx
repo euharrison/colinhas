@@ -32,7 +32,7 @@ export const HomePage = () => {
           }}
         >
           <LogoIcon />
-          <Text style={{ fontSize: 20, fontWeight: 600, flex: 1 }}>
+          <Text style={{ fontSize: 20, fontWeight: 500, flex: 1 }}>
             Colinhas
           </Text>
           <Link href={profileUrl} asChild>
