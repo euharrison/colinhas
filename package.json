@@ -15,7 +15,7 @@
     "build:prod:android": "eas build -p android",
     "build:prod:ios": "eas build -p ios",
     "build:prod:web": "expo export -p web",
-    "test": "lint && tsc",
+    "test": "npm run lint && npm run tsc",
     "lint": "eslint .",
     "tsc": "tsc"
   },
