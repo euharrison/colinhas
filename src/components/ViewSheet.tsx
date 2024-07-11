@@ -52,7 +52,9 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
 
         <Text style={{ color: textGray }}>Tom: {formatKey(sheet)}</Text>
       </View>
-      <Text style={{ fontSize: 20 }}>{formatSheet(sheet)}</Text>
+      <Text style={{ fontSize: 20, fontWeight: 500 }}>
+        {formatSheet(sheet)}
+      </Text>
     </ScrollView>
   );
 };
