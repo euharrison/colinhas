@@ -7,7 +7,7 @@ import { alert } from "../services/alert";
 import { dismissAll } from "../services/navigation";
 import { buttonFeedback } from "../theme/colors";
 import { AuthGate } from "./AuthGate";
-import { KeySignatureSelect } from "./KeySignatureSelect";
+import { KeySelector } from "./KeySelector";
 
 export const SaveSheetForm = ({
   id,
@@ -17,9 +17,7 @@ export const SaveSheetForm = ({
   defaultValues: Partial<Sheet>;
 }) => {
   const [name, setName] = useState(defaultValues?.name ?? "");
-  const [keySignature, setKeySignature] = useState(
-    defaultValues?.keySignature ?? "",
-  );
+  const [key, setKey] = useState(defaultValues?.key ?? "");
   const [instrument, setInstrument] = useState(defaultValues?.instrument ?? "");
 
   return (
@@ -39,10 +37,7 @@ export const SaveSheetForm = ({
         {Platform.OS === "web" && (
           <View>
             <Text>Tom:</Text>
-            <KeySignatureSelect
-              value={keySignature}
-              onChange={(v) => setKeySignature(v)}
-            />
+            <KeySelector value={key} onChange={(v) => setKey(v)} />
           </View>
         )}
         {Platform.OS === "web" && (
@@ -82,7 +77,7 @@ export const SaveSheetForm = ({
                 ...defaultValues,
                 name,
                 instrument,
-                keySignature,
+                key,
               };
               if (id) {
                 editSheet(id, payload);

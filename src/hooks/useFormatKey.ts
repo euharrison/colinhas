@@ -16,6 +16,6 @@ export const useFormatKey = () => {
   return (sheet: Sheet) => {
     const sheetOffset = getInstrumentOffset(sheet.instrument);
     const offset = -sheetOffset + myOffset;
-    return transposeKey(sheet.keySignature, offset);
+    return transposeKey(sheet.key, offset);
   };
 };

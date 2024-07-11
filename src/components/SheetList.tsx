@@ -54,7 +54,7 @@ export const SheetList = ({ search }: { search: string }) => {
       computeValue(item.name, anyWordRegex, 10) +
       computeValue(item.data, anyWordRegex, 5) +
       computeValue(item.instrument, anyWordRegex, 2) +
-      computeValue(item.keySignature, anyWordRegex, 1);
+      computeValue(item.key, anyWordRegex, 1);
 
     return sheetCollection
       .map((item) => ({ ...item, score: computeScore(item) }))
