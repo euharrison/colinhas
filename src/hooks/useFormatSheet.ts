@@ -1,19 +1,20 @@
-import { Instrument } from "../config";
-import { Sheet } from "../database/types";
+import { Instrument, Sheet } from "../database/types";
 import { transpose } from "../services/transpose";
-import { useInstrument } from "./useInstrument";
 import { useLocalSettings } from "./useLocalSettings";
 
-const getInstrumentOffset = (instrument: string) =>
-  ({
-    [Instrument.Sax]: -3,
-    [Instrument.Trumpet]: +2,
-  })[instrument] ?? 0;
+const getInstrumentOffset = (instrument?: Instrument): number =>
+  instrument
+    ? {
+        Sax: -3,
+        Trompete: +2,
+        Trombone: 0,
+        Tuba: 0,
+      }[instrument]
+    : 0;
 
 export const useFormatSheet = () => {
   const { settings } = useLocalSettings();
-  const instrument = useInstrument();
-  const myOffset = getInstrumentOffset(instrument);
+  const myOffset = getInstrumentOffset(settings.instrument);
 
   return (sheet: Sheet) => {
     const sheetOffset = getInstrumentOffset(sheet.instrument);

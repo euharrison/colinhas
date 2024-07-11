@@ -3,16 +3,16 @@ import { AccidentalInput } from "../components/AccidentalInput";
 import { Sheet } from "../database/types";
 import { useFormatKey } from "../hooks/useFormatKey";
 import { useFormatSheet } from "../hooks/useFormatSheet";
-import { useInstrument } from "../hooks/useInstrument";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
 import { textGray } from "../theme/colors";
+import { useLocalSettings } from "../hooks/useLocalSettings";
 
 export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
-  const instrument = useInstrument();
+  const { settings } = useLocalSettings();
   const formatSheet = useFormatSheet();
   const formatKey = useFormatKey();
 
-  const isForMyInstrument = sheet.instrument === instrument;
+  const isForMyInstrument = sheet.instrument === settings.instrument;
 
   return (
     <ScrollView
@@ -37,10 +37,10 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
               style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
             >
               <Text style={{ color: textGray }}>
-                Transposto automaticamente para {instrument}
+                Transposto automaticamente para {settings.instrument}
               </Text>
               <InstrumentIcon
-                instrument={instrument}
+                instrument={settings.instrument}
                 width={18}
                 height={18}
                 fill={textGray}

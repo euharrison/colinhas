@@ -4,7 +4,7 @@ import { Key } from "../config";
 import { Sheet } from "../database/types";
 import { useFormatKey } from "../hooks/useFormatKey";
 import { useFormatSheet } from "../hooks/useFormatSheet";
-import { useInstrument } from "../hooks/useInstrument";
+import { useLocalSettings } from "../hooks/useLocalSettings";
 import { ArrowForwardIcon } from "../icons/ArrowForwardIcon";
 import { alert } from "../services/alert";
 import { textGray } from "../theme/colors";
@@ -15,7 +15,7 @@ import { NotesKeyboard } from "./NotesKeyboard";
 import { SaveSheetForm } from "./SaveSheetForm";
 
 export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
-  const instrument = useInstrument();
+  const { settings } = useLocalSettings();
   const formatSheet = useFormatSheet();
   const formatKey = useFormatKey();
 
@@ -106,7 +106,7 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
           defaultValues={{
             ...sheet,
             key,
-            instrument,
+            instrument: settings.instrument,
             data: value,
           }}
         />

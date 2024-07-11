@@ -1,10 +1,3 @@
-export const Instrument = {
-  Sax: "Sax",
-  Trumpet: "Trompete",
-  Trombone: "Trombone",
-  Tuba: "Tuba",
-};
-
 export const Key = {
   Dob: "Do♭",
   Do: "Do",
