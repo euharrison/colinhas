@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from "react-native";
 import { useLocalSettings } from "../hooks/useLocalSettings";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
-import { buttonFeedback, textGray } from "../theme/colors";
+import { backgroundGray, textGray } from "../theme/colors";
 
 export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
   const { updateSettings } = useLocalSettings();
@@ -24,7 +24,7 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
               alignItems: "center",
               paddingLeft: 20,
               gap: 20,
-              backgroundColor: pressed ? buttonFeedback : undefined,
+              backgroundColor: pressed ? backgroundGray : undefined,
             })}
             onPress={() => {
               updateSettings({ instrument: item });

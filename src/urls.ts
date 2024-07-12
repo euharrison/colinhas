@@ -3,6 +3,7 @@ import { slugify } from "./utils";
 
 export const appUrl = `https://colinhas.com`;
 export const termsUrl = `${appUrl}/legal/termos-de-uso.html`;
+export const privacyPolicyUrl = `${appUrl}/legal/politica-de-privacidade.html`;
 
 export const homeUrl = "/";
 export const createUrl = "/create";

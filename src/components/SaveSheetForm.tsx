@@ -1,13 +1,14 @@
 import { Link } from "expo-router";
 import { useState } from "react";
-import { Platform, Pressable, Text, TextInput, View } from "react-native";
+import { Platform, Text, TextInput, View } from "react-native";
 import { createSheet, editSheet } from "../database/sheet";
 import { Sheet } from "../database/types";
 import { alert } from "../services/alert";
 import { dismissAll } from "../services/navigation";
-import { buttonFeedback, backgroundGray, textGray } from "../theme/colors";
 import { termsUrl } from "../urls";
 import { AuthGate } from "./AuthGate";
+import { Button } from "./Button";
+import { Disclaimer } from "./Disclaimer";
 import { KeySelector } from "./KeySelector";
 
 export const SaveSheetForm = ({
@@ -40,33 +41,16 @@ export const SaveSheetForm = ({
             <KeySelector value={key} onChange={(v) => setKey(v)} />
           </View>
         )}
-        <View
-          style={{
-            backgroundColor: backgroundGray,
-            paddingVertical: 8,
-            paddingHorizontal: 16,
-            borderRadius: 4,
-          }}
-        >
-          <Text style={{ color: textGray, fontStyle: "italic" }}>
-            Todas as colas são públicas e visíveis por todos. Não viole os{" "}
-            <Link href={termsUrl} target="_blank">
-              <Text style={{ textDecorationLine: "underline" }}>
-                termos de uso
-              </Text>
-            </Link>
-            .
-          </Text>
-        </View>
-        <Pressable
-          style={({ pressed }) => ({
-            padding: 8,
-            borderRadius: 4,
-            borderWidth: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: pressed ? buttonFeedback : undefined,
-          })}
+        <Disclaimer>
+          Todas as colas são públicas e visíveis por todos. Não viole os{" "}
+          <Link href={termsUrl} target="_blank">
+            <Text style={{ textDecorationLine: "underline" }}>
+              termos de uso
+            </Text>
+          </Link>
+          .
+        </Disclaimer>
+        <Button
           onPress={async () => {
             try {
               const payload = {
@@ -85,8 +69,8 @@ export const SaveSheetForm = ({
             }
           }}
         >
-          <Text>Salvar</Text>
-        </Pressable>
+          Salvar
+        </Button>
       </View>
     </AuthGate>
   );
