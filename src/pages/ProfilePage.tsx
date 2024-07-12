@@ -38,7 +38,7 @@ export const ProfilePage = () => {
             <Text>{user.displayName}</Text>
             <Text>{user.email}</Text>
             <Pressable
-              style={{ alignSelf: "flex-start", marginTop: 10 }}
+              style={{ alignSelf: "flex-start", marginTop: 16 }}
               onPress={async () => {
                 try {
                   await logout();
@@ -47,7 +47,15 @@ export const ProfilePage = () => {
                 }
               }}
             >
-              <Text>(Sair)</Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: "700",
+                  textTransform: "uppercase",
+                }}
+              >
+                Sair
+              </Text>
             </Pressable>
           </View>
         ) : (

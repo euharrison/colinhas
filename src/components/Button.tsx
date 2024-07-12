@@ -17,9 +17,9 @@ export const Button = ({ children, ...props }: PressableProps) => {
       {typeof children === "string" ? (
         <Text
           style={{
-            textTransform: "uppercase",
             fontSize: 12,
             fontWeight: "700",
+            textTransform: "uppercase",
           }}
         >
           {children}
