@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 import { CloseIcon } from "../icons/CloseIcon";
-import { buttonFeedback, modalOverlay, white } from "../theme/colors";
+import { backgroundGray, modalOverlay, white } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
 import { KeyboardLayout } from "./KeyboardLayout";
 
@@ -29,6 +29,7 @@ export const Dialog = ({
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
+            paddingHorizontal: 20,
           }}
         >
           <Pressable
@@ -73,7 +74,7 @@ export const Dialog = ({
                   alignItems: "center",
                   justifyContent: "center",
                   alignSelf: "flex-end",
-                  backgroundColor: pressed ? buttonFeedback : undefined,
+                  backgroundColor: pressed ? backgroundGray : undefined,
                 })}
                 onPress={onRequestClose}
               >

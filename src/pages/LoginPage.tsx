@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { Header } from "../components/Header";
 import { useModalPage } from "../hooks/useModalPage";
-import { buttonFeedback } from "../theme/colors";
+import { backgroundGray } from "../theme/colors";
 
 export const LoginPage = () => {
   useModalPage();
@@ -42,7 +42,7 @@ export const LoginPage = () => {
             borderWidth: 1,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: pressed ? buttonFeedback : undefined,
+            backgroundColor: pressed ? backgroundGray : undefined,
           })}
           onPress={async () => {
             try {

@@ -1,7 +1,11 @@
 import { ReactNode } from "react";
-import { Pressable, Text } from "react-native";
+import { Text, View } from "react-native";
 import { useLoginWithGoogle } from "../hooks/useLoginWithGoogle";
 import { useUser } from "../hooks/useUser";
+import { Button } from "./Button";
+import { Disclaimer } from "./Disclaimer";
+import { Link } from "expo-router";
+import { privacyPolicyUrl, termsUrl } from "../urls";
 
 export const AuthGate = ({ children }: { children: ReactNode }) => {
   const user = useUser();
@@ -12,25 +16,26 @@ export const AuthGate = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <>
+    <View style={{ gap: 16 }}>
+      <Text>Para salvar uma nova cola é preciso criar uma conta.</Text>
       <Text>
-        Para salvar uma nova cola é preciso criar uma conta.
-        {"\n"}
-        {"\n"}
         Isso é importante para você conseguir editar a cola no futuro.
       </Text>
-      <Pressable
-        style={{
-          borderWidth: 1,
-          padding: 20,
-          borderRadius: 4,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        onPress={loginWithGoogle}
-      >
-        <Text>Entrar com Google</Text>
-      </Pressable>
-    </>
+      <Disclaimer>
+        Ao entrar você concorda com a{" "}
+        <Link href={privacyPolicyUrl} target="_blank">
+          <Text style={{ textDecorationLine: "underline" }}>
+            Política de privacidade
+          </Text>
+        </Link>{" "}
+        e os
+        <Link href={termsUrl} target="_blank">
+          {" "}
+          <Text style={{ textDecorationLine: "underline" }}>Termos de Uso</Text>
+        </Link>
+        .
+      </Disclaimer>
+      <Button onPress={loginWithGoogle}>Entrar com Google</Button>
+    </View>
   );
 };

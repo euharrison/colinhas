@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 import { Key } from "../config";
-import { buttonFeedback, keyboardBackground, white } from "../theme/colors";
+import { backgroundGray, keyboardBackground, white } from "../theme/colors";
 import { KeySelector } from "./KeySelector";
 
 const notesMapByKey: Record<string, string[]> = {
@@ -35,7 +35,7 @@ const KeyboardKey = ({
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 4,
-        backgroundColor: pressed ? buttonFeedback : white,
+        backgroundColor: pressed ? backgroundGray : white,
       })}
     >
       <Text selectable={false}>{value}</Text>

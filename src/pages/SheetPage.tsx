@@ -16,7 +16,7 @@ import { ShareIcon } from "../icons/ShareIcon";
 import { TrashIcon } from "../icons/TrashIcon";
 import { alert } from "../services/alert";
 import { dismissAll } from "../services/navigation";
-import { black, buttonFeedback, white } from "../theme/colors";
+import { black, backgroundGray, white } from "../theme/colors";
 import { dropShadow } from "../theme/shadows";
 import { headerHeight, pagePadding } from "../theme/sizes";
 import { shareSheetUrl } from "../urls";
@@ -137,7 +137,7 @@ export const SheetPage = () => {
                   gap: 8,
                   paddingHorizontal: 20,
                   paddingVertical: 8,
-                  backgroundColor: pressed ? buttonFeedback : white,
+                  backgroundColor: pressed ? backgroundGray : white,
                 })}
                 onPress={() => {
                   onPress();
