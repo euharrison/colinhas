@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Modal, Pressable, Text, View } from "react-native";
+import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 import { CloseIcon } from "../icons/CloseIcon";
 import { buttonFeedback, modalOverlay, white } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
@@ -42,13 +42,17 @@ export const Dialog = ({
             }}
             onPress={onRequestClose}
           />
-          <View
+          <ScrollView
             style={{
-              width: 300,
+              flexGrow: 0,
+              maxHeight: "100%",
+              width: "100%",
+              maxWidth: 360,
+            }}
+            contentContainerStyle={{
               backgroundColor: white,
               borderRadius: 8,
               padding: pagePadding,
-              gap: 20,
             }}
           >
             <View
@@ -56,6 +60,7 @@ export const Dialog = ({
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
+                marginBottom: 20,
               }}
             >
               <Text style={{ fontSize: 20 }}>{title}</Text>
@@ -75,9 +80,8 @@ export const Dialog = ({
                 <CloseIcon />
               </Pressable>
             </View>
-            {/* {visible ? <>{children}</> : null} */}
             {children}
-          </View>
+          </ScrollView>
         </View>
       </KeyboardLayout>
     </Modal>
