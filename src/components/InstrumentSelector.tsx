@@ -7,12 +7,16 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
   const { updateSettings } = useLocalSettings();
 
   return (
-    <View>
+    <View style={{ gap: 8 }}>
       <Text style={{ fontSize: 20 }}>Escolha seu instrumento</Text>
       <Text style={{ color: textGray }}>
-        Você poderá trocar depois se preferir
+        Assim podemos transpor automaticamente as colas que não estão no tom do
+        seu instrumento.
       </Text>
-      <View style={{ marginTop: 20, gap: 8 }}>
+      <Text style={{ color: textGray }}>
+        Você poderá trocar depois se preferir.
+      </Text>
+      <View style={{ marginTop: 12, gap: 8 }}>
         {(["Sax", "Trompete", "Trombone", "Tuba"] as const).map((item) => (
           <Pressable
             key={item}
