@@ -1,7 +1,8 @@
 import { Sheet } from "./database/types";
 import { slugify } from "./utils";
 
-const appUrl = `https://colinhas.com`;
+export const appUrl = `https://colinhas.com`;
+export const termsUrl = `${appUrl}/legal/termos-de-uso.html`;
 
 export const homeUrl = "/";
 export const createUrl = "/create";

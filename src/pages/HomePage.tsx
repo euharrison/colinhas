@@ -10,7 +10,7 @@ import { LogoIcon } from "../icons/LogoIcon";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
 import { SearchIcon } from "../icons/SearchIcon";
-import { searchBackground, textGray } from "../theme/colors";
+import { backgroundGray, textGray } from "../theme/colors";
 import { headerHeight, pagePadding } from "../theme/sizes";
 import { createUrl, profileUrl } from "../urls";
 
@@ -55,7 +55,7 @@ export const HomePage = () => {
           paddingHorizontal: 16,
           marginBottom: 16,
           gap: 8,
-          backgroundColor: searchBackground,
+          backgroundColor: backgroundGray,
           borderRadius: 12,
         }}
       >
