@@ -14,7 +14,13 @@ import { FAB } from "./FAB";
 import { NotesKeyboard } from "./NotesKeyboard";
 import { SaveSheetForm } from "./SaveSheetForm";
 
-export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
+export const EditSheet = ({
+  sheet,
+  onCompleteEditing,
+}: {
+  sheet?: Sheet;
+  onCompleteEditing: () => void;
+}) => {
   const { settings } = useLocalSettings();
   const formatSheet = useFormatSheet();
   const formatKey = useFormatKey();
@@ -104,10 +110,13 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
         <SaveSheetForm
           id={sheet?.id}
           defaultValues={{
-            ...sheet,
-            key,
-            instrument: settings.instrument,
+            name: sheet?.name ?? "",
             data: value,
+            instrument: settings.instrument!, // TODO
+            key,
+          }}
+          onSuccess={() => {
+            onCompleteEditing();
           }}
         />
       </Dialog>

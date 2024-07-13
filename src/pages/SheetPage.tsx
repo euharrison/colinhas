@@ -73,7 +73,14 @@ export const SheetPage = () => {
         )}
       </Header>
 
-      {isEditMode ? <EditSheet sheet={sheet} /> : <ViewSheet sheet={sheet} />}
+      {isEditMode ? (
+        <EditSheet
+          sheet={sheet}
+          onCompleteEditing={() => setIsEditMode(false)}
+        />
+      ) : (
+        <ViewSheet sheet={sheet} />
+      )}
 
       {isOptionsVisible && (
         <View
