@@ -1,9 +1,10 @@
 import { Link } from "expo-router";
 import { useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Image, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FAB } from "../components/FAB";
 import { SheetList } from "../components/SheetList";
+import { useUser } from "../hooks/useUser";
 import { LogoIcon } from "../icons/LogoIcon";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
@@ -13,6 +14,7 @@ import { headerHeight, pagePadding } from "../theme/sizes";
 import { createUrl, profileUrl } from "../urls";
 
 export const HomePage = () => {
+  const user = useUser();
   const [search, setSearch] = useState("");
 
   return (
@@ -31,10 +33,24 @@ export const HomePage = () => {
           <Text style={{ fontSize: 20, fontWeight: "500", flex: 1 }}>
             Colinhas
           </Text>
-          <Link href={profileUrl} asChild>
-            <Pressable style={{ flexDirection: "row", gap: 8 }}>
+          <Link href={profileUrl}>
+            {user?.photoURL ? (
+              <View
+                style={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: 999,
+                  overflow: "hidden",
+                }}
+              >
+                <Image
+                  source={{ uri: user.photoURL }}
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </View>
+            ) : (
               <ProfileIcon />
-            </Pressable>
+            )}
           </Link>
         </View>
       </SafeAreaView>
