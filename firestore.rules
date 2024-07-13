@@ -4,23 +4,19 @@ service cloud.firestore {
   match /databases/{database}/documents {
    
     match /users/{userId} {
-      allow read, update, delete: if request.auth.uid == userId;
+      allow read, update, delete: if request.auth != null && request.auth.uid == userId;
       allow create: if request.auth != null;
     }
     
     match /musics/{sheetId} {
       allow read: if true;
-      allow create: if request.resource.data.userId == request.auth.uid;
-			allow update, delete: if resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
     }
     match /sheets-dev/{sheetId} {
       allow read: if true;
-      allow create: if request.resource.data.userId == request.auth.uid;
-			allow update, delete: if resource.data.userId == request.auth.uid;
-    }
-    
-    match /instruments/{instrument} {
-      allow read: if true;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid
     }
     
     match /{document=**} {
