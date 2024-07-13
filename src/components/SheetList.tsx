@@ -38,7 +38,7 @@ export const SheetList = ({ search }: { search: string }) => {
 
   const data = (() => {
     if (!search) {
-      return sheetCollection.sort((a, b) => b.updatedAt - a.updatedAt);
+      return sheetCollection.sort((a, b) => b.createdAt - a.createdAt);
     }
 
     const startsWithRegex = new RegExp(`^${search}`, "i");
@@ -59,7 +59,7 @@ export const SheetList = ({ search }: { search: string }) => {
     return sheetCollection
       .map((item) => ({ ...item, score: computeScore(item) }))
       .filter((item) => item.score > 0)
-      .sort((a, b) => b.score - a.score || b.updatedAt - a.updatedAt);
+      .sort((a, b) => b.score - a.score || b.createdAt - a.createdAt);
   })();
 
   if (!data.length) {
