@@ -76,79 +76,91 @@ export const SheetPage = () => {
       {isEditMode ? <EditSheet sheet={sheet} /> : <ViewSheet sheet={sheet} />}
 
       {isOptionsVisible && (
-        <View
-          style={{
-            position: "absolute",
-            right: 0,
-            top: headerHeight,
-            width: 200,
-            borderWidth: 1,
-            borderColor: black,
-            borderRadius: 8,
-            paddingVertical: 8,
-            backgroundColor: white,
-            ...dropShadow,
-          }}
-        >
-          {[
-            showShareButton
-              ? {
-                  label: "Compartilhar",
-                  icon: <ShareIcon width={18} />,
-                  onPress: () => Share.share({ url: shareSheetUrl(sheet) }),
-                }
-              : undefined,
-            isEditMode
-              ? {
-                  label: "Cancelar edição",
-                  icon: <ResetIcon width={18} />,
-                  onPress: () => setIsEditMode(false),
-                }
-              : {
-                  label: "Editar",
-                  icon: <PencilIcon width={18} />,
-                  onPress: () => setIsEditMode(true),
-                },
-            {
-              label: "Apagar",
-              icon: <TrashIcon width={18} />,
-              onPress: () =>
-                alert(
-                  `Apagar a cola ${sheet.name}?`,
-                  "Essa ação não poderá ser desfeita",
-                  async () => {
-                    try {
-                      await deleteSheet(sheet.id);
-                      dismissAll();
-                    } catch (error) {
-                      alert(String(error));
-                    }
+        <>
+          <Pressable
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
+            onPress={() => setIsOptionVisible(false)}
+          />
+          <View
+            style={{
+              position: "absolute",
+              right: 0,
+              top: headerHeight,
+              width: 200,
+              borderWidth: 1,
+              borderColor: black,
+              borderRadius: 8,
+              paddingVertical: 8,
+              backgroundColor: white,
+              ...dropShadow,
+            }}
+          >
+            {[
+              showShareButton
+                ? {
+                    label: "Compartilhar",
+                    icon: <ShareIcon width={18} />,
+                    onPress: () => Share.share({ url: shareSheetUrl(sheet) }),
+                  }
+                : undefined,
+              isEditMode
+                ? {
+                    label: "Cancelar edição",
+                    icon: <ResetIcon width={18} />,
+                    onPress: () => setIsEditMode(false),
+                  }
+                : {
+                    label: "Editar",
+                    icon: <PencilIcon width={18} />,
+                    onPress: () => setIsEditMode(true),
                   },
-                ),
-            },
-          ]
-            .filter(nonNullable)
-            .map(({ label, icon, onPress }) => (
-              <Pressable
-                key={label}
-                style={({ pressed }) => ({
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 8,
-                  paddingHorizontal: 20,
-                  paddingVertical: 8,
-                  backgroundColor: pressed ? backgroundGray : white,
-                })}
-                onPress={() => {
-                  onPress();
-                  setIsOptionVisible(false);
-                }}
-              >
-                <View>{icon}</View>
-                <Text style={{ fontSize: 16 }}>{label}</Text>
-              </Pressable>
-            ))}
-        </View>
+              {
+                label: "Apagar",
+                icon: <TrashIcon width={18} />,
+                onPress: () =>
+                  alert(
+                    `Apagar a cola ${sheet.name}?`,
+                    "Essa ação não poderá ser desfeita",
+                    async () => {
+                      try {
+                        await deleteSheet(sheet.id);
+                        dismissAll();
+                      } catch (error) {
+                        alert(String(error));
+                      }
+                    },
+                  ),
+              },
+            ]
+              .filter(nonNullable)
+              .map(({ label, icon, onPress }) => (
+                <Pressable
+                  key={label}
+                  style={({ pressed }) => ({
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 8,
+                    paddingHorizontal: 20,
+                    paddingVertical: 8,
+                    backgroundColor: pressed ? backgroundGray : white,
+                  })}
+                  onPress={() => {
+                    onPress();
+                    setIsOptionVisible(false);
+                  }}
+                >
+                  <View>{icon}</View>
+                  <Text style={{ fontSize: 16 }}>{label}</Text>
+                </Pressable>
+              ))}
+          </View>
+        </>
       )}
     </KeyboardLayout>
   );
