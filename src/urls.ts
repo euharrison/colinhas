@@ -8,6 +8,7 @@ export const privacyPolicyUrl = `${appUrl}/legal/politica-de-privacidade.html`;
 export const homeUrl = "/";
 export const createUrl = "/create";
 export const profileUrl = "/profile";
-export const sheetUrl = (sheet: Sheet) => `/${sheet.id}/${slugify(sheet.name)}`;
+export const sheetUrl = (sheet: { id: string; name: string }) =>
+  `/${sheet.id}/${slugify(sheet.name)}`;
 
 export const shareSheetUrl = (sheet: Sheet) => `${appUrl}${sheetUrl(sheet)}`;

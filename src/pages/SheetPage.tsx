@@ -16,7 +16,7 @@ import { ShareIcon } from "../icons/ShareIcon";
 import { TrashIcon } from "../icons/TrashIcon";
 import { alert } from "../services/alert";
 import { dismissAll } from "../services/navigation";
-import { black, backgroundGray, white } from "../theme/colors";
+import { backgroundGray, black, white } from "../theme/colors";
 import { dropShadow } from "../theme/shadows";
 import { headerHeight, pagePadding } from "../theme/sizes";
 import { shareSheetUrl } from "../urls";
@@ -73,14 +73,7 @@ export const SheetPage = () => {
         )}
       </Header>
 
-      {isEditMode ? (
-        <EditSheet
-          sheet={sheet}
-          onCompleteEditing={() => setIsEditMode(false)}
-        />
-      ) : (
-        <ViewSheet sheet={sheet} />
-      )}
+      {isEditMode ? <EditSheet sheet={sheet} /> : <ViewSheet sheet={sheet} />}
 
       {isOptionsVisible && (
         <View
