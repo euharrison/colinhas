@@ -21,7 +21,10 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
 
   const [key, setKey] = useState(sheet?.key ? formatKey(sheet) : Key.Do);
   const [value, setValue] = useState(sheet?.data ? formatSheet(sheet) : "");
-  const [selection, setSelection] = useState({ start: 0, end: 0 });
+  const [selection, setSelection] = useState({
+    start: sheet?.data.length ?? 0,
+    end: sheet?.data.length ?? 0,
+  });
 
   const [saveModalVisible, setSaveModalVisible] = useState(false);
 
