@@ -1,10 +1,10 @@
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Platform, Text, TextInput, View } from "react-native";
 import { createSheet, editSheet } from "../database/sheet";
 import { Sheet } from "../database/types";
 import { alert } from "../services/alert";
-import { termsUrl } from "../urls";
+import { sheetUrl, termsUrl } from "../urls";
 import { AuthGate } from "./AuthGate";
 import { Button } from "./Button";
 import { Disclaimer } from "./Disclaimer";
@@ -13,11 +13,9 @@ import { KeySelector } from "./KeySelector";
 export const SaveSheetForm = ({
   id,
   defaultValues,
-  onSuccess,
 }: {
   id?: string;
   defaultValues: Pick<Sheet, "name" | "data" | "instrument" | "key">;
-  onSuccess: () => void;
 }) => {
   const [name, setName] = useState(defaultValues.name);
   const [key, setKey] = useState(defaultValues.key);
@@ -59,12 +57,10 @@ export const SaveSheetForm = ({
                 name,
                 key,
               };
-              if (id) {
-                editSheet(id, payload);
-              } else {
-                createSheet(payload);
-              }
-              onSuccess();
+              const redirectId = id
+                ? editSheet(id, payload)
+                : createSheet(payload);
+              router.replace(sheetUrl({ id: redirectId, name: payload.name }));
             } catch (error) {
               alert(String(error));
             }

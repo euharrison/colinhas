@@ -1,5 +1,4 @@
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
@@ -7,6 +6,7 @@ import {
   FirestoreError,
   onSnapshot,
   serverTimestamp,
+  setDoc,
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
@@ -15,16 +15,21 @@ import { nonNullable } from "../utils";
 import { db } from "./db";
 import { Sheet } from "./types";
 
-let sheetsCollection = "musics";
+const prodCollection = "musics";
+const devCollection = "sheets-dev";
+
+let sheetsCollection =
+  process.env.NODE_ENV === "development" ? devCollection : prodCollection;
 
 export const updateToDevEnv = () => {
-  sheetsCollection = "sheets-dev";
+  sheetsCollection = devCollection;
 };
 
-export async function createSheet(
+export function createSheet(
   data: Pick<Sheet, "name" | "data" | "instrument" | "key">,
 ) {
-  return await addDoc(collection(db, sheetsCollection), {
+  const docRef = doc(collection(db, sheetsCollection));
+  setDoc(docRef, {
     name: data.name,
     data: data.data,
     instrument: data.instrument,
@@ -33,23 +38,26 @@ export async function createSheet(
     updatedAt: serverTimestamp(),
     createdAt: serverTimestamp(),
   });
+  return docRef.id;
 }
 
-export async function editSheet(
+export function editSheet(
   id: string,
   data: Pick<Sheet, "name" | "data" | "instrument" | "key">,
 ) {
-  return await updateDoc(doc(db, sheetsCollection, id), {
+  const docRef = doc(db, sheetsCollection, id);
+  updateDoc(docRef, {
     name: data.name,
     data: data.data,
     instrument: data.instrument,
     key: data.key,
     updatedAt: serverTimestamp(),
   });
+  return docRef.id;
 }
 
-export async function deleteSheet(id: string) {
-  return await deleteDoc(doc(db, sheetsCollection, id));
+export function deleteSheet(id: string) {
+  return deleteDoc(doc(db, sheetsCollection, id));
 }
 
 export const observeSheet = (
