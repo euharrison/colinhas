@@ -4,8 +4,6 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FAB } from "../components/FAB";
 import { SheetList } from "../components/SheetList";
-import { useLocalSettings } from "../hooks/useLocalSettings";
-import { InstrumentIcon } from "../icons/InstrumentIcon";
 import { LogoIcon } from "../icons/LogoIcon";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
@@ -15,8 +13,6 @@ import { headerHeight, pagePadding } from "../theme/sizes";
 import { createUrl, profileUrl } from "../urls";
 
 export const HomePage = () => {
-  const { settings } = useLocalSettings();
-
   const [search, setSearch] = useState("");
 
   return (
@@ -32,15 +28,11 @@ export const HomePage = () => {
           }}
         >
           <LogoIcon />
-          <Text style={{ fontSize: 20, fontWeight: 500, flex: 1 }}>
+          <Text style={{ fontSize: 20, fontWeight: "500", flex: 1 }}>
             Colinhas
           </Text>
           <Link href={profileUrl} asChild>
             <Pressable style={{ flexDirection: "row", gap: 8 }}>
-              <InstrumentIcon
-                instrument={settings.instrument}
-                fill={textGray}
-              />
               <ProfileIcon />
             </Pressable>
           </Link>
@@ -83,7 +75,7 @@ export const HomePage = () => {
               marginHorizontal: 8,
             }}
           >
-            <Text style={{ fontWeight: "bold", textTransform: "uppercase" }}>
+            <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
               Nova cola
             </Text>
             <PencilIcon width={18} />
