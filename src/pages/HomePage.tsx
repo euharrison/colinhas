@@ -87,7 +87,7 @@ export const HomePage = () => {
         )}
       </View>
 
-      <SheetList search={search} />
+      <SheetList search={search.trim()} />
 
       <Link href={createUrl} asChild>
         <FAB>
