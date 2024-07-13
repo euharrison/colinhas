@@ -1,10 +1,11 @@
 import { Link } from "expo-router";
 import { useState } from "react";
-import { Image, Text, TextInput, View } from "react-native";
+import { Image, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FAB } from "../components/FAB";
 import { SheetList } from "../components/SheetList";
 import { useUser } from "../hooks/useUser";
+import { CloseIcon } from "../icons/CloseIcon";
 import { LogoIcon } from "../icons/LogoIcon";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
@@ -67,7 +68,9 @@ export const HomePage = () => {
           borderRadius: 12,
         }}
       >
-        <SearchIcon />
+        <View>
+          <SearchIcon width={18} height={18} />
+        </View>
         <TextInput
           style={{ paddingVertical: 12, width: "100%" }}
           autoCapitalize="none"
@@ -77,6 +80,11 @@ export const HomePage = () => {
           value={search}
           onChangeText={setSearch}
         />
+        {!!search && (
+          <Pressable onPress={() => setSearch("")}>
+            <CloseIcon />
+          </Pressable>
+        )}
       </View>
 
       <SheetList search={search} />
