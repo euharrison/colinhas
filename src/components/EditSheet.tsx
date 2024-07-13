@@ -31,20 +31,30 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
   const inputRef = useRef<TextInput>(null);
 
   const onPressNote = (note: string) => {
-    const { start, end } = selection;
-    const isCursorAtTheEnd = end - start === 0 && end === value.length;
+    let { start, end } = selection;
 
-    if (isCursorAtTheEnd) {
-      if ((note === "♭" || note === "♯") && value.endsWith(" ")) {
-        setValue(`${value.slice(0, -1)}${note} `);
-      } else {
-        setValue(`${value}${note} `);
-      }
-    } else {
-      setValue(`${value.slice(0, start)}${note}${value.slice(end)}`);
-      const newPosition = start + note.length;
-      setSelection({ start: newPosition, end: newPosition });
+    const hasSelectionRange = end - start !== 0;
+    const isCursorAtTheEnd = !hasSelectionRange && end >= value.trim().length;
+    const isPreviousCharAnEmptyString = value[start - 1] === " ";
+    const isAddingAnAccidental = note === "♭" || note === "♯";
+
+    const shouldRemovePreviousChar =
+      isCursorAtTheEnd && isPreviousCharAnEmptyString && isAddingAnAccidental;
+    if (shouldRemovePreviousChar) {
+      start--;
     }
+    const valueBeforeCursor = value.slice(0, start);
+    const valueAfterCursor = value.slice(end);
+
+    let charsToAdd = note;
+    if (isCursorAtTheEnd) {
+      charsToAdd += " ";
+    }
+
+    setValue(`${valueBeforeCursor}${charsToAdd}${valueAfterCursor}`);
+
+    const newPosition = start + charsToAdd.length;
+    setSelection({ start: newPosition, end: newPosition });
 
     inputRef.current?.focus();
   };
