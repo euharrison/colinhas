@@ -8,7 +8,7 @@ import { LoadingIcon } from "../icons/LoadingIcon";
 import { SyncIcon } from "../icons/SyncIcon";
 import { black, textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
-import { sheetUrl } from "../urls";
+import { createUrl, sheetUrl } from "../urls";
 
 const itemHeight = 80;
 const separatorHeight = 1;
@@ -71,7 +71,12 @@ export const SheetList = ({ search }: { search: string }) => {
           alignItems: "center",
         }}
       >
-        <Text style={{ fontSize: 16 }}>Nenhum item encontrado 🥲</Text>
+        <Text style={{ fontSize: 18 }}>Nenhum item encontrado 🥲</Text>
+        <Link href={createUrl} style={{ marginTop: 20 }}>
+          <Text style={{ fontSize: 16, textDecorationLine: "underline" }}>
+            Criar nova cola
+          </Text>
+        </Link>
       </View>
     );
   }
