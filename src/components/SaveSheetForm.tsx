@@ -4,7 +4,6 @@ import { Platform, Text, TextInput, View } from "react-native";
 import { createSheet, editSheet } from "../database/sheet";
 import { Sheet } from "../database/types";
 import { alert } from "../services/alert";
-import { dismissAll } from "../services/navigation";
 import { termsUrl } from "../urls";
 import { AuthGate } from "./AuthGate";
 import { Button } from "./Button";
@@ -14,12 +13,14 @@ import { KeySelector } from "./KeySelector";
 export const SaveSheetForm = ({
   id,
   defaultValues,
+  onSuccess,
 }: {
   id?: string;
-  defaultValues: Partial<Sheet>;
+  defaultValues: Pick<Sheet, "name" | "data" | "instrument" | "key">;
+  onSuccess: () => void;
 }) => {
-  const [name, setName] = useState(defaultValues?.name ?? "");
-  const [key, setKey] = useState(defaultValues?.key ?? "");
+  const [name, setName] = useState(defaultValues.name);
+  const [key, setKey] = useState(defaultValues.key);
 
   return (
     <AuthGate>
@@ -63,7 +64,7 @@ export const SaveSheetForm = ({
               } else {
                 createSheet(payload);
               }
-              dismissAll();
+              onSuccess();
             } catch (error) {
               alert(String(error));
             }
