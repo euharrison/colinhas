@@ -1,5 +1,6 @@
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { logout } from "../auth/logout";
+import { Button } from "../components/Button";
 import { Header } from "../components/Header";
 import { InstrumentSelector } from "../components/InstrumentSelector";
 import { useLocalSettings } from "../hooks/useLocalSettings";
@@ -71,24 +72,30 @@ export const ProfilePage = () => {
           <View>
             <Text>Env:</Text>
             <View style={{ flexDirection: "row", gap: 4 }}>
-              <Pressable
-                style={{ padding: 8, borderWidth: 1 }}
+              <Button
                 onPress={() => {
                   updateSettings({ env: "prod" });
                   location.href = "/";
                 }}
               >
-                <Text>Prod {settings.env === "prod" && "(enabled)"}</Text>
-              </Pressable>
-              <Pressable
-                style={{ padding: 8, borderWidth: 1 }}
+                <Text>Prod{settings.env === "prod" && " (enabled)"}</Text>
+              </Button>
+              <Button
                 onPress={() => {
                   updateSettings({ env: "dev" });
                   location.href = "/";
                 }}
               >
-                <Text>Staging {settings.env === "dev" && "(enabled)"}</Text>
-              </Pressable>
+                <Text>Staging{settings.env === "dev" && " (enabled)"}</Text>
+              </Button>
+              <Button
+                onPress={() => {
+                  updateSettings({ env: undefined });
+                  location.href = "/";
+                }}
+              >
+                <Text>Limpar</Text>
+              </Button>
             </View>
           </View>
         )}
