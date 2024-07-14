@@ -22,7 +22,7 @@ export const Header = ({
           paddingHorizontal: 60,
         }}
       >
-        <Text style={{ fontSize: 16 }}>{title}</Text>
+        <Text style={{ fontSize: 16, textAlign: "center" }}>{title}</Text>
         <Pressable
           style={{
             position: "absolute",
