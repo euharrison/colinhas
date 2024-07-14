@@ -4,7 +4,7 @@ import {
   LocalSettings,
   LocalSettingsContext,
 } from "../contexts/LocalSettingsContext";
-import { updateDbEnv } from "../database/sheet";
+import { updateDbEnv } from "../database/sheets";
 import { LoadingPage } from "./LoadingPage";
 
 const storageKey = "colinhas:localSettings";

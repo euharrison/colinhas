@@ -9,7 +9,7 @@ import { LoadingPage } from "../components/LoadingPage";
 import { ShareDialog } from "../components/ShareDialog";
 import { SheetMenu } from "../components/SheetMenu";
 import { ViewSheet } from "../components/ViewSheet";
-import { observeSheet } from "../database/sheet";
+import { observeSheet } from "../database/sheets";
 import { Sheet } from "../database/types";
 import { OptionsIcon } from "../icons/OptionsIcons";
 import { alert } from "../services/alert";

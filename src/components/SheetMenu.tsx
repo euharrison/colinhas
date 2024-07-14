@@ -1,6 +1,6 @@
 import { Platform, Pressable, Share, Text, View } from "react-native";
 import { auth } from "../auth/auth";
-import { deleteSheet } from "../database/sheet";
+import { deleteSheet } from "../database/sheets";
 import { Sheet } from "../database/types";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ResetIcon } from "../icons/ResetIcon";

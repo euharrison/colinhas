@@ -1,7 +1,7 @@
 import { Link, router } from "expo-router";
 import { forwardRef, useState } from "react";
 import { Platform, Text, TextInput, View } from "react-native";
-import { createSheet, editSheet } from "../database/sheet";
+import { createSheet, editSheet } from "../database/sheets";
 import { Sheet } from "../database/types";
 import { alert } from "../services/alert";
 import { sheetUrl, termsUrl } from "../urls";
