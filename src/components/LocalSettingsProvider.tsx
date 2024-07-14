@@ -4,7 +4,7 @@ import {
   LocalSettings,
   LocalSettingsContext,
 } from "../contexts/LocalSettingsContext";
-import { updateToDevEnv } from "../database/sheet";
+import { updateDbEnv } from "../database/sheet";
 import { LoadingPage } from "./LoadingPage";
 
 const storageKey = "colinhas:localSettings";
@@ -35,10 +35,7 @@ export const LocalSettingsProvider = ({
 
         if (json) {
           setSettings(json);
-
-          if (json.env === "dev") {
-            updateToDevEnv();
-          }
+          updateDbEnv(json.env);
         }
       } catch {}
       setReady(true);

@@ -21,8 +21,13 @@ const devCollection = "sheets-dev";
 let sheetsCollection =
   process.env.NODE_ENV === "development" ? devCollection : prodCollection;
 
-export const updateToDevEnv = () => {
-  sheetsCollection = devCollection;
+export const updateDbEnv = (env?: "prod" | "dev") => {
+  if (env === "prod") {
+    sheetsCollection = prodCollection;
+  }
+  if (env === "dev") {
+    sheetsCollection = devCollection;
+  }
 };
 
 export function createSheet(
