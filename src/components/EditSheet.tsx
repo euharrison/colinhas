@@ -12,7 +12,7 @@ import { pagePadding } from "../theme/sizes";
 import { DialogRef } from "./Dialog";
 import { FAB } from "./FAB";
 import { NotesKeyboard } from "./NotesKeyboard";
-import { SaveSheetForm } from "./SaveSheetForm";
+import { SaveSheetDialog } from "./SaveSheetDialog";
 
 export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
   const { settings } = useLocalSettings();
@@ -108,7 +108,7 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
         onChangeKey={onChangeKey}
         onPressNote={onPressNote}
       />
-      <SaveSheetForm
+      <SaveSheetDialog
         ref={saveDialogRef}
         id={sheet?.id}
         defaultValues={{
