@@ -15,7 +15,7 @@ import { nonNullable } from "../utils";
 import { db } from "./db";
 import { Sheet } from "./types";
 
-const prodCollection = "musics";
+const prodCollection = "sheets";
 const devCollection = "sheets-dev";
 
 let sheetsCollection =

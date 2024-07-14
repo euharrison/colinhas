@@ -37,3 +37,6 @@ yarn-error.*
 # native projects
 android/
 ios/
+
+# custom
+backups/
