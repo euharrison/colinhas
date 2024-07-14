@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
-import { observeSheetCollection } from "../database/sheet";
+import { observeSheetCollection } from "../database/sheets";
 import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { LoadingIcon } from "../icons/LoadingIcon";

@@ -30,6 +30,10 @@ export const updateDbEnv = (env?: "prod" | "dev") => {
   }
 };
 
+export const getSheetsCollectionName = () => {
+  return sheetsCollection;
+};
+
 export function createSheet(
   data: Pick<Sheet, "name" | "data" | "instrument" | "key">,
 ) {
