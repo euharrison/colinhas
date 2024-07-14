@@ -1,6 +1,7 @@
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { Pressable } from "react-native";
+import { Platform, Pressable, Share } from "react-native";
+import { DeleteSheetDialog } from "../components/DeleteSheetDialog";
 import { DialogRef } from "../components/Dialog";
 import { EditSheet } from "../components/EditSheet";
 import { Header } from "../components/Header";
@@ -14,6 +15,7 @@ import { Sheet } from "../database/types";
 import { OptionsIcon } from "../icons/OptionsIcons";
 import { alert } from "../services/alert";
 import { headerHeight, pagePadding } from "../theme/sizes";
+import { shareSheetUrl } from "../urls";
 import { NotFoundPage } from "./NotFoundPage";
 
 export const SheetPage = () => {
@@ -24,6 +26,7 @@ export const SheetPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const shareDialogRef = useRef<DialogRef>(null);
+  const deleteDialogRef = useRef<DialogRef>(null);
 
   const params = useLocalSearchParams();
   const id = String(params.sheet);
@@ -70,10 +73,18 @@ export const SheetPage = () => {
         setIsVisible={setIsMenuVisible}
         isEditMode={isEditMode}
         setIsEditMode={setIsEditMode}
-        onPressShare={() => shareDialogRef.current?.open()}
+        onPressShare={() => {
+          if (Platform.OS === "web") {
+            shareDialogRef.current?.open();
+          } else {
+            Share.share({ url: shareSheetUrl(sheet) });
+          }
+        }}
+        onPressDelete={() => deleteDialogRef.current?.open()}
       />
 
       <ShareDialog ref={shareDialogRef} sheet={sheet} />
+      <DeleteSheetDialog ref={deleteDialogRef} sheet={sheet} />
     </KeyboardLayout>
   );
 };
