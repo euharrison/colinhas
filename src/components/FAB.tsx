@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { Pressable, PressableProps, View } from "react-native";
-import { black, backgroundGray, white } from "../theme/colors";
+import { backgroundGray, borderGray, white } from "../theme/colors";
 import { dropShadow } from "../theme/shadows";
 
 export const FAB = forwardRef<View, PressableProps>((props, ref) => {
@@ -12,7 +12,7 @@ export const FAB = forwardRef<View, PressableProps>((props, ref) => {
         position: "absolute",
         bottom: 20,
         right: 20,
-        borderColor: black,
+        borderColor: borderGray,
         borderWidth: 1,
         borderRadius: 999,
         height: 48,

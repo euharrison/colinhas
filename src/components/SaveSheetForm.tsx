@@ -4,12 +4,13 @@ import { Platform, Text, TextInput, View } from "react-native";
 import { createSheet, editSheet } from "../database/sheets";
 import { Sheet } from "../database/types";
 import { alert } from "../services/alert";
+import { borderGray } from "../theme/colors";
 import { sheetUrl, termsUrl } from "../urls";
 import { AuthGate } from "./AuthGate";
 import { Button } from "./Button";
+import { Dialog, DialogRef } from "./Dialog";
 import { Disclaimer } from "./Disclaimer";
 import { KeySelector } from "./KeySelector";
-import { Dialog, DialogRef } from "./Dialog";
 
 export const SaveSheetForm = forwardRef<
   DialogRef,
@@ -28,7 +29,12 @@ export const SaveSheetForm = forwardRef<
           <View>
             <Text>Nome:</Text>
             <TextInput
-              style={{ padding: 8, borderWidth: 1, borderRadius: 4 }}
+              style={{
+                padding: 8,
+                borderWidth: 1,
+                borderColor: borderGray,
+                borderRadius: 8,
+              }}
               autoComplete="off"
               autoCorrect={false}
               autoFocus

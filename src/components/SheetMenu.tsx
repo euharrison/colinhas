@@ -5,7 +5,7 @@ import { PencilIcon } from "../icons/PencilIcon";
 import { ResetIcon } from "../icons/ResetIcon";
 import { ShareIcon } from "../icons/ShareIcon";
 import { TrashIcon } from "../icons/TrashIcon";
-import { backgroundGray, black, white } from "../theme/colors";
+import { backgroundGray, borderGray, white } from "../theme/colors";
 import { dropShadow } from "../theme/shadows";
 import { headerHeight } from "../theme/sizes";
 import { nonNullable } from "../utils";
@@ -81,11 +81,11 @@ export const SheetMenu = ({
       <View
         style={{
           position: "absolute",
-          right: 0,
+          right: 8,
           top: headerHeight,
           width: 200,
           borderWidth: 1,
-          borderColor: black,
+          borderColor: borderGray,
           borderRadius: 8,
           paddingVertical: 8,
           backgroundColor: white,

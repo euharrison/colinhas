@@ -1,5 +1,6 @@
 import { Platform } from "react-native";
 import { Key } from "../config";
+import { borderGray } from "../theme/colors";
 import { nonNullable } from "../utils";
 
 export const KeySelector = ({
@@ -15,7 +16,7 @@ export const KeySelector = ({
   }
   return (
     <select
-      style={{ padding: 8 }}
+      style={{ padding: 8, borderRadius: 8, borderColor: borderGray }}
       value={value}
       onChange={(e) => onChange(e.currentTarget.value)}
     >
