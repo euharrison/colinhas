@@ -6,7 +6,7 @@ import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { LoadingIcon } from "../icons/LoadingIcon";
 import { SyncIcon } from "../icons/SyncIcon";
-import { black, textGray } from "../theme/colors";
+import { borderGray, textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
 import { createUrl, sheetUrl } from "../urls";
 
@@ -83,7 +83,7 @@ export const SheetList = ({ search }: { search: string }) => {
 
   return (
     <FlatList
-      style={{ borderTopWidth: 1 }}
+      style={{ borderTopWidth: 1, borderColor: borderGray }}
       contentContainerStyle={{ paddingBottom: 100 }}
       data={data}
       keyExtractor={(item) => item.id}
@@ -98,7 +98,7 @@ export const SheetList = ({ search }: { search: string }) => {
             height: itemHeight,
             flexDirection: "row",
             alignItems: "center",
-            borderColor: black,
+            borderColor: borderGray,
             borderBottomWidth: separatorHeight,
           }}
         >

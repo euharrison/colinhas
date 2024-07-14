@@ -64,31 +64,22 @@ export const Dialog = forwardRef<DialogRef, DialogProps>(
                 padding: pagePadding,
               }}
             >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+              <Text style={{ fontSize: 20, marginBottom: 20 }}>{title}</Text>
+              <Pressable
+                style={({ pressed }) => ({
+                  position: "absolute",
+                  top: 10,
+                  right: 10,
+                  borderRadius: 999,
                   alignItems: "center",
-                  marginBottom: 20,
-                }}
+                  justifyContent: "center",
+                  alignSelf: "flex-end",
+                  backgroundColor: pressed ? backgroundGray : undefined,
+                })}
+                onPress={() => setIsVisible(false)}
               >
-                <Text style={{ fontSize: 20 }}>{title}</Text>
-                <Pressable
-                  style={({ pressed }) => ({
-                    width: 30,
-                    height: 30,
-                    borderRadius: 30,
-                    borderWidth: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    alignSelf: "flex-end",
-                    backgroundColor: pressed ? backgroundGray : undefined,
-                  })}
-                  onPress={() => setIsVisible(false)}
-                >
-                  <CloseIcon />
-                </Pressable>
-              </View>
+                <CloseIcon />
+              </Pressable>
               {children}
             </ScrollView>
           </View>

@@ -1,5 +1,5 @@
 import { Pressable, PressableProps, Text } from "react-native";
-import { backgroundGray, white } from "../theme/colors";
+import { backgroundGray, borderGray, white } from "../theme/colors";
 
 export const Button = ({ children, style, ...props }: PressableProps) => {
   return (
@@ -8,6 +8,7 @@ export const Button = ({ children, style, ...props }: PressableProps) => {
       style={({ pressed }) => [
         {
           borderWidth: 1,
+          borderColor: borderGray,
           padding: 12,
           borderRadius: 8,
           alignItems: "center",
