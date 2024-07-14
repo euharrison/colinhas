@@ -1,17 +1,13 @@
-import { Platform, Pressable, Share, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { auth } from "../auth/auth";
-import { deleteSheet } from "../database/sheets";
 import { Sheet } from "../database/types";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ResetIcon } from "../icons/ResetIcon";
 import { ShareIcon } from "../icons/ShareIcon";
 import { TrashIcon } from "../icons/TrashIcon";
-import { alert } from "../services/alert";
-import { dismissAll } from "../services/navigation";
 import { backgroundGray, black, white } from "../theme/colors";
 import { dropShadow } from "../theme/shadows";
 import { headerHeight } from "../theme/sizes";
-import { shareSheetUrl } from "../urls";
 import { nonNullable } from "../utils";
 
 export const SheetMenu = ({
@@ -21,6 +17,7 @@ export const SheetMenu = ({
   isEditMode,
   setIsEditMode,
   onPressShare,
+  onPressDelete,
 }: {
   sheet: Sheet;
   isVisible: boolean;
@@ -28,6 +25,7 @@ export const SheetMenu = ({
   isEditMode: boolean;
   setIsEditMode: (value: boolean) => void;
   onPressShare: () => void;
+  onPressDelete: () => void;
 }) => {
   if (!isVisible) {
     return <></>;
@@ -37,13 +35,7 @@ export const SheetMenu = ({
     {
       label: "Compartilhar",
       icon: <ShareIcon width={16} />,
-      onPress: () => {
-        if (Platform.OS === "web") {
-          onPressShare();
-        } else {
-          Share.share({ url: shareSheetUrl(sheet) });
-        }
-      },
+      onPress: onPressShare,
     },
   ];
 
@@ -70,20 +62,7 @@ export const SheetMenu = ({
     options.push({
       label: "Apagar",
       icon: <TrashIcon width={18} />,
-      onPress: () => {
-        alert(
-          `Apagar a cola ${sheet.name}?`,
-          "Essa ação não poderá ser desfeita",
-          async () => {
-            try {
-              deleteSheet(sheet.id);
-              dismissAll();
-            } catch (error) {
-              alert(String(error));
-            }
-          },
-        );
-      },
+      onPress: onPressDelete,
     });
   }
 
