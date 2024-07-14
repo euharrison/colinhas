@@ -9,7 +9,7 @@ import { ArrowForwardIcon } from "../icons/ArrowForwardIcon";
 import { alert } from "../services/alert";
 import { textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
-import { Dialog } from "./Dialog";
+import { DialogRef } from "./Dialog";
 import { FAB } from "./FAB";
 import { NotesKeyboard } from "./NotesKeyboard";
 import { SaveSheetForm } from "./SaveSheetForm";
@@ -26,9 +26,8 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
     end: sheet?.data.length ?? 0,
   });
 
-  const [saveModalVisible, setSaveModalVisible] = useState(false);
-
   const inputRef = useRef<TextInput>(null);
+  const saveDialogRef = useRef<DialogRef>(null);
 
   const onPressNote = (note: string) => {
     let { start, end } = selection;
@@ -97,7 +96,7 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
             if (!value) {
               alert("Escreva sua cola antes de salvar");
             } else {
-              setSaveModalVisible(true);
+              saveDialogRef.current?.open();
             }
           }}
         >
@@ -109,21 +108,16 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
         onChangeKey={onChangeKey}
         onPressNote={onPressNote}
       />
-      <Dialog
-        title="Salvar"
-        visible={saveModalVisible}
-        onRequestClose={() => setSaveModalVisible(false)}
-      >
-        <SaveSheetForm
-          id={sheet?.id}
-          defaultValues={{
-            name: sheet?.name ?? "",
-            data: value,
-            instrument: settings.instrument!, // TODO
-            key,
-          }}
-        />
-      </Dialog>
+      <SaveSheetForm
+        ref={saveDialogRef}
+        id={sheet?.id}
+        defaultValues={{
+          name: sheet?.name ?? "",
+          data: value,
+          instrument: settings.instrument!, // TODO
+          key,
+        }}
+      />
     </>
   );
 };
