@@ -20,14 +20,14 @@ export const SheetMenu = ({
   setIsVisible,
   isEditMode,
   setIsEditMode,
-  setIsShareVisible,
+  onPressShare,
 }: {
   sheet: Sheet;
   isVisible: boolean;
   setIsVisible: (value: boolean) => void;
   isEditMode: boolean;
   setIsEditMode: (value: boolean) => void;
-  setIsShareVisible: (value: boolean) => void;
+  onPressShare: () => void;
 }) => {
   if (!isVisible) {
     return <></>;
@@ -39,7 +39,7 @@ export const SheetMenu = ({
       icon: <ShareIcon width={16} />,
       onPress: () => {
         if (Platform.OS === "web") {
-          setIsShareVisible(true);
+          onPressShare();
         } else {
           Share.share({ url: shareSheetUrl(sheet) });
         }
