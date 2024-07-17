@@ -17,7 +17,18 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
         Você poderá trocar depois se preferir.
       </Text>
       <View style={{ marginTop: 12, gap: 8 }}>
-        {(["Sax", "Trompete", "Trombone", "Tuba"] as const).map((item) => (
+        {(
+          [
+            "Flauta",
+            "Clarinete",
+            "Sax Soprano",
+            "Sax Alto",
+            "Sax Tenor",
+            "Trompete",
+            "Trombone",
+            "Tuba",
+          ] as const
+        ).map((item) => (
           <Pressable
             key={item}
             style={({ pressed }) => ({

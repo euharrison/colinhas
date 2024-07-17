@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { View } from "react-native";
+import { ScrollView } from "react-native";
 import { useLocalSettings } from "../hooks/useLocalSettings";
 import { InstrumentSelector } from "./InstrumentSelector";
 
@@ -8,9 +8,9 @@ export const OnboardingGate = ({ children }: { children: ReactNode }) => {
 
   if (!settings.instrument) {
     return (
-      <View style={{ flex: 1, padding: 20, justifyContent: "center" }}>
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
         <InstrumentSelector />
-      </View>
+      </ScrollView>
     );
   }
 
