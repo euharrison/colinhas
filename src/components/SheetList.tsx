@@ -1,6 +1,7 @@
 import { Link } from "expo-router";
 import { useEffect, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
+import { auth } from "../auth/auth";
 import { observeSheetCollection } from "../database/sheets";
 import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
@@ -13,7 +14,13 @@ import { createUrl, sheetUrl } from "../urls";
 const itemHeight = 80;
 const separatorHeight = 1;
 
-export const SheetList = ({ search }: { search: string }) => {
+export const SheetList = ({
+  search,
+  filterMyOwn,
+}: {
+  search: string;
+  filterMyOwn: boolean;
+}) => {
   const formatSheet = useFormatSheet();
   const [sheetCollection, setSheetCollection] = useState<Sheet[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,8 +44,12 @@ export const SheetList = ({ search }: { search: string }) => {
   }
 
   const data = (() => {
+    const filteredData = filterMyOwn
+      ? sheetCollection.filter((i) => i.userId === auth.currentUser?.uid)
+      : sheetCollection;
+
     if (!search) {
-      return sheetCollection.sort((a, b) => b.createdAt - a.createdAt);
+      return filteredData.sort((a, b) => b.createdAt - a.createdAt);
     }
 
     const startsWithRegex = new RegExp(`^${search}`, "i");
@@ -56,7 +67,7 @@ export const SheetList = ({ search }: { search: string }) => {
       computeValue(item.instrument, anyWordRegex, 2) +
       computeValue(item.key, anyWordRegex, 1);
 
-    return sheetCollection
+    return filteredData
       .map((item) => ({ ...item, score: computeScore(item) }))
       .filter((item) => item.score > 0)
       .sort((a, b) => b.score - a.score || b.createdAt - a.createdAt);
@@ -71,10 +82,10 @@ export const SheetList = ({ search }: { search: string }) => {
           alignItems: "center",
         }}
       >
-        <Text style={{ fontSize: 18 }}>Nenhum item encontrado 🥲</Text>
+        <Text style={{ fontSize: 18 }}>Nenhuma cola encontrada 🥲</Text>
         <Link href={createUrl} style={{ marginTop: 20 }}>
           <Text style={{ fontSize: 16, textDecorationLine: "underline" }}>
-            Criar nova cola
+            Escrever nova cola
           </Text>
         </Link>
       </View>
