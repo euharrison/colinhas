@@ -3,16 +3,16 @@ import { AccidentalInput } from "../components/AccidentalInput";
 import { Sheet } from "../database/types";
 import { useFormatKey } from "../hooks/useFormatKey";
 import { useFormatSheet } from "../hooks/useFormatSheet";
+import { useLocalSettings } from "../hooks/useLocalSettings";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
 import { textGray } from "../theme/colors";
-import { useLocalSettings } from "../hooks/useLocalSettings";
 
 export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
   const { settings } = useLocalSettings();
   const formatSheet = useFormatSheet();
   const formatKey = useFormatKey();
 
-  const isForMyInstrument = sheet.instrument === settings.instrument;
+  const isDifferentKey = formatKey(sheet) !== sheet.key;
 
   return (
     <ScrollView
@@ -31,7 +31,7 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
           />
         </View>
 
-        {!isForMyInstrument && (
+        {isDifferentKey && (
           <View>
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
