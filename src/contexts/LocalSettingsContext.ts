@@ -4,7 +4,6 @@ import { Instrument } from "../database/types";
 export type LocalSettings = {
   env?: "prod" | "dev";
   instrument?: Instrument;
-  accidental?: "sharp" | "flat";
 };
 
 export const LocalSettingsContext = createContext<{

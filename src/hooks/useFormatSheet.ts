@@ -1,5 +1,7 @@
 import { Instrument, Sheet } from "../database/types";
 import { transpose } from "../services/transpose";
+import { getAccidental } from "../services/transposeKey";
+import { useFormatKey } from "./useFormatKey";
 import { useLocalSettings } from "./useLocalSettings";
 
 const getInstrumentOffset = (instrument?: Instrument): number =>
@@ -17,12 +19,17 @@ const getInstrumentOffset = (instrument?: Instrument): number =>
     : 0;
 
 export const useFormatSheet = () => {
+  const formatKey = useFormatKey();
   const { settings } = useLocalSettings();
   const myOffset = getInstrumentOffset(settings.instrument);
 
   return (sheet: Sheet) => {
     const sheetOffset = getInstrumentOffset(sheet.instrument);
     const offset = -sheetOffset + myOffset;
-    return transpose(sheet.data, offset, settings.accidental ?? "sharp");
+
+    const key = formatKey(sheet);
+    const accidental = getAccidental(key);
+
+    return transpose(sheet.data, offset, accidental);
   };
 };
