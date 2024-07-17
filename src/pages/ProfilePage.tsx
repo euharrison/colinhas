@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { logout } from "../auth/logout";
 import { AdminSettings } from "../components/AdminSettings";
@@ -61,6 +62,18 @@ export const ProfilePage = () => {
             <Text>Entrar com Google</Text>
           </Pressable>
         )}
+
+        <View>
+          <Text style={{ fontWeight: "700" }}>Dúvidas ou sugestões?</Text>
+          <Text>
+            Envie um email para:{" "}
+            <Link href="mailto:contato@colinhas.com" target="_blank">
+              <Text style={{ textDecorationLine: "underline" }} selectable>
+                contato@colinhas.com
+              </Text>
+            </Link>
+          </Text>
+        </View>
 
         <AdminSettings />
       </ScrollView>
