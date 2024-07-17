@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Platform, Pressable, Share } from "react-native";
 import { DeleteSheetDialog } from "../components/DeleteSheetDialog";
 import { DialogRef } from "../components/Dialog";
+import { DiscardDialog } from "../components/DiscardDialog";
 import { EditSheet } from "../components/EditSheet";
 import { Header } from "../components/Header";
 import { KeyboardLayout } from "../components/KeyboardLayout";
@@ -25,6 +26,7 @@ export const SheetPage = () => {
   const [sheet, setSheet] = useState<Sheet | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
 
+  const discardDialogRef = useRef<DialogRef>(null);
   const shareDialogRef = useRef<DialogRef>(null);
   const deleteDialogRef = useRef<DialogRef>(null);
 
@@ -51,7 +53,12 @@ export const SheetPage = () => {
 
   return (
     <KeyboardLayout>
-      <Header title={sheet.name}>
+      <Header
+        title={sheet.name}
+        onPressBack={
+          isEditMode ? () => discardDialogRef.current?.open() : undefined
+        }
+      >
         <Pressable
           style={{
             height: headerHeight,
@@ -83,6 +90,10 @@ export const SheetPage = () => {
         onPressDelete={() => deleteDialogRef.current?.open()}
       />
 
+      <DiscardDialog
+        ref={discardDialogRef}
+        onConfirm={() => setIsEditMode(false)}
+      />
       <ShareDialog ref={shareDialogRef} sheet={sheet} />
       <DeleteSheetDialog ref={deleteDialogRef} sheet={sheet} />
     </KeyboardLayout>
