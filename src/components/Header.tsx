@@ -8,9 +8,11 @@ import { headerHeight, pagePadding } from "../theme/sizes";
 export const Header = ({
   title,
   children,
+  onPressBack,
 }: {
   title?: string;
   children?: ReactNode;
+  onPressBack?: () => void;
 }) => {
   return (
     <SafeAreaView>
@@ -35,7 +37,11 @@ export const Header = ({
             marginLeft: -6,
           }}
           onPress={() => {
-            goBack();
+            if (onPressBack) {
+              onPressBack();
+            } else {
+              goBack();
+            }
           }}
         >
           <ArrowBackIcon />
