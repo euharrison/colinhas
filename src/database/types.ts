@@ -1,4 +1,12 @@
-export type Instrument = "Sax" | "Trompete" | "Trombone" | "Tuba";
+export type Instrument =
+  | "Flauta"
+  | "Clarinete"
+  | "Sax Soprano"
+  | "Sax Alto"
+  | "Sax Tenor"
+  | "Trompete"
+  | "Trombone"
+  | "Tuba";
 
 export type Sheet = {
   id: string;

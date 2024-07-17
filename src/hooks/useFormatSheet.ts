@@ -5,7 +5,11 @@ import { useLocalSettings } from "./useLocalSettings";
 const getInstrumentOffset = (instrument?: Instrument): number =>
   instrument
     ? {
-        Sax: -3,
+        Flauta: 0,
+        Clarinete: +2,
+        "Sax Soprano": +2,
+        "Sax Alto": -3,
+        "Sax Tenor": +2,
         Trompete: +2,
         Trombone: 0,
         Tuba: 0,
