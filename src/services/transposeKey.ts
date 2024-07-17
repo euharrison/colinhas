@@ -18,6 +18,11 @@ const orderedKeys = [
   Key["Do#"],
 ];
 
+export const getAccidental = (key: string): "sharp" | "flat" => {
+  const index = orderedKeys.findIndex((v) => v === key);
+  return index > 6 ? "sharp" : "flat"; // 6 === Key.Fa
+};
+
 export const transposeKey = (key: string, offset: number) => {
   const index = orderedKeys.findIndex((v) => v === key);
   return orderedKeys[index + offset];

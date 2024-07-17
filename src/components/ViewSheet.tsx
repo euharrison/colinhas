@@ -1,5 +1,4 @@
 import { ScrollView, Text, View } from "react-native";
-import { AccidentalInput } from "../components/AccidentalInput";
 import { Sheet } from "../database/types";
 import { useFormatKey } from "../hooks/useFormatKey";
 import { useFormatSheet } from "../hooks/useFormatSheet";
@@ -46,7 +45,6 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
                 fill={textGray}
               />
             </View>
-            <AccidentalInput />
           </View>
         )}
 

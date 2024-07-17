@@ -44,11 +44,6 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
             })}
             onPress={() => {
               updateSettings({ instrument: item });
-              if (item === "Trombone" || item === "Tuba") {
-                updateSettings({ accidental: "flat" });
-              } else {
-                updateSettings({ accidental: "sharp" });
-              }
               onChange?.();
             }}
           >
