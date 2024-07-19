@@ -1,48 +1,92 @@
-import { Platform } from "react-native";
-import { Key } from "../config";
-import { borderGray } from "../theme/colors";
-import { nonNullable } from "../utils";
+import { ReactNode, useRef } from "react";
+import { Pressable, Text, View } from "react-native";
+import { Key, KeySignature, MajorKey, MinorKey } from "../database/types";
+import { backgroundGray, borderGray, white } from "../theme/colors";
+import { Dialog, DialogRef } from "./Dialog";
+
+export const keySignatureMap: [KeySignature, MajorKey, MinorKey][] = [
+  ["♭♭♭♭♭♭♭", "Do♭ Maior", "La♭ menor"],
+  ["♭♭♭♭♭♭", "Sol♭ Maior", "Mi♭ menor"],
+  ["♭♭♭♭♭", "Re♭ Maior", "Si♭ menor"],
+  ["♭♭♭♭", "La♭ Maior", "Fa menor"],
+  ["♭♭♭", "Mi♭ Maior", "Do menor"],
+  ["♭♭", "Si♭ Maior", "Sol menor"],
+  ["♭", "Fa Maior", "Re menor"],
+  [" ", "Do Maior", "La menor"],
+  ["♯", "Sol Maior", "Mi menor"],
+  ["♯♯", "Re Maior", "Si menor"],
+  ["♯♯♯", "La Maior", "Fa♯ menor"],
+  ["♯♯♯♯", "Mi Maior", "Do♯ menor"],
+  ["♯♯♯♯♯", "Si Maior", "Sol♯ menor"],
+  ["♯♯♯♯♯♯", "Fa♯ Maior", "Re♯ menor"],
+  ["♯♯♯♯♯♯♯", "Do♯ Maior", "La♯ menor"],
+];
+
+const KeyButton = ({
+  children,
+  onPress,
+}: {
+  children: string;
+  onPress: () => void;
+}) => {
+  return (
+    <Pressable
+      style={({ pressed }) => ({
+        flex: 1,
+        justifyContent: "center",
+        height: 32,
+        paddingHorizontal: 8,
+        backgroundColor: pressed ? backgroundGray : white,
+      })}
+      onPress={onPress}
+    >
+      <Text style={{ fontSize: 14 }}>{children}</Text>
+    </Pressable>
+  );
+};
 
 export const KeySelector = ({
-  value,
+  children,
   onChange,
 }: {
-  value: string;
-  onChange: (value: string) => void;
+  children: ReactNode;
+  onChange: (value: Key) => void;
 }) => {
-  // TODO native platform
-  if (Platform.OS !== "web") {
-    return null;
-  }
+  const dialogRef = useRef<DialogRef>(null);
+
+  const onPress = (value: Key) => {
+    onChange(value);
+    dialogRef.current?.close();
+  };
+
   return (
-    <select
-      style={{ padding: 8, borderRadius: 8, borderColor: borderGray }}
-      value={value}
-      onChange={(e) => onChange(e.currentTarget.value)}
-    >
-      {[
-        { value: Key.Dob, label: "Do♭ - ♭♭♭♭♭♭♭" },
-        { value: Key.Solb, label: "Sol♭ - ♭♭♭♭♭♭" },
-        { value: Key.Reb, label: "Re♭ - ♭♭♭♭♭" },
-        { value: Key.Lab, label: "La♭ - ♭♭♭♭" },
-        { value: Key.Mib, label: "Mi♭ - ♭♭♭" },
-        { value: Key.Sib, label: "Si♭ - ♭♭" },
-        { value: Key.Fa, label: "Fa - ♭" },
-        { value: Key.Do, label: "Do" },
-        { value: Key.Sol, label: "Sol - ♯" },
-        { value: Key.Re, label: "Re - ♯♯" },
-        { value: Key.La, label: "La - ♯♯♯" },
-        { value: Key.Mi, label: "Mi - ♯♯♯♯" },
-        { value: Key.Si, label: "Si - ♯♯♯♯♯" },
-        { value: Key["Fa#"], label: "Fa♯ - ♯♯♯♯♯♯" },
-        { value: Key["Do#"], label: "Do♯ - ♯♯♯♯♯♯♯" },
-      ]
-        .filter(nonNullable)
-        .map(({ value, label }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-    </select>
+    <>
+      <Pressable
+        onPress={() => {
+          dialogRef.current?.open();
+        }}
+      >
+        {children}
+      </Pressable>
+      <Dialog ref={dialogRef} title="Tom">
+        <View>
+          {keySignatureMap.map(([signature, major, minor]) => (
+            <View
+              key={Math.random()}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                borderBottomWidth: 1,
+                borderColor: borderGray,
+              }}
+            >
+              <KeyButton onPress={() => onPress(major)}>{signature}</KeyButton>
+              <KeyButton onPress={() => onPress(major)}>{major}</KeyButton>
+              <KeyButton onPress={() => onPress(minor)}>{minor}</KeyButton>
+            </View>
+          ))}
+        </View>
+      </Dialog>
+    </>
   );
 };

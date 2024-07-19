@@ -1,6 +1,6 @@
 import { Link, router } from "expo-router";
 import { forwardRef, useState } from "react";
-import { Platform, Text, TextInput, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 import { createSheet, editSheet } from "../database/sheets";
 import { Sheet } from "../database/types";
 import { alert } from "../services/alert";
@@ -39,12 +39,21 @@ const SaveSheetForm = ({ id, defaultValues }: Props) => {
           onChangeText={setName}
         />
       </View>
-      {Platform.OS === "web" && (
-        <View>
-          <Text>Tom:</Text>
-          <KeySelector value={key} onChange={(v) => setKey(v)} />
-        </View>
-      )}
+      <View>
+        <Text>Tom:</Text>
+        <KeySelector onChange={(v) => setKey(v)}>
+          <Text
+            style={{
+              padding: 8,
+              borderWidth: 1,
+              borderColor: borderGray,
+              borderRadius: 8,
+            }}
+          >
+            <Text>{key}</Text>
+          </Text>
+        </KeySelector>
+      </View>
       <Disclaimer>
         Todas as colas são públicas e visíveis por todos. Não viole os{" "}
         <Link href={termsUrl} target="_blank">

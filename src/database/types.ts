@@ -8,12 +8,65 @@ export type Instrument =
   | "Trombone"
   | "Tuba";
 
+export type KeySignature =
+  | "♭♭♭♭♭♭♭"
+  | "♭♭♭♭♭♭"
+  | "♭♭♭♭♭"
+  | "♭♭♭♭"
+  | "♭♭♭"
+  | "♭♭"
+  | "♭"
+  | " "
+  | "♯"
+  | "♯♯"
+  | "♯♯♯"
+  | "♯♯♯♯"
+  | "♯♯♯♯♯"
+  | "♯♯♯♯♯♯"
+  | "♯♯♯♯♯♯♯";
+
+export type MajorKey =
+  | "Do♭ Maior"
+  | "Sol♭ Maior"
+  | "Re♭ Maior"
+  | "La♭ Maior"
+  | "Mi♭ Maior"
+  | "Si♭ Maior"
+  | "Fa Maior"
+  | "Do Maior"
+  | "Sol Maior"
+  | "Re Maior"
+  | "La Maior"
+  | "Mi Maior"
+  | "Si Maior"
+  | "Fa♯ Maior"
+  | "Do♯ Maior";
+
+export type MinorKey =
+  | "La♭ menor"
+  | "Mi♭ menor"
+  | "Si♭ menor"
+  | "Fa menor"
+  | "Do menor"
+  | "Sol menor"
+  | "Re menor"
+  | "La menor"
+  | "Mi menor"
+  | "Si menor"
+  | "Fa♯ menor"
+  | "Do♯ menor"
+  | "Sol♯ menor"
+  | "Re♯ menor"
+  | "La♯ menor";
+
+export type Key = MajorKey | MinorKey;
+
 export type Sheet = {
   id: string;
   name: string;
   data: string;
   instrument: Instrument;
-  key: string;
+  key: Key;
   userId: string;
   updatedAt: number;
   createdAt: number;

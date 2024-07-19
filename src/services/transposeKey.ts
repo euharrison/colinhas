@@ -1,29 +1,57 @@
-import { Key } from "../config";
+import { Key, MajorKey, MinorKey } from "../database/types";
 
-const orderedKeys = [
-  Key.Dob,
-  Key.Solb,
-  Key.Reb,
-  Key.Lab,
-  Key.Mib,
-  Key.Sib,
-  Key.Fa,
-  Key.Do,
-  Key.Sol,
-  Key.Re,
-  Key.La,
-  Key.Mi,
-  Key.Si,
-  Key["Fa#"],
-  Key["Do#"],
+const majorArray: MajorKey[] = [
+  "Do♭ Maior",
+  "Sol♭ Maior",
+  "Re♭ Maior",
+  "La♭ Maior",
+  "Mi♭ Maior",
+  "Si♭ Maior",
+  "Fa Maior",
+  "Do Maior",
+  "Sol Maior",
+  "Re Maior",
+  "La Maior",
+  "Mi Maior",
+  "Si Maior",
+  "Fa♯ Maior",
+  "Do♯ Maior",
 ];
 
-export const getAccidental = (key: string): "sharp" | "flat" => {
-  const index = orderedKeys.findIndex((v) => v === key);
-  return index > 6 ? "sharp" : "flat"; // 6 === Key.Fa
+const minorArray: MinorKey[] = [
+  "La♭ menor",
+  "Mi♭ menor",
+  "Si♭ menor",
+  "Fa menor",
+  "Do menor",
+  "Sol menor",
+  "Re menor",
+  "La menor",
+  "Mi menor",
+  "Si menor",
+  "Fa♯ menor",
+  "Do♯ menor",
+  "Sol♯ menor",
+  "Re♯ menor",
+  "La♯ menor",
+];
+
+const isMinorKey = (key: Key): key is MinorKey => {
+  return key.includes("menor");
 };
 
-export const transposeKey = (key: string, offset: number) => {
-  const index = orderedKeys.findIndex((v) => v === key);
-  return orderedKeys[index + offset];
+const getArray = (key: Key) => {
+  return isMinorKey(key) ? minorArray : majorArray;
+};
+
+export const getAccidental = (key: Key): "sharp" | "flat" => {
+  const array = getArray(key);
+  const index = array.findIndex((v) => v === key);
+  return index > 6 ? "sharp" : "flat"; // index 6 = Fa Maior
+};
+
+export const transposeKey = (key: Key, offset: number): Key => {
+  const array = getArray(key);
+  const index = array.findIndex((v) => v === key);
+  return array[index + offset] ?? key;
 };
