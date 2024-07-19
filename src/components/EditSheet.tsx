@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { TextInput, View } from "react-native";
-import { Key } from "../config";
-import { Sheet } from "../database/types";
+import { Key, Sheet } from "../database/types";
 import { useFormatKey } from "../hooks/useFormatKey";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useLocalSettings } from "../hooks/useLocalSettings";
@@ -19,7 +18,9 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
   const formatSheet = useFormatSheet();
   const formatKey = useFormatKey();
 
-  const [key, setKey] = useState(sheet?.key ? formatKey(sheet) : Key.Do);
+  const [key, setKey] = useState<Key>(
+    sheet?.key ? formatKey(sheet) : "Do Maior",
+  );
   const [value, setValue] = useState(sheet?.data ? formatSheet(sheet) : "");
   const [selection, setSelection] = useState({
     start: sheet?.data.length ?? 0,
@@ -58,7 +59,7 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
     inputRef.current?.focus();
   };
 
-  const onChangeKey = (value: string) => {
+  const onChangeKey = (value: Key) => {
     setKey(value);
     inputRef.current?.focus();
   };
