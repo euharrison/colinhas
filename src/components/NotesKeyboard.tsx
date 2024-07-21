@@ -1,6 +1,14 @@
-import { Pressable, Text, View } from "react-native";
+import { useMemo, useRef } from "react";
+import {
+  Pressable,
+  ScrollView,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { Key, KeySignature } from "../database/types";
 import { backgroundGray, keyboardBackground, white } from "../theme/colors";
+import { pagePadding } from "../theme/sizes";
 import { KeySelector, keySignatureMap } from "./KeySelector";
 
 const keyboardMap: Record<KeySignature, string[]> = {
@@ -27,45 +35,6 @@ const getKeySignature = (key: Key): KeySignature | undefined => {
   )?.[0];
 };
 
-const KeyboardKey = ({
-  value,
-  onPress,
-}: {
-  value: string;
-  onPress: (value: string) => void;
-}) => {
-  return (
-    <Pressable
-      onPress={() => onPress(value)}
-      style={({ pressed }) => ({
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 4,
-        backgroundColor: pressed ? backgroundGray : white,
-      })}
-    >
-      <Text selectable={false}>{value}</Text>
-    </Pressable>
-  );
-};
-
-const NotesRow = ({
-  notes,
-  onPress,
-}: {
-  notes: string[];
-  onPress: (value: string) => void;
-}) => {
-  return (
-    <View style={{ flexDirection: "row", gap: 2, height: 32 }}>
-      {notes.map((key) => (
-        <KeyboardKey key={key} value={key} onPress={() => onPress(key)} />
-      ))}
-    </View>
-  );
-};
-
 export const NotesKeyboard = ({
   keyValue,
   onChangeKey,
@@ -75,22 +44,34 @@ export const NotesKeyboard = ({
   onChangeKey: (value: Key) => void;
   onPressNote: (value: string) => void;
 }) => {
-  const keySignature = getKeySignature(keyValue);
-  const keys = keySignature !== undefined ? keyboardMap[keySignature] : [];
+  const { width } = useWindowDimensions();
+  const scrollRef = useRef<ScrollView>(null);
+
+  const notes = useMemo(() => {
+    const keySignature = getKeySignature(keyValue);
+    const scale = keySignature !== undefined ? keyboardMap[keySignature] : [];
+    return [
+      ...scale,
+      ...scale.map((s) => s[0].toUpperCase() + s.slice(1)),
+      ...scale.map((s) => s.toUpperCase()),
+    ];
+  }, [keyValue]);
 
   return (
     <View
       style={{
-        padding: 8,
+        paddingVertical: 8,
         gap: 2,
         backgroundColor: keyboardBackground,
       }}
     >
       <View
         style={{
+          paddingHorizontal: pagePadding,
           flexDirection: "row",
           justifyContent: "space-between",
           gap: 2,
+          height: 32,
         }}
       >
         <KeySelector onChange={onChangeKey}>
@@ -98,7 +79,7 @@ export const NotesKeyboard = ({
             style={{
               alignItems: "center",
               justifyContent: "center",
-              height: 32,
+              height: "100%",
               paddingHorizontal: 20,
               borderRadius: 999,
               backgroundColor: white,
@@ -107,19 +88,55 @@ export const NotesKeyboard = ({
             <Text>{keyValue}</Text>
           </View>
         </KeySelector>
-        <View style={{ width: 160 }}>
-          <NotesRow notes={["♯", "♭"]} onPress={onPressNote} />
+        <View style={{ flexDirection: "row", gap: 2 }}>
+          {["♯", "♭"].map((key) => (
+            <Pressable
+              key={key}
+              onPress={() => onPressNote(key)}
+              style={({ pressed }) => ({
+                height: "100%",
+                width: 50,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 4,
+                backgroundColor: pressed ? backgroundGray : white,
+              })}
+            >
+              <Text selectable={false}>{key}</Text>
+            </Pressable>
+          ))}
         </View>
       </View>
-      <NotesRow
-        notes={keys.map((s) => s.toUpperCase())}
-        onPress={onPressNote}
-      />
-      <NotesRow
-        notes={keys.map((s) => s[0].toUpperCase() + s.slice(1))}
-        onPress={onPressNote}
-      />
-      <NotesRow notes={keys} onPress={onPressNote} />
+      <ScrollView
+        ref={scrollRef}
+        onContentSizeChange={(w) => {
+          scrollRef.current?.scrollTo({ x: (w - width) / 2, animated: false });
+        }}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          flexDirection: "row",
+          gap: 2,
+          paddingHorizontal: pagePadding,
+        }}
+      >
+        {notes.map((key) => (
+          <Pressable
+            key={key}
+            onPress={() => onPressNote(key)}
+            style={({ pressed }) => ({
+              height: 44,
+              width: width / 8 - 3,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 4,
+              backgroundColor: pressed ? backgroundGray : white,
+            })}
+          >
+            <Text selectable={false}>{key}</Text>
+          </Pressable>
+        ))}
+      </ScrollView>
     </View>
   );
 };
