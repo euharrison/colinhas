@@ -14,7 +14,7 @@ export const OgTags = ({
       <title>{fullTitle}</title>
       <meta property="og:title" content={fullTitle} />
       <meta
-        name="description"
+        name="og:description"
         content={
           description ??
           "Leia e escreva colas de músicas para tocar no carnaval de rua"
