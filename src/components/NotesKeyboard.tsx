@@ -57,6 +57,8 @@ export const NotesKeyboard = ({
     ];
   }, [keyValue]);
 
+  const keyWidth = width / 8 - 3;
+
   return (
     <View
       style={{
@@ -89,13 +91,13 @@ export const NotesKeyboard = ({
           </View>
         </KeySelector>
         <View style={{ flexDirection: "row", gap: 2 }}>
-          {["♯", "♭"].map((key) => (
+          {["/", "_", "♯", "♭"].map((key) => (
             <Pressable
               key={key}
               onPress={() => onPressNote(key)}
               style={({ pressed }) => ({
                 height: "100%",
-                width: 50,
+                width: keyWidth,
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: 4,
@@ -126,7 +128,7 @@ export const NotesKeyboard = ({
             onPress={() => onPressNote(key)}
             style={({ pressed }) => ({
               height: 44,
-              width: width / 8 - 3,
+              width: keyWidth,
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 4,
