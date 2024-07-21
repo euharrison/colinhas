@@ -8,6 +8,7 @@ import { EditSheet } from "../components/EditSheet";
 import { Header } from "../components/Header";
 import { KeyboardLayout } from "../components/KeyboardLayout";
 import { LoadingPage } from "../components/LoadingPage";
+import { OgTags } from "../components/OgTags";
 import { ShareDialog } from "../components/ShareDialog";
 import { SheetMenu } from "../components/SheetMenu";
 import { ViewSheet } from "../components/ViewSheet";
@@ -53,6 +54,7 @@ export const SheetPage = () => {
 
   return (
     <KeyboardLayout>
+      <OgTags title={sheet.name} />
       <Header
         title={sheet.name}
         onPressBack={
