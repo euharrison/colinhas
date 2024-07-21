@@ -36,10 +36,10 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
     const hasSelectionRange = end - start !== 0;
     const isCursorAtTheEnd = !hasSelectionRange && end >= value.trim().length;
     const isPreviousCharAnEmptyString = value[start - 1] === " ";
-    const isAddingAnAccidental = note === "♭" || note === "♯";
+    const isAddingSpecialChar = ["/", "_", "♭", "♯"].includes(note);
 
     const shouldRemovePreviousChar =
-      isCursorAtTheEnd && isPreviousCharAnEmptyString && isAddingAnAccidental;
+      isCursorAtTheEnd && isPreviousCharAnEmptyString && isAddingSpecialChar;
     if (shouldRemovePreviousChar) {
       start--;
     }
