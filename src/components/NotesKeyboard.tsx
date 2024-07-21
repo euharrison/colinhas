@@ -58,18 +58,19 @@ export const NotesKeyboard = ({
   }, [keyValue]);
 
   const keyWidth = width / 8 - 3;
+  const margin = 8;
 
   return (
     <View
       style={{
-        paddingVertical: 8,
+        paddingVertical: margin,
         gap: 2,
         backgroundColor: keyboardBackground,
       }}
     >
       <View
         style={{
-          paddingHorizontal: pagePadding,
+          paddingHorizontal: margin,
           flexDirection: "row",
           justifyContent: "space-between",
           gap: 2,
@@ -82,7 +83,7 @@ export const NotesKeyboard = ({
               alignItems: "center",
               justifyContent: "center",
               height: "100%",
-              paddingHorizontal: 20,
+              paddingHorizontal: 16,
               borderRadius: 999,
               backgroundColor: white,
             }}
@@ -117,9 +118,9 @@ export const NotesKeyboard = ({
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
+          paddingHorizontal: margin,
           flexDirection: "row",
           gap: 2,
-          paddingHorizontal: pagePadding,
         }}
       >
         {notes.map((key) => (
