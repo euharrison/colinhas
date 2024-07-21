@@ -1,4 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
+import Head from "expo-router/head";
 import { useEffect, useRef, useState } from "react";
 import { Platform, Pressable, Share } from "react-native";
 import { DeleteSheetDialog } from "../components/DeleteSheetDialog";
@@ -53,6 +54,9 @@ export const SheetPage = () => {
 
   return (
     <KeyboardLayout>
+      <Head>
+        <title>{sheet.name} | Colinhas</title>
+      </Head>
       <Header
         title={sheet.name}
         onPressBack={
