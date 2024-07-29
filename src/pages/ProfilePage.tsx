@@ -8,6 +8,7 @@ import { useLoginWithGoogle } from "../hooks/useLoginWithGoogle";
 import { useUser } from "../hooks/useUser";
 import { alert } from "../services/alert";
 import { goBack } from "../services/navigation";
+import { supportEmail } from "../urls";
 
 export const ProfilePage = () => {
   const user = useUser();
@@ -67,9 +68,9 @@ export const ProfilePage = () => {
           <Text style={{ fontWeight: "700" }}>Dúvidas ou sugestões?</Text>
           <Text>
             Envie um email para:{" "}
-            <Link href="mailto:contato@colinhas.com" target="_blank">
+            <Link href={`mailto:${supportEmail}`} target="_blank">
               <Text style={{ textDecorationLine: "underline" }} selectable>
-                contato@colinhas.com
+                {supportEmail}
               </Text>
             </Link>
           </Text>
