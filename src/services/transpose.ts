@@ -101,7 +101,7 @@ export const transpose = (
     let counter = maxNoteLength;
     output = "";
 
-    // se os caracteres forem menor que o mínimo de duas notas
+    // se os caracteres forem menores que o mínimo de duas notas
     // é uma palavra comum, possivelmente "2x", então retorna antes
     if (charSequence.length < minNoteLength * 2) {
       return match;

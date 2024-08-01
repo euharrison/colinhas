@@ -8,8 +8,9 @@ import {
 } from "react-native";
 import { Key, KeySignature } from "../database/types";
 import { backgroundGray, keyboardBackground, white } from "../theme/colors";
-import { pagePadding } from "../theme/sizes";
 import { KeySelector, keySignatureMap } from "./KeySelector";
+
+export const specialChars = ['"', "/", "_", "♯", "♭"];
 
 const keyboardMap: Record<KeySignature, string[]> = {
   ["♭♭♭♭♭♭♭"]: ["do♭", "re♭", "mi♭", "fa♭", "sol♭", "la♭", "si♭"],
@@ -92,7 +93,7 @@ export const NotesKeyboard = ({
           </View>
         </KeySelector>
         <View style={{ flexDirection: "row", gap: 2 }}>
-          {["/", "_", "♯", "♭"].map((key) => (
+          {specialChars.map((key) => (
             <Pressable
               key={key}
               onPress={() => onPressNote(key)}
