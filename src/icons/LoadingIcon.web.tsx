@@ -1,10 +1,13 @@
-export const LoadingIcon = () => {
+import { SvgProps } from "react-native-svg";
+
+export const LoadingIcon = (props: Pick<SvgProps, "width" | "height">) => {
   return (
     <svg
       width={36}
       height={36}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 200 200"
+      {...props}
     >
       <circle r="22" cx="40" cy="65">
         <animate

@@ -76,8 +76,8 @@ export const HomePage = () => {
           style={{ paddingVertical: 12, width: "100%" }}
           autoCapitalize="none"
           autoCorrect={false}
-          placeholderTextColor={textGray}
           placeholder="Busca"
+          placeholderTextColor={textGray}
           value={search}
           onChangeText={setSearch}
         />
