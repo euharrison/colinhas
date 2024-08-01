@@ -1,3 +1,4 @@
+import { AuthError } from "firebase/auth";
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { loginWithEmail } from "../auth/loginWithEmail";
@@ -64,16 +65,22 @@ export const ButtonLoginWithEmail = () => {
             backgroundColor: pressed ? backgroundGray : undefined,
           })}
           onPress={async () => {
-            // if (!email) {
-            //   alert("Digite seu email antes de continuar");
-            //   return;
-            // }
             try {
               setStep(Step.LOADING);
               await loginWithEmail(email);
               setStep(Step.COMPLETE);
             } catch (error) {
-              alert(String(error));
+              switch ((error as AuthError).code) {
+                case "auth/missing-email":
+                  alert("Digite seu email para de continuar");
+                  break;
+                case "auth/invalid-email":
+                  alert("Digite um email válido antes de continuar");
+                  break;
+                default:
+                  alert(String(error));
+                  break;
+              }
               setStep(Step.FORM);
             }
           }}
@@ -111,7 +118,7 @@ export const ButtonLoginWithEmail = () => {
         }}
       >
         <Text style={{ textAlign: "center" }}>
-          Enviamos um email com um link{"\n"} para você continuar o acesso.
+          Enviamos um email para você{"\n"}com um link para continuar o acesso.
         </Text>
       </View>
     );

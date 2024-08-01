@@ -1,16 +1,13 @@
 import { Link } from "expo-router";
 import { ReactNode } from "react";
 import { Text, View } from "react-native";
-import { useLoginWithGoogle } from "../hooks/useLoginWithGoogle";
 import { useUser } from "../hooks/useUser";
 import { privacyPolicyUrl, termsUrl } from "../urls";
-import { Button } from "./Button";
-import { ButtonLoginWithEmail } from "./ButtonLoginWithEmail";
 import { Disclaimer } from "./Disclaimer";
+import { LoginButtons } from "./LoginButtons";
 
 export const AuthGate = ({ children }: { children: ReactNode }) => {
   const user = useUser();
-  const loginWithGoogle = useLoginWithGoogle();
 
   if (user) {
     return <>{children}</>;
@@ -36,8 +33,7 @@ export const AuthGate = ({ children }: { children: ReactNode }) => {
         </Link>
         .
       </Disclaimer>
-      <Button onPress={loginWithGoogle}>Entrar com Google</Button>
-      <ButtonLoginWithEmail />
+      <LoginButtons />
     </View>
   );
 };
