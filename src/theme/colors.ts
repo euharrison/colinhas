@@ -6,4 +6,6 @@ export const borderGray = "#ccc";
 export const textGray = "#999";
 export const keyboardBackground = "#ddd";
 
+export const textRed = "#f00";
+
 export const modalOverlay = "#00000077";

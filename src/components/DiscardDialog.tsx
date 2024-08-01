@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import { Text, View } from "react-native";
 import { Button } from "./Button";
 import { Dialog, DialogRef } from "./Dialog";
+import { textRed } from "../theme/colors";
 
 type Props = {
   onConfirm: () => void;
@@ -32,21 +33,13 @@ export const DiscardDialog = forwardRef<DialogRef, Props>(
           </Button>
           <Button
             style={{ flex: 1 }}
+            textStyle={{ color: textRed }}
             onPress={() => {
               onConfirm();
               close();
             }}
           >
-            <Text
-              style={{
-                fontSize: 12,
-                fontWeight: "700",
-                textTransform: "uppercase",
-                color: "red",
-              }}
-            >
-              Descartar
-            </Text>
+            Descartar
           </Button>
         </View>
       </Dialog>
