@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { loginWithEmail } from "../auth/loginWithEmail";
 import { ArrowForwardIcon } from "../icons/ArrowForwardIcon";
+import { EmailIcon } from "../icons/EmailIcon";
 import { LoadingIcon } from "../icons/LoadingIcon";
 import { alert } from "../services/alert";
 import { backgroundGray, borderGray, textGray } from "../theme/colors";
@@ -15,14 +16,37 @@ enum Step {
   COMPLETE,
 }
 
-const height = 41;
+const height = 42;
 
 export const ButtonLoginWithEmail = () => {
   const [step, setStep] = useState(Step.BUTTON);
   const [email, setEmail] = useState("");
 
   if (step === Step.BUTTON) {
-    return <Button onPress={() => setStep(Step.FORM)}>Entrar com email</Button>;
+    return (
+      <Button
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          paddingLeft: 16,
+          gap: 12,
+          height,
+        }}
+        onPress={() => setStep(Step.FORM)}
+      >
+        <EmailIcon width={16} />
+        <Text
+          style={{
+            fontSize: 12,
+            fontWeight: "700",
+            textTransform: "uppercase",
+          }}
+        >
+          Entrar com email
+        </Text>
+      </Button>
+    );
   }
 
   if (step === Step.FORM) {

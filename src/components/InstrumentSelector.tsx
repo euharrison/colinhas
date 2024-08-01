@@ -1,7 +1,8 @@
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { useLocalSettings } from "../hooks/useLocalSettings";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
-import { backgroundGray, borderGray, textGray } from "../theme/colors";
+import { textGray } from "../theme/colors";
+import { Button } from "./Button";
 
 export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
   const { updateSettings } = useLocalSettings();
@@ -29,19 +30,16 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
             "Tuba",
           ] as const
         ).map((item) => (
-          <Pressable
+          <Button
             key={item}
-            style={({ pressed }) => ({
-              borderRadius: 4,
-              borderWidth: 1,
-              borderColor: borderGray,
-              paddingVertical: 20,
+            style={{
               flexDirection: "row",
               alignItems: "center",
+              justifyContent: "flex-start",
+              paddingVertical: 20,
               paddingLeft: 20,
               gap: 20,
-              backgroundColor: pressed ? backgroundGray : undefined,
-            })}
+            }}
             onPress={() => {
               updateSettings({ instrument: item });
               onChange?.();
@@ -49,7 +47,7 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
           >
             <InstrumentIcon instrument={item} />
             <Text style={{ fontSize: 20 }}>{item}</Text>
-          </Pressable>
+          </Button>
         ))}
       </View>
     </View>
