@@ -6,6 +6,7 @@ import { deleteSheet } from "../database/sheets";
 import { Sheet } from "../database/types";
 import { alert } from "../services/alert";
 import { dismissAll } from "../services/navigation";
+import { textRed } from "../theme/colors";
 
 type Props = {
   sheet: Sheet;
@@ -21,6 +22,7 @@ export const DeleteSheetDialog = forwardRef<DialogRef, Props>(
         <Text style={{ marginTop: 8 }}>Essa ação não poderá ser desfeita!</Text>
         <Button
           style={{ marginTop: 20 }}
+          textStyle={{ color: textRed }}
           onPress={() => {
             try {
               deleteSheet(sheet.id);

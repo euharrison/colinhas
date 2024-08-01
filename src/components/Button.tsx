@@ -1,7 +1,12 @@
-import { Pressable, PressableProps, Text } from "react-native";
+import { Pressable, PressableProps, Text, TextStyle } from "react-native";
 import { backgroundGray, borderGray, white } from "../theme/colors";
 
-export const Button = ({ children, style, ...props }: PressableProps) => {
+export const Button = ({
+  children,
+  style,
+  textStyle,
+  ...props
+}: PressableProps & { textStyle?: TextStyle }) => {
   return (
     <Pressable
       {...props}
@@ -24,6 +29,7 @@ export const Button = ({ children, style, ...props }: PressableProps) => {
             fontSize: 12,
             fontWeight: "700",
             textTransform: "uppercase",
+            ...textStyle,
           }}
         >
           {children}

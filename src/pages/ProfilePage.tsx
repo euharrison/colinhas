@@ -4,14 +4,14 @@ import { logout } from "../auth/logout";
 import { AdminSettings } from "../components/AdminSettings";
 import { Header } from "../components/Header";
 import { InstrumentSelector } from "../components/InstrumentSelector";
-import { useLoginWithGoogle } from "../hooks/useLoginWithGoogle";
+import { LoginButtons } from "../components/LoginButtons";
 import { useUser } from "../hooks/useUser";
 import { alert } from "../services/alert";
 import { goBack } from "../services/navigation";
+import { supportEmail } from "../urls";
 
 export const ProfilePage = () => {
   const user = useUser();
-  const loginWithGoogle = useLoginWithGoogle();
 
   return (
     <>
@@ -20,7 +20,7 @@ export const ProfilePage = () => {
         contentContainerStyle={{
           padding: 20,
           paddingBottom: 100,
-          gap: 40,
+          gap: 60,
         }}
       >
         <InstrumentSelector
@@ -28,6 +28,18 @@ export const ProfilePage = () => {
             goBack();
           }}
         />
+
+        <View style={{ gap: 8 }}>
+          <Text style={{ fontSize: 20 }}>Dúvidas ou sugestões?</Text>
+          <Text>
+            Envie um email para:{" "}
+            <Link href={`mailto:${supportEmail}`} target="_blank">
+              <Text style={{ textDecorationLine: "underline" }} selectable>
+                {supportEmail}
+              </Text>
+            </Link>
+          </Text>
+        </View>
 
         {user ? (
           <View>
@@ -55,25 +67,11 @@ export const ProfilePage = () => {
             </Pressable>
           </View>
         ) : (
-          <Pressable
-            style={{ alignSelf: "flex-start" }}
-            onPress={loginWithGoogle}
-          >
-            <Text>Entrar com Google</Text>
-          </Pressable>
+          <View style={{ gap: 8 }}>
+            <Text style={{ fontSize: 20 }}>Login</Text>
+            <LoginButtons />
+          </View>
         )}
-
-        <View>
-          <Text style={{ fontWeight: "700" }}>Dúvidas ou sugestões?</Text>
-          <Text>
-            Envie um email para:{" "}
-            <Link href="mailto:contato@colinhas.com" target="_blank">
-              <Text style={{ textDecorationLine: "underline" }} selectable>
-                contato@colinhas.com
-              </Text>
-            </Link>
-          </Text>
-        </View>
 
         <AdminSettings />
       </ScrollView>
