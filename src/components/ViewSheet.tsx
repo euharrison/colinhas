@@ -1,10 +1,11 @@
 import { ScrollView, Text, View } from "react-native";
+import reactStringReplace from "react-string-replace";
 import { Sheet } from "../database/types";
 import { useFormatKey } from "../hooks/useFormatKey";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useLocalSettings } from "../hooks/useLocalSettings";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
-import { textGray } from "../theme/colors";
+import { black, textGray } from "../theme/colors";
 
 export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
   const { settings } = useLocalSettings();
@@ -50,8 +51,12 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
 
         <Text style={{ color: textGray }}>Tom: {formatKey(sheet)}</Text>
       </View>
-      <Text style={{ fontSize: 20, fontWeight: "500" }}>
-        {formatSheet(sheet)}
+      <Text style={{ fontSize: 20, fontWeight: "500", color: black }}>
+        {reactStringReplace(formatSheet(sheet), /"(.*?)"/g, (match, i) => (
+          <Text key={i} style={{ fontSize: 16, color: textGray }}>
+            {match}
+          </Text>
+        ))}
       </Text>
     </ScrollView>
   );

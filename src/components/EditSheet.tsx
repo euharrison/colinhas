@@ -10,7 +10,7 @@ import { textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
 import { DialogRef } from "./Dialog";
 import { FAB } from "./FAB";
-import { NotesKeyboard } from "./NotesKeyboard";
+import { NotesKeyboard, specialChars } from "./NotesKeyboard";
 import { SaveSheetDialog } from "./SaveSheetDialog";
 
 export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
@@ -36,7 +36,7 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
     const hasSelectionRange = end - start !== 0;
     const isCursorAtTheEnd = !hasSelectionRange && end >= value.trim().length;
     const isPreviousCharAnEmptyString = value[start - 1] === " ";
-    const isAddingSpecialChar = ["/", "_", "♭", "♯"].includes(note);
+    const isAddingSpecialChar = specialChars.includes(note);
 
     const shouldRemovePreviousChar =
       isCursorAtTheEnd && isPreviousCharAnEmptyString && isAddingSpecialChar;
