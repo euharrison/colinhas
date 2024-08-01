@@ -1,11 +1,11 @@
 import { Text, View } from "react-native";
 import { useLocalSettings } from "../hooks/useLocalSettings";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
-import { textGray } from "../theme/colors";
+import { backgroundGray, textGray } from "../theme/colors";
 import { Button } from "./Button";
 
 export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
-  const { updateSettings } = useLocalSettings();
+  const { settings, updateSettings } = useLocalSettings();
 
   return (
     <View style={{ gap: 8 }}>
@@ -39,6 +39,8 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
               paddingVertical: 20,
               paddingLeft: 20,
               gap: 20,
+              backgroundColor:
+                item === settings.instrument ? backgroundGray : undefined,
             }}
             onPress={() => {
               updateSettings({ instrument: item });
