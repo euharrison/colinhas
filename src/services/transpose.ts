@@ -85,7 +85,7 @@ export const transpose = (
     return undefined;
   };
 
-  return data.replaceAll(/[a-zA-Z#♯♭]+/g, (match) => {
+  return data.replaceAll(/[\p{L}#♯♭]+/gu, (match) => {
     // tenta localizar o match com a nota, é o caso mais comum e mais rápido para a CPU
     let output = transposeNote(match);
     if (output) {
