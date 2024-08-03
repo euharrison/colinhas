@@ -12,6 +12,7 @@ const getInstrumentOffset = (instrument?: Instrument): number =>
         "Sax Tenor": +2,
         Trompete: +2,
         Trombone: 0,
+        Eufônio: 0,
         Tuba: 0,
       }[instrument]
     : 0;

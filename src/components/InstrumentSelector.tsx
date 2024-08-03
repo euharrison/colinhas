@@ -27,6 +27,7 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
             "Sax Tenor",
             "Trompete",
             "Trombone",
+            "Eufônio",
             "Tuba",
           ] as const
         ).map((item) => (

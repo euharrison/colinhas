@@ -24,6 +24,7 @@ export const InstrumentIcon = ({
       return <TrumpetIcon {...props} />;
     case "Trombone":
       return <TromboneIcon {...props} />;
+    case "Eufônio":
     case "Tuba":
       return <TubaIcon {...props} />;
     default:
