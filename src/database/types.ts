@@ -6,6 +6,7 @@ export type Instrument =
   | "Sax Tenor"
   | "Trompete"
   | "Trombone"
+  | "Eufônio"
   | "Tuba";
 
 export type KeySignature =
