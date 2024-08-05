@@ -64,6 +64,9 @@ const SaveSheetForm = ({ id, defaultValues }: Props) => {
       <Button
         onPress={async () => {
           try {
+            if (!name) {
+              throw new Error("Dê um nome para sua cola");
+            }
             const payload = {
               ...defaultValues,
               name,
