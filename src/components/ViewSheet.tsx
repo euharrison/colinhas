@@ -1,11 +1,37 @@
-import { ScrollView, Text, View } from "react-native";
+import { Link } from "expo-router";
+import { ReactNode } from "react";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import reactStringReplace from "react-string-replace";
 import { Sheet } from "../database/types";
 import { useFormatKey } from "../hooks/useFormatKey";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useLocalSettings } from "../hooks/useLocalSettings";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
-import { black, textGray } from "../theme/colors";
+import { black, blue, darkBlue, textGray } from "../theme/colors";
+
+const formatLyrics = (element: ReactNode): ReactNode[] =>
+  typeof element !== "string"
+    ? [element]
+    : reactStringReplace(element, /["|http](.*?)"/g, (match, i) => (
+        <Text key={i} style={{ fontSize: 16, color: textGray }}>
+          {match}
+        </Text>
+      ));
+
+const formatUrls = (element: ReactNode): ReactNode[] =>
+  typeof element !== "string"
+    ? [element]
+    : reactStringReplace(element, /(http.*)/g, (match, i) => (
+        <Link key={i} href={match} target="_blank" rel="noreferrer" asChild>
+          <Pressable>
+            {({ pressed }) => (
+              <Text style={{ fontSize: 14, color: pressed ? darkBlue : blue }}>
+                {match}
+              </Text>
+            )}
+          </Pressable>
+        </Link>
+      ));
 
 export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
   const { settings } = useLocalSettings();
@@ -52,11 +78,7 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
         <Text style={{ color: textGray }}>Tom: {formatKey(sheet)}</Text>
       </View>
       <Text style={{ fontSize: 20, fontWeight: "500", color: black }}>
-        {reactStringReplace(formatSheet(sheet), /"(.*?)"/g, (match, i) => (
-          <Text key={i} style={{ fontSize: 16, color: textGray }}>
-            {match}
-          </Text>
-        ))}
+        {formatLyrics(formatSheet(sheet)).map(formatUrls)}
       </Text>
     </ScrollView>
   );
