@@ -12,7 +12,6 @@ import {
 
 /*
 TODO
-- renderizar ele totalmente na horizontal
 - renderizar elementos personalizados alinhas com as notas
 */
 
@@ -27,8 +26,7 @@ export const MusicXmlPage = () => {
       const osmd = new OpenSheetMusicDisplay("osmdContainer");
       osmd.setOptions({
         backend: "svg",
-        // drawTitle: true,
-        // drawPartNames: true,
+        renderSingleHorizontalStaffline: true,
         drawingParameters: "compacttight", // don't display title, composer etc., smaller margins
       });
       osmd
@@ -69,7 +67,9 @@ export const MusicXmlPage = () => {
             </option>
           ))}
         </select>
-        <div id="osmdContainer" />
+        <ScrollView horizontal>
+          <div id="osmdContainer" />
+        </ScrollView>
       </ScrollView>
     </View>
   );
