@@ -1,26 +1,9 @@
-import { ReactNode, useRef } from "react";
-import { Pressable, Text, View } from "react-native";
-import { Key, KeySignature, MajorKey, MinorKey } from "../database/types";
+import { useRef } from "react";
+import { Pressable, PressableProps, Text, View } from "react-native";
+import { Key } from "../database/types";
 import { backgroundGray, borderGray, white } from "../theme/colors";
+import { keySignatureMap } from "../utils";
 import { Dialog, DialogRef } from "./Dialog";
-
-export const keySignatureMap: [KeySignature, MajorKey, MinorKey][] = [
-  ["♭♭♭♭♭♭♭", "Do♭ Maior", "La♭ menor"],
-  ["♭♭♭♭♭♭", "Sol♭ Maior", "Mi♭ menor"],
-  ["♭♭♭♭♭", "Re♭ Maior", "Si♭ menor"],
-  ["♭♭♭♭", "La♭ Maior", "Fa menor"],
-  ["♭♭♭", "Mi♭ Maior", "Do menor"],
-  ["♭♭", "Si♭ Maior", "Sol menor"],
-  ["♭", "Fa Maior", "Re menor"],
-  [" ", "Do Maior", "La menor"],
-  ["♯", "Sol Maior", "Mi menor"],
-  ["♯♯", "Re Maior", "Si menor"],
-  ["♯♯♯", "La Maior", "Fa♯ menor"],
-  ["♯♯♯♯", "Mi Maior", "Do♯ menor"],
-  ["♯♯♯♯♯", "Si Maior", "Sol♯ menor"],
-  ["♯♯♯♯♯♯", "Fa♯ Maior", "Re♯ menor"],
-  ["♯♯♯♯♯♯♯", "Do♯ Maior", "La♯ menor"],
-];
 
 const KeyButton = ({
   children,
@@ -46,12 +29,11 @@ const KeyButton = ({
 };
 
 export const KeySelector = ({
-  children,
   onChange,
+  ...props
 }: {
-  children: ReactNode;
   onChange: (value: Key) => void;
-}) => {
+} & PressableProps) => {
   const dialogRef = useRef<DialogRef>(null);
 
   const onPress = (value: Key) => {
@@ -62,12 +44,11 @@ export const KeySelector = ({
   return (
     <>
       <Pressable
+        {...props}
         onPress={() => {
           dialogRef.current?.open();
         }}
-      >
-        {children}
-      </Pressable>
+      />
       <Dialog ref={dialogRef} title="Tom">
         <View>
           {keySignatureMap.map(([signature, major, minor]) => (

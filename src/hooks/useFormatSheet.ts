@@ -34,3 +34,14 @@ export const useFormatSheet = () => {
     return transpose(sheet.data, offset, accidental);
   };
 };
+
+export const useFormatSheet2 = () => {
+  const formatKey = useFormatKey();
+
+  return (sheet: Sheet, offset: number) => {
+    const key = formatKey(sheet);
+    const accidental = getAccidental(key);
+
+    return transpose(sheet.data, offset, accidental);
+  };
+};
