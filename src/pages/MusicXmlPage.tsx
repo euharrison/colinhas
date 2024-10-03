@@ -125,6 +125,7 @@ function addNote({
   width = 5,
   height = 5,
   color = "red",
+  border = "1px solid black",
   text = "",
 }: {
   x: number;
@@ -132,6 +133,7 @@ function addNote({
   width?: number;
   height?: number;
   color?: string;
+  border?: string;
   text?: string;
 }) {
   const note = document.createElement("div");
@@ -142,9 +144,11 @@ function addNote({
   note.style.left = `${x}px`;
   note.style.top = `${y}px`;
   note.style.whiteSpace = "nowrap";
-  note.style.fontSize = "14px";
+  note.style.fontSize = "20px";
+  note.style.lineHeight = "20px";
+  note.style.fontFamily = "sans-serif";
   note.style.letterSpacing = "-1px";
-  note.style.border = "1px solid black";
+  note.style.border = border;
   note.innerHTML = text;
 
   const container = document.getElementById("osmdContainer");
@@ -160,6 +164,7 @@ type XmlMeasuse = {
 
 type XmlNote = {
   duration: number;
+  notations?: { articulations?: { staccato?: [""] }[] }[];
   pitch?: {
     alter?: ["-2" | "-1" | "1" | "2"];
     step: ["A" | "B" | "C" | "D" | "E" | "F" | "G"];
@@ -212,11 +217,17 @@ export const MusicXmlPage = () => {
     // renderiza uma nota
     const renderNote = (n: XmlNote) => {
       duration += n.duration * 23.25;
+
+      const staccato = n.notations?.find((i) =>
+        i.articulations?.find((i) => i.staccato?.length),
+      );
+      if (staccato) {
+        duration /= 2;
+      }
+
       if (n.tie?.find((i) => i.$.type === "start")) {
         return;
       }
-      const x = xCursor;
-      xCursor += duration;
 
       let text = "";
       let y = 300;
@@ -262,16 +273,33 @@ export const MusicXmlPage = () => {
         const maxY = 200; // TODO calcular com base na nota mais grave
         const semiStepHeight = 5;
         y += maxY - yIndex * semiStepHeight;
+
+        // renderiza a nota
+        addNote({
+          x: xCursor,
+          y,
+          width: duration,
+          height: 20,
+          color: "rgba(0,255,255,0.5)",
+          text,
+        });
+        xCursor += duration;
       }
 
-      addNote({
-        x,
-        y,
-        width: duration,
-        height: 15,
-        color: n.pitch ? "rgba(0,255,255,0.5)" : "rgba(255,255,0,0.2)",
-        text,
-      });
+      if (!n.pitch || staccato) {
+        // TODO nao renderizar o silencio
+        // renderiza o silêncio
+        addNote({
+          x: xCursor,
+          y,
+          width: duration,
+          height: 20,
+          color: "rgba(255,255,0,0.1)",
+          border: "1px solid rgba(0,0,0,0.1)",
+          text: "",
+        });
+        xCursor += duration;
+      }
 
       duration = 0;
     };
