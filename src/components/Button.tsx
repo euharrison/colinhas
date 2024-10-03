@@ -29,6 +29,7 @@ export const Button = ({
             fontSize: 12,
             fontWeight: "700",
             textTransform: "uppercase",
+            userSelect: "none",
             ...textStyle,
           }}
         >

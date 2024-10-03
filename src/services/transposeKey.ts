@@ -44,6 +44,17 @@ const getArray = (key: Key) => {
   return isMinorKey(key) ? minorArray : majorArray;
 };
 
+const getIndex = (index: number, length: number) => {
+  let newIndex = index;
+  while (newIndex < 0) {
+    newIndex += length;
+  }
+  while (newIndex > length - 1) {
+    newIndex -= length;
+  }
+  return newIndex;
+};
+
 export const getAccidental = (key: Key): "sharp" | "flat" => {
   const array = getArray(key);
   const index = array.findIndex((v) => v === key);
@@ -53,5 +64,6 @@ export const getAccidental = (key: Key): "sharp" | "flat" => {
 export const transposeKey = (key: Key, offset: number): Key => {
   const array = getArray(key);
   const index = array.findIndex((v) => v === key);
-  return array[index + offset] ?? key;
+  const newIndex = getIndex(index + offset, array.length);
+  return array[newIndex];
 };

@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import { Key, KeySignature } from "../database/types";
 import { backgroundGray, keyboardBackground, white } from "../theme/colors";
-import { KeySelector, keySignatureMap } from "./KeySelector";
+import { getKeySignature } from "../utils";
+import { KeySelector } from "./KeySelector";
 
 export const specialChars = ['"', "/", "_", "♯", "♭"];
 
@@ -28,12 +29,6 @@ const keyboardMap: Record<KeySignature, string[]> = {
   ["♯♯♯♯♯"]: ["do♯", "re♯", "mi", "fa♯", "sol♯", "la♯", "si"],
   ["♯♯♯♯♯♯"]: ["do♯", "re♯", "mi♯", "fa♯", "sol♯", "la♯", "si"],
   ["♯♯♯♯♯♯♯"]: ["do♯", "re♯", "mi♯", "fa♯", "sol♯", "la♯", "si♯"],
-};
-
-const getKeySignature = (key: Key): KeySignature | undefined => {
-  return keySignatureMap.find(
-    (item) => item[1] === key || item[2] === key,
-  )?.[0];
 };
 
 export const NotesKeyboard = ({
