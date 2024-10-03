@@ -25,7 +25,18 @@ OPCAO 1
 OPCAO 2
 - usar a lib apenas para fazer o parse do xml e montar tudo na mão
 - pode ser melhor pq os ritornelos passam a ficar flat sem dar um jump na musica
+
+Seguindo pela opcao 2, fazer:
+- tempo de articulacoes
+- "planificar" o retornelo, S, Coda, Capo etc
 */
+
+// const fileUrl = "http://downloads2.makemusic.com/musicxml/MozaVeilSample.xml"
+// const fileUrl = "/musicxml/MozaVeilSample.xml";
+// const fileUrl = "/musicxml/anunciacao.mxl";
+const fileUrl = "/musicxml/Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl";
+// const fileUrl =
+//   "/musicxml/Ilegal, Imoral ou Engorda - Marimbondo - 2.0-Trombone_Cigarra.mxl";
 
 async function fetchZippedXml(url: string): Promise<void> {
   try {
@@ -144,6 +155,7 @@ function addNote({
 
 type XmlMeasuse = {
   note: XmlNote[];
+  barline?: XmlBarLine[];
 };
 
 type XmlNote = {
@@ -157,6 +169,23 @@ type XmlNote = {
   tie?: { $: { type: "start" | "stop" } }[];
 };
 
+type NumberLike = string; // "1" | "2" | "3" ...
+
+type XmlBarLine = {
+  ending?: {
+    $: {
+      number: NumberLike;
+      type: "start" | "stop";
+    };
+  }[];
+  repeat?: {
+    $: {
+      // TODO validar o forward
+      direction: "backward" | "forward";
+    };
+  }[];
+};
+
 export const MusicXmlPage = () => {
   const [instrumentIndex, setInstrumentIndex] = useState(0);
   const [instrumentOptions, setInstrumentOptions] = useState<Instrument[]>([]);
@@ -164,13 +193,8 @@ export const MusicXmlPage = () => {
   const [json, setJson] = useState<any>();
 
   useEffect(() => {
-    // fetchZippedXml("/musicxml/MozaVeilSample.xml")
-    // fetchZippedXml("/musicxml/anunciacao.mxl")
     const load = async () => {
-      await fetchZippedXml(
-        // "/musicxml/Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl",
-        "/musicxml/anunciacao.mxl",
-      );
+      await fetchZippedXml(fileUrl);
     };
     load();
   }, []);
@@ -179,74 +203,117 @@ export const MusicXmlPage = () => {
     const measures: XmlMeasuse[] =
       json["score-partwise"].part[instrumentIndex].measure;
     console.log(measures);
+
     let xCursor = 137;
     let duration = 0;
-    measures.forEach((m) => {
-      m.note.forEach((n) => {
-        duration += n.duration * 23.25;
-        if (n.tie?.find((i) => i["$"].type === "start")) {
-          return;
-        }
-        const x = xCursor;
-        xCursor += duration;
+    let repeatReferenceStart = 0;
+    let repeatReferenceStop = 0;
 
-        let text = "";
-        let y = 300;
-        if (n.pitch) {
-          // TODO suporte para multiplas notas
-          const pitch = n.pitch[0];
+    // renderiza uma nota
+    const renderNote = (n: XmlNote) => {
+      duration += n.duration * 23.25;
+      if (n.tie?.find((i) => i.$.type === "start")) {
+        return;
+      }
+      const x = xCursor;
+      xCursor += duration;
 
-          const step = pitch.step[0];
+      let text = "";
+      let y = 300;
+      if (n.pitch) {
+        // TODO suporte para multiplas notas
+        const pitch = n.pitch[0];
+
+        const step = pitch.step[0];
+        text += {
+          A: "La",
+          B: "Si",
+          C: "Do",
+          D: "Re",
+          E: "Mi",
+          F: "Fa",
+          G: "Sol",
+        }[step];
+
+        const alter = pitch.alter?.[0];
+        if (alter) {
           text += {
-            A: "La",
-            B: "Si",
-            C: "Do",
-            D: "Re",
-            E: "Mi",
-            F: "Fa",
-            G: "Sol",
-          }[step];
-
-          const alter = pitch.alter?.[0];
-          if (alter) {
-            text += {
-              "-2": "♭♭",
-              "-1": "♭",
-              "1": "♯",
-              "2": "♯♯",
-            }[alter];
-          }
-
-          const octave = Number(pitch.octave[0]);
-          let yIndex = octave * 12;
-          yIndex += {
-            C: 0,
-            D: 2,
-            E: 4,
-            F: 5,
-            G: 7,
-            A: 9,
-            B: 11,
-          }[step];
-          if (alter) {
-            yIndex += Number(alter);
-          }
-          const maxY = 200; // TODO calcular com base na nota mais grave
-          const semiStepHeight = 5;
-          y += maxY - yIndex * semiStepHeight;
+            "-2": "♭♭",
+            "-1": "♭",
+            "1": "♯",
+            "2": "♯♯",
+          }[alter];
         }
 
-        addNote({
-          x,
-          y,
-          width: duration,
-          height: 15,
-          color: n.pitch ? "rgba(0,255,255,0.5)" : "rgba(255,255,0,0.2)",
-          text,
-        });
+        const octave = Number(pitch.octave[0]);
+        let yIndex = octave * 12;
+        yIndex += {
+          C: 0,
+          D: 2,
+          E: 4,
+          F: 5,
+          G: 7,
+          A: 9,
+          B: 11,
+        }[step];
+        if (alter) {
+          yIndex += Number(alter);
+        }
+        const maxY = 200; // TODO calcular com base na nota mais grave
+        const semiStepHeight = 5;
+        y += maxY - yIndex * semiStepHeight;
+      }
 
-        duration = 0;
+      addNote({
+        x,
+        y,
+        width: duration,
+        height: 15,
+        color: n.pitch ? "rgba(0,255,255,0.5)" : "rgba(255,255,0,0.2)",
+        text,
       });
+
+      duration = 0;
+    };
+
+    // renderiza um compasso
+    const renderMeasure = (m: XmlMeasuse) => {
+      m.note.forEach((n) => renderNote(n));
+    };
+
+    // para cada compasso, render
+    measures.forEach((m, mIndex) => {
+      renderMeasure(m);
+
+      // se o compasso terminar com ritornelo
+      const barline = m.barline;
+      if (barline) {
+        const ending = barline.find((i) => i.ending)?.ending;
+        if (ending) {
+          const startEnding = ending.find((i) => i.$.type === "start");
+          if (startEnding) {
+            repeatReferenceStop = mIndex;
+          }
+        }
+
+        const repeat = barline.find((i) => i.repeat)?.repeat;
+        if (repeat) {
+          const startRepeat = repeat.find((i) => i.$.direction === "forward");
+          if (startRepeat) {
+            repeatReferenceStart = mIndex;
+          }
+
+          const endRepeat = repeat.find((i) => i.$.direction === "backward");
+          if (endRepeat) {
+            // TODO suporte para ritornelo com mais de duas voltas
+            measures
+              .slice(repeatReferenceStart, repeatReferenceStop)
+              .forEach((m) => renderMeasure(m));
+
+            repeatReferenceStart = mIndex;
+          }
+        }
+      }
     });
   }
 
@@ -274,66 +341,61 @@ export const MusicXmlPage = () => {
           return xml;
         },
       });
-      osmd
-        // .load("http://downloads2.makemusic.com/musicxml/MozaVeilSample.xml")
-        // .load("/musicxml/MozaVeilSample.xml")
-        // .load("/musicxml/anunciacao.mxl")
-        .load("/musicxml/Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl")
-        .then(function () {
-          const container = document.getElementById("osmdContainer");
-          if (container) {
-            container.innerHTML = "";
-          }
+      osmd.load(fileUrl).then(function () {
+        const container = document.getElementById("osmdContainer");
+        if (container) {
+          container.innerHTML = "";
+        }
 
-          osmdRef.current = osmd;
+        osmdRef.current = osmd;
 
-          // mantém a distancia igual em cada compasso
-          osmd.EngravingRules.FixedMeasureWidth = true;
+        // mantém a distancia igual em cada compasso
+        osmd.EngravingRules.FixedMeasureWidth = true;
 
-          setInstrumentOptions(osmd.Sheet.Instruments);
+        setInstrumentOptions(osmd.Sheet.Instruments);
 
-          const allParts = osmd.Sheet.Instruments;
-          allParts.forEach((part, index) => {
-            part.Visible = index === instrumentIndex;
-          });
-
-          osmd.render();
-
-          osmd.GraphicSheet.MeasureList.forEach((measureArray) => {
-            measureArray.forEach((measure) => {
-              if (!measure) {
-                return;
-              }
-              addNote(measure.PositionAndShape.AbsolutePosition);
-            });
-          });
-
-          // osmd.GraphicSheet.MeasureList.forEach((measureArray) => {
-          //   measureArray.forEach((measure) => {
-          //     // Get the beams from each measure
-          //     measure.staffEntries.forEach((entry) => {
-          //       if (entry.graphicalVoiceEntries) {
-          //         entry.graphicalVoiceEntries.forEach((gve) => {
-          //           // gve.
-          //           // gve.notes
-          //           // console.log({ gve }, gve.notes);
-          //           // console.log(gve.PositionAndShape);
-          //           if (gve.notes) {
-          //             gve.notes.forEach((note) => {
-          //               addCustomVisualOnBeam(note);
-          //             });
-          //           }
-          //           // if (gve.graphicalBeams) {
-          //           //     gve.graphicalBeams.forEach((beam) => {
-          //           //         addCustomVisualOnBeam(beam);
-          //           //     });
-          //           // }
-          //         });
-          //       }
-          //     });
-          //   });
-          // });
+        const allParts = osmd.Sheet.Instruments;
+        allParts.forEach((part, index) => {
+          part.Visible = index === instrumentIndex;
         });
+
+        osmd.render();
+
+        osmd.GraphicSheet.MeasureList.forEach((measureArray) => {
+          measureArray.forEach((measure) => {
+            if (!measure) {
+              return;
+            }
+            addNote(measure.PositionAndShape.AbsolutePosition);
+          });
+        });
+
+        // osmd.GraphicSheet.MeasureList.forEach((measureArray) => {
+        //   measureArray.forEach((measure) => {
+        //     // Get the beams from each measure
+        //     measure.staffEntries.forEach((entry) => {
+        //       if (entry.graphicalVoiceEntries) {
+        //         entry.graphicalVoiceEntries.forEach((gve) => {
+        //           // gve.
+        //           // gve.notes
+        //           // console.log({ gve }, gve.notes);
+        //           // console.log(gve.PositionAndShape);
+        //           if (gve.notes) {
+        //             gve.notes.forEach((note) => {
+        //               addCustomVisualOnBeam(note);
+        //             });
+        //           }
+        //           // if (gve.graphicalBeams) {
+        //           //     gve.graphicalBeams.forEach((beam) => {
+        //           //         addCustomVisualOnBeam(beam);
+        //           //     });
+        //           // }
+        //         });
+        //       }
+        //     });
+        //   });
+        // });
+      });
     };
     try {
       load();
