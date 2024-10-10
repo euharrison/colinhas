@@ -18,9 +18,7 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
   const formatSheet = useFormatSheet();
   const formatKey = useFormatKey();
 
-  const [key, setKey] = useState<Key>(
-    sheet?.key ? formatKey(sheet) : "Do Maior",
-  );
+  const [key, setKey] = useState(sheet ? formatKey(sheet) : undefined);
   const [value, setValue] = useState(sheet?.data ? formatSheet(sheet) : "");
   const [selection, setSelection] = useState({
     start: sheet?.data.length ?? 0,
@@ -59,7 +57,7 @@ export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
     inputRef.current?.focus();
   };
 
-  const onChangeKey = (value: Key) => {
+  const onChangeKey = (value?: Key) => {
     setKey(value);
     inputRef.current?.focus();
   };

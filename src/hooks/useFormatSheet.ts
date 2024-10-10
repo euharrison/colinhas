@@ -1,4 +1,4 @@
-import { Instrument, Sheet } from "../database/types";
+import { Accidental, Instrument, Sheet } from "../database/types";
 import { transpose } from "../services/transpose";
 import { getAccidental } from "../services/transposeKey";
 import { useFormatKey } from "./useFormatKey";
@@ -19,6 +19,12 @@ const getInstrumentOffset = (instrument?: Instrument): number =>
       }[instrument]
     : 0;
 
+const guessAccidental = (sheet: Sheet): Accidental => {
+  const sharpCount = sheet.data.match(/[♯|#]/g)?.length ?? 0;
+  const flatCount = sheet.data.match(/[♭|b]/g)?.length ?? 0;
+  return flatCount > sharpCount ? "flat" : "sharp";
+};
+
 export const useFormatSheet = () => {
   const formatKey = useFormatKey();
   const { settings } = useLocalSettings();
@@ -29,7 +35,7 @@ export const useFormatSheet = () => {
     const offset = -sheetOffset + myOffset;
 
     const key = formatKey(sheet);
-    const accidental = getAccidental(key);
+    const accidental = key ? getAccidental(key) : guessAccidental(sheet);
 
     return transpose(sheet.data, offset, accidental);
   };

@@ -62,12 +62,14 @@ export type MinorKey =
 
 export type Key = MajorKey | MinorKey;
 
+export type Accidental = "sharp" | "flat";
+
 export type Sheet = {
   id: string;
   name: string;
   data: string;
   instrument: Instrument;
-  key: Key;
+  key?: Key;
   userId: string;
   updatedAt: number;
   createdAt: number;

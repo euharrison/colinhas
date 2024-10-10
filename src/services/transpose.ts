@@ -1,3 +1,5 @@
+import { Accidental } from "../database/types";
+
 const inputMap = {
   // starting on 15 means the note C2 saving space for future low octaves
   15: ["do"],
@@ -69,7 +71,7 @@ buildDictionaries();
 export const transpose = (
   data: string,
   offset: number,
-  accidental: "sharp" | "flat",
+  accidental: Accidental,
 ) => {
   if (offset === 0) {
     return data;

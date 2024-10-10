@@ -65,7 +65,7 @@ export const SheetList = ({
       computeValue(item.name, anyWordRegex, 10) +
       computeValue(item.data, anyWordRegex, 5) +
       computeValue(item.instrument, anyWordRegex, 2) +
-      computeValue(item.key, anyWordRegex, 1);
+      (item.key ? computeValue(item.key, anyWordRegex, 1) : 0);
 
     return filteredData
       .map((item) => ({ ...item, score: computeScore(item) }))

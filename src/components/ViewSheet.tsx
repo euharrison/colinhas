@@ -38,7 +38,8 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
   const formatSheet = useFormatSheet();
   const formatKey = useFormatKey();
 
-  const isDifferentKey = formatKey(sheet) !== sheet.key;
+  const viewKey = formatKey(sheet);
+  const isDifferentKey = viewKey && viewKey !== sheet.key;
 
   return (
     <ScrollView
@@ -75,7 +76,9 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
           </View>
         )}
 
-        <Text style={{ color: textGray }}>Tom: {formatKey(sheet)}</Text>
+        <Text style={{ color: textGray }}>
+          Tom: {viewKey ?? "Desconhecido"}
+        </Text>
       </View>
       <Text style={{ fontSize: 20, fontWeight: "500", color: black }}>
         {formatLyrics(formatSheet(sheet)).map(formatUrls)}

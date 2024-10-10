@@ -2,7 +2,7 @@ import { Link, router } from "expo-router";
 import { forwardRef, useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import { createSheet, editSheet } from "../database/sheets";
-import { Sheet } from "../database/types";
+import { Key, Sheet } from "../database/types";
 import { alert } from "../services/alert";
 import { borderGray } from "../theme/colors";
 import { sheetUrl, termsUrl } from "../urls";
@@ -19,7 +19,7 @@ type Props = {
 
 const SaveSheetForm = ({ id, defaultValues }: Props) => {
   const [name, setName] = useState(defaultValues.name);
-  const [key, setKey] = useState(defaultValues.key);
+  const [key, setKey] = useState<Key | undefined>(defaultValues.key);
 
   return (
     <View style={{ gap: 16 }}>
@@ -50,7 +50,7 @@ const SaveSheetForm = ({ id, defaultValues }: Props) => {
               borderRadius: 8,
             }}
           >
-            <Text>{key}</Text>
+            <Text>{key ?? "Desconhecido"}</Text>
           </Text>
         </KeySelector>
       </View>
