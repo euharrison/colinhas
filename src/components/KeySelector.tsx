@@ -50,11 +50,11 @@ export const KeySelector = ({
   onChange,
 }: {
   children: ReactNode;
-  onChange: (value: Key) => void;
+  onChange: (value?: Key) => void;
 }) => {
   const dialogRef = useRef<DialogRef>(null);
 
-  const onPress = (value: Key) => {
+  const onPress = (value?: Key) => {
     onChange(value);
     dialogRef.current?.close();
   };
@@ -72,7 +72,7 @@ export const KeySelector = ({
         <View>
           {keySignatureMap.map(([signature, major, minor]) => (
             <View
-              key={Math.random()}
+              key={signature}
               style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -85,6 +85,16 @@ export const KeySelector = ({
               <KeyButton onPress={() => onPress(minor)}>{minor}</KeyButton>
             </View>
           ))}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              borderBottomWidth: 1,
+              borderColor: borderGray,
+            }}
+          >
+            <KeyButton onPress={() => onPress()}>Não sei o tom</KeyButton>
+          </View>
         </View>
       </Dialog>
     </>

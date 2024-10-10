@@ -1,4 +1,4 @@
-import { Key, MajorKey, MinorKey } from "../database/types";
+import { Accidental, Key, MajorKey, MinorKey } from "../database/types";
 
 const majorArray: MajorKey[] = [
   "Do♭ Maior",
@@ -44,7 +44,7 @@ const getArray = (key: Key) => {
   return isMinorKey(key) ? minorArray : majorArray;
 };
 
-export const getAccidental = (key: Key): "sharp" | "flat" => {
+export const getAccidental = (key: Key): Accidental => {
   const array = getArray(key);
   const index = array.findIndex((v) => v === key);
   return index > 6 ? "sharp" : "flat"; // index 6 = Fa Maior

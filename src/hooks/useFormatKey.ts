@@ -22,6 +22,9 @@ export const useFormatKey = () => {
   const myOffset = getInstrumentOffset(settings.instrument);
 
   return (sheet: Sheet) => {
+    if (!sheet.key) {
+      return undefined;
+    }
     const sheetOffset = getInstrumentOffset(sheet.instrument);
     const offset = -sheetOffset + myOffset;
     return transposeKey(sheet.key, offset);

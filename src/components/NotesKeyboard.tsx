@@ -41,15 +41,15 @@ export const NotesKeyboard = ({
   onChangeKey,
   onPressNote,
 }: {
-  keyValue: Key;
-  onChangeKey: (value: Key) => void;
+  keyValue?: Key;
+  onChangeKey: (value?: Key) => void;
   onPressNote: (value: string) => void;
 }) => {
   const { width } = useWindowDimensions();
   const scrollRef = useRef<ScrollView>(null);
 
   const notes = useMemo(() => {
-    const keySignature = getKeySignature(keyValue);
+    const keySignature = keyValue ? getKeySignature(keyValue) : " ";
     const scale = keySignature !== undefined ? keyboardMap[keySignature] : [];
     return [
       ...scale,
@@ -89,7 +89,7 @@ export const NotesKeyboard = ({
               backgroundColor: white,
             }}
           >
-            <Text>{keyValue}</Text>
+            <Text>{keyValue ?? "Tom"}</Text>
           </View>
         </KeySelector>
         <View style={{ flexDirection: "row", gap: 2 }}>

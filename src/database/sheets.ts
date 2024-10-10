@@ -42,7 +42,7 @@ export function createSheet(
     name: data.name,
     data: data.data,
     instrument: data.instrument,
-    key: data.key,
+    key: data.key ?? "",
     userId: auth.currentUser?.uid,
     updatedAt: serverTimestamp(),
     createdAt: serverTimestamp(),
@@ -59,7 +59,7 @@ export function editSheet(
     name: data.name,
     data: data.data,
     instrument: data.instrument,
-    key: data.key,
+    key: data.key ?? "",
     updatedAt: serverTimestamp(),
   });
   return docRef.id;
