@@ -1,6 +1,13 @@
 import { Link } from "expo-router";
 import { useState } from "react";
-import { Image, Pressable, Text, TextInput, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FAB } from "../components/FAB";
 import { SheetList } from "../components/SheetList";
@@ -99,32 +106,52 @@ export const HomePage = () => {
           overflow: "hidden",
         }}
       >
-        {[
-          { label: "Todas as colas", value: false },
-          { label: "Minhas colas", value: true },
-        ].map(({ label, value }) => {
-          const selected = filterMyOwn === value;
-          return (
-            <Pressable
-              key={label}
-              onPress={() => setFilterMyOwn(value)}
-              style={{
-                flex: 1,
-                padding: 4,
-                alignItems: "center",
-                justifyContent: "center",
-                borderColor: borderGray,
-                backgroundColor: selected ? backgroundGray : undefined,
-              }}
-            >
-              <Text
-                style={{ fontSize: 12, color: selected ? black : textGray }}
+        <ScrollView horizontal contentContainerStyle={{ height: 24 }}>
+          {[
+            { label: "Todas as colas", value: false },
+            { label: "Minhas colas", value: true },
+            { label: "Trombone", value: true },
+            { label: "Marimbondo", value: true },
+            { label: "Summer", value: true },
+          ].map(({ label, value }) => {
+            const selected = filterMyOwn === value;
+            return (
+              <Pressable
+                key={label}
+                onPress={() => setFilterMyOwn(value)}
+                style={{
+                  paddingHorizontal: 20,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderColor: backgroundGray,
+                  borderRightWidth: 1,
+                  backgroundColor: selected ? backgroundGray : undefined,
+                }}
               >
-                {label}
-              </Text>
-            </Pressable>
-          );
-        })}
+                <Text
+                  numberOfLines={1}
+                  style={{ fontSize: 12, color: selected ? black : textGray }}
+                >
+                  {label}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
+        <Pressable
+          onPress={() => {}}
+          style={{
+            width: 24,
+            alignItems: "center",
+            justifyContent: "center",
+            borderColor: backgroundGray,
+            borderLeftWidth: 1,
+          }}
+        >
+          <Text style={{ fontSize: 12, color: black, fontWeight: "bold" }}>
+            +
+          </Text>
+        </Pressable>
       </View>
 
       <SheetList search={search.trim()} filterMyOwn={filterMyOwn} />
