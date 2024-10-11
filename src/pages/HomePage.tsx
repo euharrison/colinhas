@@ -17,18 +17,25 @@ import { LogoIcon } from "../icons/LogoIcon";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
 import { SearchIcon } from "../icons/SearchIcon";
-import { backgroundGray, black, borderGray, textGray } from "../theme/colors";
+import {
+  backgroundGray,
+  black,
+  borderGray,
+  textGray,
+  white,
+} from "../theme/colors";
 import { headerHeight, pagePadding } from "../theme/sizes";
 import { createUrl, profileUrl } from "../urls";
+import { PlusIcon } from "../icons/PlusIcon";
 
 export const HomePage = () => {
   const user = useUser();
+  const [tab, setTab] = useState("Todas");
   const [search, setSearch] = useState("");
-  const [filterMyOwn, setFilterMyOwn] = useState(false);
 
   return (
     <>
-      <SafeAreaView>
+      <SafeAreaView style={{ backgroundColor: backgroundGray }}>
         <View
           style={{
             flexDirection: "row",
@@ -64,15 +71,70 @@ export const HomePage = () => {
         </View>
       </SafeAreaView>
 
+      <View style={{ backgroundColor: backgroundGray }}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingHorizontal: pagePadding,
+            height: 28,
+            gap: 2,
+          }}
+        >
+          {[
+            { label: "Todas" },
+            { label: "Minhas" },
+            { label: "Trombone" },
+            { label: "Marimbondo" },
+            { label: "Summer" },
+            { label: "AAAA" },
+            { label: "BBBB" },
+            { label: "CCCC" },
+            {
+              label: "+",
+              children: <PlusIcon width={10} height={10} fill={textGray} />,
+              value: true,
+            },
+          ].map(({ label }) => {
+            const selected = label === tab;
+            return (
+              <Pressable
+                key={label}
+                onPress={() => setTab(label)}
+                style={{
+                  paddingHorizontal: 12,
+                  justifyContent: "center",
+                  borderColor: borderGray,
+                  borderWidth: selected ? undefined : 1,
+                  borderBottomWidth: 0,
+                  backgroundColor: selected ? white : undefined,
+                  borderTopLeftRadius: 6,
+                  borderTopRightRadius: 6,
+                }}
+              >
+                <Text
+                  numberOfLines={1}
+                  style={{ fontSize: 12, color: selected ? black : textGray }}
+                >
+                  {label}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
+      </View>
+
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           marginHorizontal: pagePadding,
           paddingHorizontal: 16,
-          marginBottom: 8,
+          marginTop: 16,
+          marginBottom: 16,
           gap: 8,
           backgroundColor: backgroundGray,
+          // backgroundColor: white,
           borderRadius: 8,
         }}
       >
@@ -95,66 +157,7 @@ export const HomePage = () => {
         )}
       </View>
 
-      <View
-        style={{
-          flexDirection: "row",
-          marginHorizontal: pagePadding,
-          marginBottom: 20,
-          borderColor: backgroundGray,
-          borderWidth: 1,
-          borderRadius: 8,
-          overflow: "hidden",
-        }}
-      >
-        <ScrollView horizontal contentContainerStyle={{ height: 24 }}>
-          {[
-            { label: "Todas as colas", value: false },
-            { label: "Minhas colas", value: true },
-            { label: "Trombone", value: true },
-            { label: "Marimbondo", value: true },
-            { label: "Summer", value: true },
-          ].map(({ label, value }) => {
-            const selected = filterMyOwn === value;
-            return (
-              <Pressable
-                key={label}
-                onPress={() => setFilterMyOwn(value)}
-                style={{
-                  paddingHorizontal: 20,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderColor: backgroundGray,
-                  borderRightWidth: 1,
-                  backgroundColor: selected ? backgroundGray : undefined,
-                }}
-              >
-                <Text
-                  numberOfLines={1}
-                  style={{ fontSize: 12, color: selected ? black : textGray }}
-                >
-                  {label}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </ScrollView>
-        <Pressable
-          onPress={() => {}}
-          style={{
-            width: 24,
-            alignItems: "center",
-            justifyContent: "center",
-            borderColor: backgroundGray,
-            borderLeftWidth: 1,
-          }}
-        >
-          <Text style={{ fontSize: 12, color: black, fontWeight: "bold" }}>
-            +
-          </Text>
-        </Pressable>
-      </View>
-
-      <SheetList search={search.trim()} filterMyOwn={filterMyOwn} />
+      <SheetList search={search.trim()} filterMyOwn={tab === "Minhas"} />
 
       <Link href={createUrl} asChild>
         <FAB>
