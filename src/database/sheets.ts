@@ -7,13 +7,13 @@ import {
   onSnapshot,
   serverTimestamp,
   setDoc,
-  Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import { auth } from "../auth/auth";
 import { nonNullable } from "../utils";
 import { db } from "./db";
 import { Sheet } from "./types";
+import { getMillis } from "./utils";
 
 const prodCollection = "sheets";
 const devCollection = "sheets-dev";
@@ -97,9 +97,6 @@ export const observeSheetCollection = (
     onError,
   );
 };
-
-const getMillis = (value: unknown): number =>
-  value instanceof Timestamp ? value.toMillis() : Date.now();
 
 const docToSheet = (snapshot: DocumentSnapshot): Sheet | undefined => {
   const data = snapshot.data({ serverTimestamps: "estimate" });

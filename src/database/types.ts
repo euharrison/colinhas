@@ -75,3 +75,13 @@ export type Sheet = {
   createdAt: number;
   syncing: boolean;
 };
+
+export type Book = {
+  id: string;
+  name: string;
+  sheets: string[];
+  userId: string;
+  updatedAt: number;
+  createdAt: number;
+  syncing: boolean;
+};
