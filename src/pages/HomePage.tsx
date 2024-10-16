@@ -13,8 +13,7 @@ import { PencilIcon } from "../icons/PencilIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
 import { backgroundGray, black, borderGray, textGray } from "../theme/colors";
 import { headerHeight, pagePadding } from "../theme/sizes";
-import { bookUrl, createUrl, mySheetsUrl, profileUrl, sheetUrl } from "../urls";
-import { Button } from "../components/Button";
+import { createUrl, profileUrl } from "../urls";
 
 export const HomePage = () => {
   const user = useUser();
@@ -72,22 +71,43 @@ export const HomePage = () => {
         </View>
       </SafeAreaView>
 
-      <View>
-        {/* TODO grid com botão de criar cola */}
-        <Link href={mySheetsUrl} asChild>
-          <Pressable
-            style={{
-              borderColor: borderGray,
-              borderWidth: 1,
-              borderRadius: 4,
-              height: 140,
-              width: 140,
-              margin: 20,
-            }}
-          >
-            <Text>Minhas Colas</Text>
-          </Pressable>
-        </Link>
+      <View
+        style={{
+          flexDirection: "row",
+          marginHorizontal: pagePadding,
+          marginBottom: 20,
+          borderColor: backgroundGray,
+          borderWidth: 1,
+          borderRadius: 8,
+          overflow: "hidden",
+        }}
+      >
+        {[
+          { label: "Todas as colas", value: false },
+          { label: "Minhas colas", value: true },
+        ].map(({ label, value }) => {
+          const selected = filterMyOwn === value;
+          return (
+            <Pressable
+              key={label}
+              onPress={() => setFilterMyOwn(value)}
+              style={{
+                flex: 1,
+                padding: 4,
+                alignItems: "center",
+                justifyContent: "center",
+                borderColor: borderGray,
+                backgroundColor: selected ? backgroundGray : undefined,
+              }}
+            >
+              <Text
+                style={{ fontSize: 12, color: selected ? black : textGray }}
+              >
+                {label}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
 
       <SheetList data={filteredData} />
