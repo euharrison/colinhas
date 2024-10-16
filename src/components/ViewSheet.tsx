@@ -7,6 +7,7 @@ import { useFormatKey } from "../hooks/useFormatKey";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useLocalSettings } from "../hooks/useLocalSettings";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
+import { getInstrumentOffset } from "../services/getInstrumentOffset";
 import { black, blue, darkBlue, textGray } from "../theme/colors";
 
 const formatLyrics = (element: ReactNode): ReactNode[] =>
@@ -38,8 +39,9 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
   const formatSheet = useFormatSheet();
   const formatKey = useFormatKey();
 
-  const viewKey = formatKey(sheet);
-  const isDifferentKey = viewKey && viewKey !== sheet.key;
+  const needsAutoTransposition =
+    getInstrumentOffset(settings.instrument) !==
+    getInstrumentOffset(sheet.instrument);
 
   return (
     <ScrollView
@@ -58,7 +60,7 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
           />
         </View>
 
-        {isDifferentKey && (
+        {needsAutoTransposition && (
           <View>
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
@@ -77,7 +79,7 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
         )}
 
         <Text style={{ color: textGray }}>
-          Tom: {viewKey ?? "Desconhecido"}
+          Tom: {formatKey(sheet) ?? "Desconhecido"}
         </Text>
       </View>
       <Text style={{ fontSize: 20, fontWeight: "500", color: black }}>
