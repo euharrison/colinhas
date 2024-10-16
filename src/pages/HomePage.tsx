@@ -1,23 +1,37 @@
 import { Link } from "expo-router";
-import { useState } from "react";
-import { Image, Pressable, Text, TextInput, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { auth } from "../auth/auth";
 import { FAB } from "../components/FAB";
 import { SheetList } from "../components/SheetList";
+import { observeSheetCollection } from "../database/sheets";
+import { Sheet } from "../database/types";
 import { useUser } from "../hooks/useUser";
-import { CloseIcon } from "../icons/CloseIcon";
 import { LogoIcon } from "../icons/LogoIcon";
 import { PencilIcon } from "../icons/PencilIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
-import { SearchIcon } from "../icons/SearchIcon";
 import { backgroundGray, black, borderGray, textGray } from "../theme/colors";
 import { headerHeight, pagePadding } from "../theme/sizes";
 import { createUrl, profileUrl } from "../urls";
 
 export const HomePage = () => {
   const user = useUser();
-  const [search, setSearch] = useState("");
   const [filterMyOwn, setFilterMyOwn] = useState(false);
+  const [sheetCollection, setSheetCollection] = useState<Sheet[]>([]);
+
+  useEffect(() => {
+    return observeSheetCollection(
+      (data) => {
+        setSheetCollection(data.sort((a, b) => b.createdAt - a.createdAt));
+      },
+      (error) => alert(error.message),
+    );
+  }, []);
+
+  const filteredData = filterMyOwn
+    ? sheetCollection.filter((i) => i.userId === auth.currentUser?.uid)
+    : sheetCollection;
 
   return (
     <>
@@ -60,37 +74,6 @@ export const HomePage = () => {
       <View
         style={{
           flexDirection: "row",
-          alignItems: "center",
-          marginHorizontal: pagePadding,
-          paddingHorizontal: 16,
-          marginBottom: 8,
-          gap: 8,
-          backgroundColor: backgroundGray,
-          borderRadius: 8,
-        }}
-      >
-        <View>
-          <SearchIcon width={18} height={18} />
-        </View>
-        <TextInput
-          style={{ paddingVertical: 12, width: "100%" }}
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholder="Busca"
-          placeholderTextColor={textGray}
-          value={search}
-          onChangeText={setSearch}
-        />
-        {!!search && (
-          <Pressable onPress={() => setSearch("")}>
-            <CloseIcon />
-          </Pressable>
-        )}
-      </View>
-
-      <View
-        style={{
-          flexDirection: "row",
           marginHorizontal: pagePadding,
           marginBottom: 20,
           borderColor: backgroundGray,
@@ -127,7 +110,7 @@ export const HomePage = () => {
         })}
       </View>
 
-      <SheetList search={search.trim()} filterMyOwn={filterMyOwn} />
+      <SheetList data={filteredData} />
 
       <Link href={createUrl} asChild>
         <FAB>
