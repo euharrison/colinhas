@@ -9,10 +9,14 @@ export const termsUrl = `${appUrl}/legal/termos-de-uso.html`;
 export const privacyPolicyUrl = `${appUrl}/legal/politica-de-privacidade.html`;
 
 export const homeUrl = "/";
-export const createUrl = "/create";
 export const profileUrl = "/profile";
+
+export const createUrl = "/create";
 export const sheetUrl = (sheet: { id: string; name: string }) =>
   `/${sheet.id}/${slugify(sheet.name)}`;
+
+export const bookUrl = (id: string) => `/lista/${id}`;
+export const mySheetsUrl = "/lista/minhas-colas";
 
 export const shareSheetUrl = (sheet: Sheet) => `${appUrl}${sheetUrl(sheet)}`;
 
