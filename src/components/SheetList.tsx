@@ -44,7 +44,7 @@ export const SheetList = ({ data }: { data?: Sheet[] }) => {
   const formatSheet = useFormatSheet();
   const [search, setSearch] = useState("");
 
-  if (data == undefined) {
+  if (data === undefined) {
     return (
       <View style={{ alignItems: "center", marginTop: 20 }}>
         <LoadingIcon />
@@ -138,11 +138,6 @@ export const SheetList = ({ data }: { data?: Sheet[] }) => {
           }}
         >
           <Text style={{ fontSize: 18 }}>Nenhuma cola encontrada 🥲</Text>
-          <Link href={createUrl} style={{ marginTop: 20 }}>
-            <Text style={{ fontSize: 16, textDecorationLine: "underline" }}>
-              Escrever nova cola
-            </Text>
-          </Link>
         </View>
       )}
     </>

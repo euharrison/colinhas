@@ -1,3 +1,3 @@
-import { ListPage } from "../../pages/ListPage";
+import { BookPage } from "../../pages/BookPage";
 
-export default ListPage;
+export default BookPage;
