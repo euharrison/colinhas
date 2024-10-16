@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { Text, View } from "react-native";
 import { Button } from "./Button";
-import { Dialog, DialogRef } from "./Dialog";
+import { closeDialog, Dialog, DialogRef } from "./Dialog";
 import { textRed } from "../theme/colors";
 
 type Props = {
@@ -10,12 +10,6 @@ type Props = {
 
 export const DiscardDialog = forwardRef<DialogRef, Props>(
   ({ onConfirm }, ref) => {
-    const close = () => {
-      if (ref && "current" in ref) {
-        ref?.current?.close();
-      }
-    };
-
     return (
       <Dialog ref={ref} title="Descartar">
         <View style={{ marginBottom: 20, gap: 8 }}>
@@ -26,7 +20,7 @@ export const DiscardDialog = forwardRef<DialogRef, Props>(
           <Button
             style={{ flex: 1 }}
             onPress={() => {
-              close();
+              closeDialog(ref);
             }}
           >
             Cancelar
@@ -36,7 +30,7 @@ export const DiscardDialog = forwardRef<DialogRef, Props>(
             textStyle={{ color: textRed }}
             onPress={() => {
               onConfirm();
-              close();
+              closeDialog(ref);
             }}
           >
             Descartar
