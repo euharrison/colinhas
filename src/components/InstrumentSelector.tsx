@@ -1,8 +1,7 @@
 import { Text, View } from "react-native";
 import { useLocalSettings } from "../hooks/useLocalSettings";
-import { InstrumentIcon } from "../icons/InstrumentIcon";
-import { backgroundGray, textGray } from "../theme/colors";
-import { Button } from "./Button";
+import { textGray } from "../theme/colors";
+import { InstrumentList } from "./InstrumentList";
 
 export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
   const { settings, updateSettings } = useLocalSettings();
@@ -17,41 +16,14 @@ export const InstrumentSelector = ({ onChange }: { onChange?: () => void }) => {
       <Text style={{ color: textGray }}>
         Você poderá trocar depois se preferir.
       </Text>
-      <View style={{ marginTop: 12, gap: 8 }}>
-        {(
-          [
-            "Flauta",
-            "Clarinete",
-            "Sax Soprano",
-            "Sax Alto",
-            "Sax Tenor",
-            "Trompete",
-            "Trombone",
-            "Eufônio",
-            "Tuba",
-          ] as const
-        ).map((item) => (
-          <Button
-            key={item}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              paddingVertical: 20,
-              paddingLeft: 20,
-              gap: 20,
-              backgroundColor:
-                item === settings.instrument ? backgroundGray : undefined,
-            }}
-            onPress={() => {
-              updateSettings({ instrument: item });
-              onChange?.();
-            }}
-          >
-            <InstrumentIcon instrument={item} />
-            <Text style={{ fontSize: 20 }}>{item}</Text>
-          </Button>
-        ))}
+      <View style={{ marginTop: 12 }}>
+        <InstrumentList
+          selectedItem={settings.instrument}
+          onSelect={(instrument) => {
+            updateSettings({ instrument });
+            onChange?.();
+          }}
+        />
       </View>
     </View>
   );

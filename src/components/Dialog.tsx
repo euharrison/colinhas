@@ -1,4 +1,10 @@
-import { forwardRef, ReactNode, useImperativeHandle, useState } from "react";
+import {
+  ForwardedRef,
+  forwardRef,
+  ReactNode,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 import { CloseIcon } from "../icons/CloseIcon";
 import { backgroundGray, modalOverlay, white } from "../theme/colors";
@@ -13,6 +19,12 @@ export type DialogRef = {
 export type DialogProps = {
   title: string;
   children: ReactNode;
+};
+
+export const closeDialog = (ref: ForwardedRef<DialogRef>) => {
+  if (ref && "current" in ref) {
+    ref?.current?.close();
+  }
 };
 
 export const Dialog = forwardRef<DialogRef, DialogProps>(
