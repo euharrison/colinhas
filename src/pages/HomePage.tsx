@@ -4,6 +4,7 @@ import { Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { auth } from "../auth/auth";
 import { FAB } from "../components/FAB";
+import { LoadingPage } from "../components/LoadingPage";
 import { SheetList } from "../components/SheetList";
 import { observeSheetCollection } from "../database/sheets";
 import { Sheet } from "../database/types";
@@ -19,11 +20,13 @@ export const HomePage = () => {
   const user = useUser();
   const [filterMyOwn, setFilterMyOwn] = useState(false);
   const [sheetCollection, setSheetCollection] = useState<Sheet[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     return observeSheetCollection(
       (data) => {
         setSheetCollection(data.sort((a, b) => b.createdAt - a.createdAt));
+        setIsLoading(false);
       },
       (error) => alert(error.message),
     );
@@ -32,6 +35,10 @@ export const HomePage = () => {
   const filteredData = filterMyOwn
     ? sheetCollection.filter((i) => i.userId === auth.currentUser?.uid)
     : sheetCollection;
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <>
