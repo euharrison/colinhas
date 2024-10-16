@@ -26,12 +26,14 @@ import {
 } from "../theme/colors";
 import { headerHeight, pagePadding } from "../theme/sizes";
 import { createUrl, profileUrl } from "../urls";
+import { useLocalSettings } from "../hooks/useLocalSettings";
 import { PlusIcon } from "../icons/PlusIcon";
 
 export const HomePage = () => {
   const user = useUser();
   const [tab, setTab] = useState("Todas");
   const [search, setSearch] = useState("");
+  const { settings } = useLocalSettings();
 
   return (
     <>
@@ -84,23 +86,28 @@ export const HomePage = () => {
           {[
             { label: "Todas" },
             { label: "Minhas" },
-            { label: "Trombone" },
-            { label: "Marimbondo" },
-            { label: "Summer" },
-            { label: "AAAA" },
-            { label: "BBBB" },
-            { label: "CCCC" },
-            {
-              label: "+",
-              children: <PlusIcon width={10} height={10} fill={textGray} />,
-              value: true,
-            },
+            { label: settings.instrument ?? "" },
+            // { label: "Marimbondo" },
+            // { label: "Summer" },
+            // { label: "AAAA" },
+            // { label: "BBBB" },
+            // { label: "CCCC" },
+            { label: "+" },
           ].map(({ label }) => {
             const selected = label === tab;
+            const isCreateNew = label === "+";
+
+            // , children: <PlusIcon width={12} fill={textGray}/>, onPress: () => {}
             return (
               <Pressable
                 key={label}
-                onPress={() => setTab(label)}
+                onPress={
+                  isCreateNew
+                    ? () => {
+                        //
+                      }
+                    : () => setTab(label)
+                }
                 style={{
                   paddingHorizontal: 12,
                   justifyContent: "center",
@@ -112,12 +119,16 @@ export const HomePage = () => {
                   borderTopRightRadius: 6,
                 }}
               >
-                <Text
-                  numberOfLines={1}
-                  style={{ fontSize: 12, color: selected ? black : textGray }}
-                >
-                  {label}
-                </Text>
+                {isCreateNew ? (
+                  <PlusIcon width={8} height={8} fill={textGray} />
+                ) : (
+                  <Text
+                    numberOfLines={1}
+                    style={{ fontSize: 12, color: selected ? black : textGray }}
+                  >
+                    {label}
+                  </Text>
+                )}
               </Pressable>
             );
           })}
