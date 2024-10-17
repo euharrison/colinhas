@@ -52,7 +52,7 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 100 }}
       >
-        <View style={{ marginTop: 8, marginBottom: 20 }}>
+        <View style={{ marginTop: 8, marginBottom: 20, gap: 8 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
             <Text style={{ color: textGray }}>
               Escrito para {sheet.instrument}
@@ -65,31 +65,37 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
             />
           </View>
 
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-            <Text style={{ color: textGray }}>
-              Visualizando para{" "}
-              <Pressable
-                onPress={() => {
-                  instrumentDialogRef.current?.open();
-                }}
-              >
-                <Text style={{ textDecorationLine: "underline" }}>
-                  {instrument}
-                </Text>
-              </Pressable>
-            </Text>
-            <InstrumentIcon
-              instrument={instrument}
-              width={18}
-              height={18}
-              fill={textGray}
-            />
-            <Text style={{ color: textGray }}>
-              {needsAutoTransposition && "(transposto automaticamente)"}
-            </Text>
+          <View>
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+            >
+              <Text style={{ color: textGray }}>
+                Visualizando para{" "}
+                <Pressable
+                  onPress={() => {
+                    instrumentDialogRef.current?.open();
+                  }}
+                >
+                  <Text style={{ textDecorationLine: "underline" }}>
+                    {instrument}
+                  </Text>
+                </Pressable>
+              </Text>
+              <InstrumentIcon
+                instrument={instrument}
+                width={18}
+                height={18}
+                fill={textGray}
+              />
+            </View>
+            {needsAutoTransposition && (
+              <Text style={{ color: textGray }}>
+                (transposto automaticamente)
+              </Text>
+            )}
           </View>
 
-          <Text style={{ color: textGray, marginTop: 8 }}>
+          <Text style={{ color: textGray }}>
             Tom: {formatKey(sheet, instrument) ?? "Desconhecido"}
           </Text>
         </View>
