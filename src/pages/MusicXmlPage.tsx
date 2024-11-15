@@ -1,3 +1,5 @@
+import { Instrument, OpenSheetMusicDisplay } from "opensheetmusicdisplay";
+import { startTransition, useEffect, useRef, useState } from "react";
 import {
   Pressable,
   PressableProps,
@@ -6,132 +8,23 @@ import {
   TextStyle,
   View,
 } from "react-native";
-import { Header } from "../components/Header";
-import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  OpenSheetMusicDisplay,
-  Cursor,
-  VoiceEntry,
-  Note,
-  StemDirectionType,
-  Instrument,
-  Beam,
-  GraphicalNote,
-} from "opensheetmusicdisplay";
-import { parseString } from "xml2js";
-import JSZip from "jszip";
-import { startTransition } from "react";
 import { backgroundGray, borderGray, white } from "../theme/colors";
 
 const host = "https://harrison.com.br/temp/colinhas-mxl/";
 
-const files = [
-  "Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl",
-  "Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl",
-  "Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl",
-  "Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl",
+const musicUrlList = [
+  "A_Lenda-Marimbondo-15.0.mxl",
+  "Aqui_no_Mar-Marimbondo-5.0.mxl",
+  "Ilegal, Imoral ou Engorda - Marimbondo - 2.0.mxl",
+  "Non, à Francesa - Marimbondo - 2.0.mxl",
+  "Sulamericano-Marimbondo-2.0.mxl",
 ];
-
-// const fileUrl = "http://downloads2.makemusic.com/musicxml/MozaVeilSample.xml"
-// const fileUrl = "/musicxml/MozaVeilSample.xml";
-// const fileUrl = "/musicxml/anunciacao.mxl";
-// const fileUrl =
-//   "https://harrison.com.br/temp/colinhas-mxl/Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl";
-// const fileUrl = "/musicxml/Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl";
-// const fileUrl = "/musicxml/Sulamericano-Marimbondo-2.0.mxl";
-// const fileUrl = "/musicxml/A_Lenda-Marimbondo-15.0.mxl";
-const fileUrl =
-  "/musicxml/Sulamericano-Marimbondo-2.0-Trombone_Abelha.musicxml";
-// const fileUrl =
-//   "/musicxml/Sulamericano-Marimbondo-2.0-Trombone_Cigarra.musicxml";
-// const fileUrl = "/musicxml/Sulamericano-Marimbondo-2.0-Trombone_Cigarra.musicxml";
-// const fileUrl =
-//   "/musicxml/Ilegal, Imoral ou Engorda - Marimbondo - 2.0-Trombone_Cigarra.mxl";
-
-async function fetchZippedXml(url: string): Promise<void> {
-  try {
-    // Fetch the zipped XML file
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Network response was not ok");
-
-    // Get the blob from the response
-    const blob = await response.blob();
-
-    // Load the blob into JSZip
-    const zip = await JSZip.loadAsync(blob);
-
-    // Assuming the XML file is named 'data.xml' in the zip
-    const xmlFile = zip.file("score.xml");
-    if (!xmlFile) throw new Error("XML file not found in the zip");
-
-    // Get the content of the XML file as a string
-    const xmlContent = await xmlFile.async("string");
-
-    console.log({ xmlContent });
-
-    // Convert XML to JSON
-    const jsonData = xmlToJson(xmlContent);
-    console.log("xmlToJson", jsonData);
-
-    parseString(xmlContent, (err, result) => {
-      // console.log("parseString", result);
-    });
-  } catch (error) {
-    console.error("Error fetching or processing the file:", error);
-  }
-}
-
-function xmlToJson(xml: string): any {
-  // Create a JSON object
-  const obj: { [key: string]: any } = {};
-
-  // If the input is not an XML string, return an empty object
-  if (typeof xml !== "string") {
-    return obj;
-  }
-
-  // Parse the XML string into a DOM object
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(xml, "application/xml");
-
-  // Recursive function to convert XML to JSON
-  function convert(node: Node): void {
-    if (node.nodeType === 1) {
-      // Element
-      const nodeName = node.nodeName;
-      obj[nodeName] = obj[nodeName] || [];
-
-      const child: { [key: string]: string } = {};
-      for (let i = 0; i < node.attributes.length; i++) {
-        const attr = node.attributes[i];
-        child[attr.nodeName] = attr.nodeValue || "";
-      }
-
-      if (node.childNodes.length === 0) {
-        obj[nodeName].push(child);
-      } else {
-        for (let i = 0; i < node.childNodes.length; i++) {
-          convert(node.childNodes[i]);
-        }
-      }
-      obj[nodeName].push(child);
-    } else if (node.nodeType === 3) {
-      // Text
-      const textContent = node.nodeValue?.trim();
-      if (textContent) {
-        obj["#text"] = textContent;
-      }
-    }
-  }
-
-  // Start the conversion
-  convert(xmlDoc.documentElement);
-  return obj;
-}
 
 const defaultSpacing = 100;
 const defaultZoom = 100;
 const defaultDrawClef = false;
+
+const divRenderId = "osmdContainer";
 
 export const Button = ({
   children,
@@ -172,6 +65,10 @@ export const Button = ({
 };
 
 export const MusicXmlPage = () => {
+  const [musicUrl, setMusicUrl] = useState<string>();
+  const [instrumentId, setInstrumentId] = useState<string>();
+  const [instrumentOptions, setInstrumentOptions] = useState<Instrument[]>([]);
+
   const [drawClef, setDrawClef] = useState(defaultDrawClef);
   const [spacing, setSpacing] = useState(defaultZoom);
   const [zoom, setZoom] = useState(defaultZoom);
@@ -179,24 +76,14 @@ export const MusicXmlPage = () => {
   const [autoScrollPx, setAutoScrollPx] = useState(0);
   const [autoScrollTick, setAutoScrollTick] = useState(1);
 
-  const [instrumentIndex, setInstrumentIndex] = useState(0);
-  const [instrumentOptions, setInstrumentOptions] = useState<Instrument[]>([]);
-
   const scrollViewRef = useRef<ScrollView>(null);
   const scrollPosRef = useRef<number>(0);
-
-  useEffect(() => {
-    const load = async () => {
-      // await fetchZippedXml(fileUrl);
-    };
-    load();
-  }, []);
 
   const osmdRef = useRef<OpenSheetMusicDisplay>();
 
   useEffect(() => {
     const load = async () => {
-      const osmd = new OpenSheetMusicDisplay("osmdContainer");
+      const osmd = new OpenSheetMusicDisplay(divRenderId);
       osmd.setOptions({
         backend: "svg",
         drawingParameters: "compacttight",
@@ -212,29 +99,42 @@ export const MusicXmlPage = () => {
       // osmd.EngravingRules.VoiceSpacingAddend = 5; // default 3.0, 2.0 in compacttight mode
       osmd.EngravingRules.VoiceSpacingMultiplierVexflow = defaultSpacing / 100;
 
-      await osmd.load(fileUrl);
-      const container = document.getElementById("osmdContainer");
+      await osmd.load(`${host}${musicUrl}`);
+      const container = document.getElementById(divRenderId);
       if (container) {
         container.innerHTML = "";
       }
 
       osmdRef.current = osmd;
 
-      // TODO instrumento
-      // setInstrumentOptions(osmd.Sheet.Instruments);
-      // const allParts = osmd.Sheet.Instruments;
-      // allParts.forEach((part, index) => {
-      //   part.Visible = index === instrumentIndex;
-      // });
+      const instruments = osmd.Sheet.Instruments;
+      instruments.forEach((i) => {
+        i.Visible = false;
+      });
+      setInstrumentId(undefined);
+      setInstrumentOptions(instruments);
 
       osmd.render();
     };
-    try {
-      load();
-    } catch (error) {
-      console.error("[ERRO]", error);
+    if (musicUrl) {
+      load().catch((e) => console.error("[ERROR]", e));
     }
-  }, [instrumentIndex]);
+  }, [musicUrl]);
+
+  const onChangeInstrument = (id: string) => {
+    startTransition(() => {
+      setInstrumentId(() => {
+        if (osmdRef.current) {
+          const allParts = osmdRef.current.Sheet.Instruments;
+          allParts.forEach((part) => {
+            part.Visible = part.IdString === id;
+          });
+          osmdRef.current.render();
+        }
+        return id;
+      });
+    });
+  };
 
   const onToggleClef = () => {
     startTransition(() => {
@@ -344,19 +244,32 @@ export const MusicXmlPage = () => {
         }}
         contentContainerStyle={{ flex: 1 }}
       >
-        <select
-          onChange={(e) => setInstrumentIndex(Number(e.target.value))}
-          style={{ margin: 20 }}
-        >
-          {instrumentOptions.map((o) => (
-            <option key={o.Id} value={o.Id}>
-              {o.Id} - {o.Name}
-            </option>
-          ))}
-        </select>
+        <View style={{ padding: 20, gap: 5 }}>
+          <Text>Música:</Text>
+          <select onChange={(e) => setMusicUrl(e.target.value)}>
+            <option value="" />
+            {musicUrlList.map((musicUrl) => (
+              <option key={musicUrl} value={musicUrl}>
+                {musicUrl}
+              </option>
+            ))}
+          </select>
+          <Text>Instrumento:</Text>
+          <select
+            value={instrumentId}
+            onChange={(e) => onChangeInstrument(e.target.value)}
+          >
+            <option value="" />
+            {instrumentOptions.map((o) => (
+              <option key={o.IdString} value={o.IdString}>
+                {o.Name}
+              </option>
+            ))}
+          </select>
+        </View>
 
         <View style={{ flex: 1 }}>
-          <View id="osmdContainer" />
+          <View id={divRenderId} />
         </View>
       </ScrollView>
     </View>
