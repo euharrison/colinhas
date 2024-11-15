@@ -1,4 +1,11 @@
-import { Pressable, ScrollView, Text, View } from "react-native";
+import {
+  Pressable,
+  PressableProps,
+  ScrollView,
+  Text,
+  TextStyle,
+  View,
+} from "react-native";
 import { Header } from "../components/Header";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -14,13 +21,30 @@ import {
 import { parseString } from "xml2js";
 import JSZip from "jszip";
 import { startTransition } from "react";
-import { Button } from "../components/Button";
+import { backgroundGray, borderGray, white } from "../theme/colors";
+
+const host = "https://harrison.com.br/temp/colinhas-mxl/";
+
+const files = [
+  "Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl",
+  "Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl",
+  "Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl",
+  "Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl",
+];
 
 // const fileUrl = "http://downloads2.makemusic.com/musicxml/MozaVeilSample.xml"
 // const fileUrl = "/musicxml/MozaVeilSample.xml";
 // const fileUrl = "/musicxml/anunciacao.mxl";
-const fileUrl = "/musicxml/Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl";
+// const fileUrl =
+//   "https://harrison.com.br/temp/colinhas-mxl/Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl";
+// const fileUrl = "/musicxml/Sulamericano-Marimbondo-2.0-Trombone_Cigarra.mxl";
 // const fileUrl = "/musicxml/Sulamericano-Marimbondo-2.0.mxl";
+// const fileUrl = "/musicxml/A_Lenda-Marimbondo-15.0.mxl";
+const fileUrl =
+  "/musicxml/Sulamericano-Marimbondo-2.0-Trombone_Abelha.musicxml";
+// const fileUrl =
+//   "/musicxml/Sulamericano-Marimbondo-2.0-Trombone_Cigarra.musicxml";
+// const fileUrl = "/musicxml/Sulamericano-Marimbondo-2.0-Trombone_Cigarra.musicxml";
 // const fileUrl =
 //   "/musicxml/Ilegal, Imoral ou Engorda - Marimbondo - 2.0-Trombone_Cigarra.mxl";
 
@@ -43,11 +67,11 @@ async function fetchZippedXml(url: string): Promise<void> {
     // Get the content of the XML file as a string
     const xmlContent = await xmlFile.async("string");
 
-    // console.log({ xmlContent });
+    console.log({ xmlContent });
 
     // Convert XML to JSON
     const jsonData = xmlToJson(xmlContent);
-    // console.log("xmlToJson", jsonData);
+    console.log("xmlToJson", jsonData);
 
     parseString(xmlContent, (err, result) => {
       // console.log("parseString", result);
@@ -105,12 +129,52 @@ function xmlToJson(xml: string): any {
   return obj;
 }
 
+const defaultSpacing = 100;
 const defaultZoom = 100;
 const defaultDrawClef = false;
 
+export const Button = ({
+  children,
+  style,
+  textStyle,
+  ...props
+}: PressableProps & { textStyle?: TextStyle }) => {
+  return (
+    <Pressable
+      {...props}
+      style={({ pressed }) => [
+        {
+          borderWidth: 1,
+          borderColor: borderGray,
+          padding: 8,
+          borderRadius: 8,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: pressed ? backgroundGray : white,
+        },
+        typeof style === "function" ? style({ pressed }) : style,
+      ]}
+    >
+      {typeof children === "string" ? (
+        <Text
+          style={{
+            fontSize: 12,
+            ...textStyle,
+          }}
+        >
+          {children}
+        </Text>
+      ) : (
+        children
+      )}
+    </Pressable>
+  );
+};
+
 export const MusicXmlPage = () => {
-  const [zoom, setZoom] = useState(defaultZoom);
   const [drawClef, setDrawClef] = useState(defaultDrawClef);
+  const [spacing, setSpacing] = useState(defaultZoom);
+  const [zoom, setZoom] = useState(defaultZoom);
 
   const [autoScrollPx, setAutoScrollPx] = useState(0);
   const [autoScrollTick, setAutoScrollTick] = useState(1);
@@ -121,12 +185,12 @@ export const MusicXmlPage = () => {
   const scrollViewRef = useRef<ScrollView>(null);
   const scrollPosRef = useRef<number>(0);
 
-  // useEffect(() => {
-  //   const load = async () => {
-  //     await fetchZippedXml(fileUrl);
-  //   };
-  //   load();
-  // }, []);
+  useEffect(() => {
+    const load = async () => {
+      // await fetchZippedXml(fileUrl);
+    };
+    load();
+  }, []);
 
   const osmdRef = useRef<OpenSheetMusicDisplay>();
 
@@ -142,6 +206,11 @@ export const MusicXmlPage = () => {
       osmd.Zoom = defaultZoom / 100;
       osmd.DrawingParameters.Rules.RenderClefsAtBeginningOfStaffline =
         defaultDrawClef;
+
+      // Relevant parameters if you want to change the spacing:
+      // osmd.EngravingRules.VoiceSpacingMultiplier = 2; // default 0.85, 0.65 in compacttight mode
+      // osmd.EngravingRules.VoiceSpacingAddend = 5; // default 3.0, 2.0 in compacttight mode
+      osmd.EngravingRules.VoiceSpacingMultiplierVexflow = defaultSpacing / 100;
 
       await osmd.load(fileUrl);
       const container = document.getElementById("osmdContainer");
@@ -174,6 +243,20 @@ export const MusicXmlPage = () => {
         if (osmdRef.current) {
           osmdRef.current.DrawingParameters.Rules.RenderClefsAtBeginningOfStaffline =
             newValue;
+          osmdRef.current.render();
+        }
+        return newValue;
+      });
+    });
+  };
+
+  const onChangeSpacing = (diff: number) => {
+    startTransition(() => {
+      setSpacing((v) => {
+        const newValue = v + diff;
+        if (osmdRef.current) {
+          osmdRef.current.EngravingRules.VoiceSpacingMultiplierVexflow =
+            newValue / 100;
           osmdRef.current.render();
         }
         return newValue;
@@ -222,39 +305,35 @@ export const MusicXmlPage = () => {
   return (
     <View style={{ flex: 1 }}>
       <View>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-          <Button onPress={() => onToggleClef()}>
-            <Text>{drawClef ? "Esconder" : "Mostrar"} Clave</Text>
-          </Button>
+        <ScrollView horizontal>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+            <Button onPress={() => onToggleClef()}>
+              {drawClef ? "Esconder Clave" : "Mostrar Clave"}
+            </Button>
 
-          <View style={{ width: 10 }} />
+            <View style={{ width: 5 }} />
 
-          <Text>Zoom: {zoom}%</Text>
-          <Button onPress={() => onChangeZoom(-10)}>
-            <Text>-10%</Text>
-          </Button>
-          <Button onPress={() => onChangeZoom(+10)}>
-            <Text>+10%</Text>
-          </Button>
+            <Text>Espaçamento: {spacing}%</Text>
+            <Button onPress={() => onChangeSpacing(-10)}>-</Button>
+            <Button onPress={() => onChangeSpacing(+10)}>+</Button>
 
-          <View style={{ width: 10 }} />
+            <View style={{ width: 5 }} />
 
-          <Text>
-            AutoScroll: {autoScrollPx}px/{autoScrollTick}s
-          </Text>
-          <Button onPress={() => onChangeAutoScrollPx(-5)}>
-            <Text>-5px</Text>
-          </Button>
-          <Button onPress={() => onChangeAutoScrollPx(+5)}>
-            <Text>+5px</Text>
-          </Button>
-          <Button onPress={() => onChangeAutoScrollTick(-1)}>
-            <Text>-1s</Text>
-          </Button>
-          <Button onPress={() => onChangeAutoScrollTick(+1)}>
-            <Text>+1s</Text>
-          </Button>
-        </View>
+            <Text>Zoom: {zoom}%</Text>
+            <Button onPress={() => onChangeZoom(-10)}>-</Button>
+            <Button onPress={() => onChangeZoom(+10)}>+</Button>
+
+            <View style={{ width: 5 }} />
+
+            <Text>
+              AutoScroll: {autoScrollPx}px/{autoScrollTick}s
+            </Text>
+            <Button onPress={() => onChangeAutoScrollPx(-5)}>-5px</Button>
+            <Button onPress={() => onChangeAutoScrollPx(+5)}>+5px</Button>
+            <Button onPress={() => onChangeAutoScrollTick(-1)}>-1s</Button>
+            <Button onPress={() => onChangeAutoScrollTick(+1)}>+1s</Button>
+          </View>
+        </ScrollView>
       </View>
 
       <ScrollView
