@@ -20,16 +20,16 @@ const musicUrlList = [
   "Down_In_Mexico-Marimbondo-6.0.mxl",
   "Hips_Don_t_Lie-Marimbondo-11.mxl",
   "Ilegal, Imoral ou Engorda - Marimbondo - 2.0.mxl",
-  "Lilás-Marimbondo-8.0.mxl",
+  "Lilas-Marimbondo-8.0.mxl",
   "Lua_de_Cristal-Marimbondo-7.5.mxl",
   "Nem luxo nem lixo - Marimbondo - 3.0.mxl",
   "No_Soy_De_Aqui-Marimbondo-7.0.mxl",
-  "Non, à Francesa - Marimbondo - 2.0.mxl",
-  "O_Meu_Sangue_Ferve_Por_Você-9.mxl",
-  "Padê Onã-Marimbondo-6.0.mxl",
+  "Non, a Francesa - Marimbondo - 2.0.mxl",
+  "O_Meu_Sangue_Ferve_Por_Voce-9.mxl",
+  "Pade Ona-Marimbondo-6.0.mxl",
   "Palco-Marimbondo-6.0.mxl",
   "Sangue Latino-Marimbondo-2.0.mxl",
-  "Suíte + Dorival - Marimbondo - 4.mxl",
+  "Suite + Dorival - Marimbondo - 4.mxl",
   "Sulamericano-Marimbondo-2.0.mxl",
 ];
 
@@ -78,8 +78,8 @@ export const Button = ({
 };
 
 export const MusicXmlPage = () => {
-  const [musicUrl, setMusicUrl] = useState<string>();
-  const [instrumentId, setInstrumentId] = useState<string>();
+  const [musicUrl, setMusicUrl] = useState<string>("");
+  const [instrumentId, setInstrumentId] = useState<string>("");
   const [instrumentOptions, setInstrumentOptions] = useState<Instrument[]>([]);
 
   const [drawClef, setDrawClef] = useState(defaultDrawClef);
@@ -95,6 +95,15 @@ export const MusicXmlPage = () => {
   const osmdRef = useRef<OpenSheetMusicDisplay>();
 
   useEffect(() => {
+    const clear = () => {
+      const container = document.getElementById(divRenderId);
+      if (container) {
+        container.innerHTML = "";
+      }
+      setInstrumentId("");
+      setInstrumentOptions([]);
+    };
+
     const load = async () => {
       const osmd = new OpenSheetMusicDisplay(divRenderId);
       osmd.setOptions({
@@ -113,24 +122,23 @@ export const MusicXmlPage = () => {
       osmd.EngravingRules.VoiceSpacingMultiplierVexflow = defaultSpacing / 100;
 
       await osmd.load(`${host}${musicUrl}`);
-      const container = document.getElementById(divRenderId);
-      if (container) {
-        container.innerHTML = "";
-      }
-
       osmdRef.current = osmd;
+
+      clear();
 
       const instruments = osmd.Sheet.Instruments;
       instruments.forEach((i) => {
         i.Visible = false;
       });
-      setInstrumentId(undefined);
       setInstrumentOptions(instruments);
-
-      osmd.render();
     };
     if (musicUrl) {
-      load().catch((e) => console.error("[ERROR]", e));
+      load().catch((e) => {
+        clear();
+        setTimeout(() => {
+          alert("Erro ao carregar a música");
+        });
+      });
     }
   }, [musicUrl]);
 
@@ -259,7 +267,10 @@ export const MusicXmlPage = () => {
       >
         <View style={{ padding: 20, gap: 5 }}>
           <Text>Música:</Text>
-          <select onChange={(e) => setMusicUrl(e.target.value)}>
+          <select
+            value={musicUrl}
+            onChange={(e) => setMusicUrl(e.target.value)}
+          >
             <option value="" />
             {musicUrlList.map((musicUrl) => (
               <option key={musicUrl} value={musicUrl}>
