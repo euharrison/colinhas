@@ -15,8 +15,21 @@ const host = "https://harrison.com.br/temp/colinhas-mxl/";
 const musicUrlList = [
   "A_Lenda-Marimbondo-15.0.mxl",
   "Aqui_no_Mar-Marimbondo-5.0.mxl",
+  "Bella_Ciao-Marimbondo-10.0.mxl",
+  "Clandestino-Marimbondo-14.mxl",
+  "Down_In_Mexico-Marimbondo-6.0.mxl",
+  "Hips_Don_t_Lie-Marimbondo-11.mxl",
   "Ilegal, Imoral ou Engorda - Marimbondo - 2.0.mxl",
-  "Non, à Francesa - Marimbondo - 2.0.mxl",
+  "Lilás-Marimbondo-8.0.mxl",
+  "Lua_de_Cristal-Marimbondo-7.5.mxl",
+  "Nem luxo nem lixo - Marimbondo - 3.0.mxl",
+  "No_Soy_De_Aqui-Marimbondo-7.0.mxl",
+  "Non, à Francesa - Marimbondo - 2.0.mxl",
+  "O_Meu_Sangue_Ferve_Por_Você-9.mxl",
+  "Padê Onã-Marimbondo-6.0.mxl",
+  "Palco-Marimbondo-6.0.mxl",
+  "Sangue Latino-Marimbondo-2.0.mxl",
+  "Suíte + Dorival - Marimbondo - 4.mxl",
   "Sulamericano-Marimbondo-2.0.mxl",
 ];
 
