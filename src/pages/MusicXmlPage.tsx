@@ -112,14 +112,26 @@ export const MusicXmlPage = () => {
         drawMeasureNumbers: false,
       });
 
+      // margem geral
+      osmd.EngravingRules.PageLeftMargin = 1.0;
+      osmd.EngravingRules.PageRightMargin = 1.0;
+
+      // zoom
       osmd.Zoom = defaultZoom / 100;
+
+      // desenha a clave
       osmd.DrawingParameters.Rules.RenderClefsAtBeginningOfStaffline =
         defaultDrawClef;
 
-      // Relevant parameters if you want to change the spacing:
-      // osmd.EngravingRules.VoiceSpacingMultiplier = 2; // default 0.85, 0.65 in compacttight mode
+      // espaçamento entre notas (beams)
       // osmd.EngravingRules.VoiceSpacingAddend = 5; // default 3.0, 2.0 in compacttight mode
-      osmd.EngravingRules.VoiceSpacingMultiplierVexflow = defaultSpacing / 100;
+      osmd.EngravingRules.VoiceSpacingMultiplierVexflow = defaultSpacing / 100; // default 0.85, 0.65 in compacttight mode
+
+      // fixa a largura do compasso
+      osmd.EngravingRules.FixedMeasureWidth = true;
+
+      // influencia o espaçamento "line break"
+      osmd.EngravingRules.MinSkyBottomDistBetweenSystems = 3.0; // default 5.0, 1.0 in compacttight mode
 
       await osmd.load(`${host}${musicUrl}`);
       osmdRef.current = osmd;
