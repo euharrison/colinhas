@@ -96,7 +96,7 @@ export const SheetPage = () => {
         ref={discardDialogRef}
         onConfirm={() => setIsEditMode(false)}
       />
-      <ShareDialog ref={shareDialogRef} sheet={sheet} />
+      <ShareDialog ref={shareDialogRef} url={shareSheetUrl(sheet)} />
       <DeleteSheetDialog ref={deleteDialogRef} sheet={sheet} />
     </KeyboardLayout>
   );

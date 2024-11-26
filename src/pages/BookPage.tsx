@@ -1,18 +1,20 @@
-import { Link, useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import { useEffect, useRef, useState } from "react";
+import { Platform, Pressable, Share } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FAB } from "../components/FAB";
+import { BookMenu } from "../components/BookMenu";
+import { DeleteBookDialog } from "../components/DeleteBookDialog";
+import { DialogRef } from "../components/Dialog";
 import { Header } from "../components/Header";
 import { LoadingPage } from "../components/LoadingPage";
+import { ShareDialog } from "../components/ShareDialog";
 import { SheetList } from "../components/SheetList";
 import { observeBook } from "../database/books";
 import { observeSheetCollection } from "../database/sheets";
 import { Book, Sheet } from "../database/types";
 import { OptionsIcon } from "../icons/OptionsIcons";
-import { PencilIcon } from "../icons/PencilIcon";
 import { headerHeight, pagePadding } from "../theme/sizes";
-import { createUrl } from "../urls";
+import { shareBookUrl } from "../urls";
 import { NotFoundPage } from "./NotFoundPage";
 
 export const BookPage = () => {
@@ -20,6 +22,12 @@ export const BookPage = () => {
 
   const [book, setBook] = useState<Book | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+
+  const shareDialogRef = useRef<DialogRef>(null);
+  const deleteDialogRef = useRef<DialogRef>(null);
 
   const params = useLocalSearchParams();
   const id = String(params.id);
@@ -69,8 +77,7 @@ export const BookPage = () => {
               alignItems: "center",
               justifyContent: "center",
             }}
-            // TODO
-            // onPress={() => setIsMenuVisible((v) => !v)}
+            onPress={() => setIsMenuVisible((v) => !v)}
           >
             <OptionsIcon />
           </Pressable>
@@ -79,23 +86,24 @@ export const BookPage = () => {
 
       <SheetList data={data} />
 
-      <Link href={createUrl} asChild>
-        <FAB>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 4,
-              marginHorizontal: 8,
-            }}
-          >
-            <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
-              Nova cola
-            </Text>
-            <PencilIcon width={18} />
-          </View>
-        </FAB>
-      </Link>
+      <BookMenu
+        book={book}
+        isVisible={isMenuVisible}
+        setIsVisible={setIsMenuVisible}
+        isEditMode={isEditMode}
+        setIsEditMode={setIsEditMode}
+        onPressShare={() => {
+          if (Platform.OS === "web") {
+            shareDialogRef.current?.open();
+          } else {
+            Share.share({ url: shareBookUrl(book) });
+          }
+        }}
+        onPressDelete={() => deleteDialogRef.current?.open()}
+      />
+
+      <ShareDialog ref={shareDialogRef} url={shareBookUrl(book)} />
+      <DeleteBookDialog ref={deleteDialogRef} book={book} />
     </>
   );
 };

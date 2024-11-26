@@ -1,4 +1,4 @@
-import { Sheet } from "./database/types";
+import { Book, Sheet } from "./database/types";
 import { slugify } from "./utils";
 
 export const appUrl = __DEV__
@@ -13,7 +13,10 @@ export const createUrl = "/create";
 export const profileUrl = "/profile";
 export const sheetUrl = (sheet: { id: string; name: string }) =>
   `/${sheet.id}/${slugify(sheet.name)}`;
+export const bookUrl = (book: { id: string; name: string }) =>
+  `/lista/${book.id}/${slugify(book.name)}`;
 
 export const shareSheetUrl = (sheet: Sheet) => `${appUrl}${sheetUrl(sheet)}`;
+export const shareBookUrl = (book: Book) => `${appUrl}${bookUrl(book)}`;
 
 export const supportEmail = "contato@colinhas.com";
