@@ -1,19 +1,19 @@
 import { Text, View } from "react-native";
 import { Instrument } from "../database/types";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
-import { backgroundGray } from "../theme/colors";
+import { backgroundGray, textGray } from "../theme/colors";
 import { Button } from "./Button";
 
 const items = [
-  "Flauta",
-  "Clarinete",
-  "Sax Soprano",
-  "Sax Alto",
-  "Sax Tenor",
-  "Trompete",
-  "Trombone",
-  "Eufônio",
-  "Tuba",
+  { name: "Flauta", pitch: "C" },
+  { name: "Clarinete", pitch: "B♭" },
+  { name: "Sax Soprano", pitch: "B♭" },
+  { name: "Sax Alto", pitch: "Mi♭" },
+  { name: "Sax Tenor", pitch: "B♭" },
+  { name: "Trompete", pitch: "B♭" },
+  { name: "Trombone", pitch: "C" },
+  { name: "Eufônio", pitch: "C" },
+  { name: "Tuba", pitch: "C" },
 ] as const;
 
 export const InstrumentList = ({
@@ -25,24 +25,35 @@ export const InstrumentList = ({
 }) => {
   return (
     <View style={{ gap: 8 }}>
-      {items.map((item) => (
+      {items.map(({ name, pitch }) => (
         <Button
-          key={item}
+          key={name}
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "flex-start",
             paddingVertical: 12,
             paddingLeft: 20,
-            gap: 20,
-            backgroundColor: item === selectedItem ? backgroundGray : undefined,
+            backgroundColor: name === selectedItem ? backgroundGray : undefined,
           }}
           onPress={() => {
-            onSelect(item);
+            onSelect(name);
           }}
         >
-          <InstrumentIcon instrument={item} />
-          <Text style={{ fontSize: 20 }}>{item}</Text>
+          <InstrumentIcon instrument={name} />
+          <Text style={{ fontSize: 20, alignItems: "center", marginLeft: 20 }}>
+            {name}
+          </Text>
+          <Text
+            style={{
+              fontSize: 12,
+              color: textGray,
+              marginLeft: 8,
+              top: 2,
+            }}
+          >
+            {pitch !== "C" && pitch}
+          </Text>
         </Button>
       ))}
     </View>
