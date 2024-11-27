@@ -11,11 +11,12 @@ import { Header } from "../components/Header";
 import { LoadingPage } from "../components/LoadingPage";
 import { ShareDialog } from "../components/ShareDialog";
 import { SheetList } from "../components/SheetList";
-import { observeBook } from "../database/books";
+import { observeBook, removeSheetFromBook } from "../database/books";
 import { observeSheetCollection } from "../database/sheets";
 import { Book, Sheet } from "../database/types";
 import { OptionsIcon } from "../icons/OptionsIcons";
 import { PencilIcon } from "../icons/PencilIcon";
+import { TrashIcon } from "../icons/TrashIcon";
 import { headerHeight, pagePadding } from "../theme/sizes";
 import { shareBookUrl } from "../urls";
 import { NotFoundPage } from "./NotFoundPage";
@@ -108,7 +109,24 @@ export const BookPage = () => {
         </Header>
       </SafeAreaView>
 
-      <SheetList data={data} scrollRef={scrollRef} />
+      <SheetList
+        data={data}
+        scrollRef={scrollRef}
+        renderAfterIcons={
+          isEditMode
+            ? (item) => (
+                <Pressable
+                  style={{ marginRight: pagePadding }}
+                  onPress={() => {
+                    removeSheetFromBook(book.id, item.id);
+                  }}
+                >
+                  <TrashIcon width={18} />
+                </Pressable>
+              )
+            : undefined
+        }
+      />
 
       <BookMenu
         book={book}

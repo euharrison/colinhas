@@ -54,7 +54,7 @@ export const BookMenu = ({
       },
       isEditMode
         ? {
-            label: "Cancelar edição",
+            label: "Terminar edição",
             icon: <ResetIcon width={18} />,
             onPress: () => {
               setIsEditMode(false);

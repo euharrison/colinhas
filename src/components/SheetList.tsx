@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { RefObject, useState } from "react";
+import { ReactNode, RefObject, useState } from "react";
 import { FlatList, Pressable, Text, TextInput, View } from "react-native";
 import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
@@ -43,10 +43,14 @@ const getSearchResult = (data: Sheet[], search: string) => {
 export const SheetList = ({
   data,
   scrollRef,
+  renderBeforeIcons,
+  renderAfterIcons,
   onPress,
 }: {
   data?: Sheet[];
   scrollRef?: RefObject<FlatList>;
+  renderBeforeIcons?: (item: Sheet, index: number) => ReactNode;
+  renderAfterIcons?: (item: Sheet, index: number) => ReactNode;
   onPress?: (item: Sheet) => void;
 }) => {
   const formatSheet = useFormatSheet();
@@ -95,7 +99,7 @@ export const SheetList = ({
         )}
       </View>
       {dataResult.length ? (
-        <FlatList
+        <FlatList<Sheet>
           ref={scrollRef}
           style={{ borderTopWidth: 1, borderColor: borderGray }}
           contentContainerStyle={{ paddingBottom: 100 }}
@@ -106,7 +110,7 @@ export const SheetList = ({
             offset: (itemHeight + separatorHeight) * index,
             index,
           })}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <View
               style={{
                 height: itemHeight,
@@ -116,6 +120,7 @@ export const SheetList = ({
                 borderBottomWidth: separatorHeight,
               }}
             >
+              {renderBeforeIcons?.(item, index)}
               <Link href={sheetUrl(item)} asChild>
                 <Pressable
                   style={{
@@ -143,6 +148,7 @@ export const SheetList = ({
                   <SyncIcon />
                 </View>
               )}
+              {renderAfterIcons?.(item, index)}
             </View>
           )}
         />
