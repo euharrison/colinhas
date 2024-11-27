@@ -100,6 +100,7 @@ export const BookPage = () => {
               book.name
             )
           }
+          onPressBack={isEditMode ? () => setIsEditMode(false) : undefined}
         >
           <Pressable
             style={{
