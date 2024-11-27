@@ -13,6 +13,6 @@ export const goBack = () => {
   if (router.canGoBack()) {
     router.back();
   } else {
-    router.replace(homeUrl);
+    router.push(homeUrl);
   }
 };
