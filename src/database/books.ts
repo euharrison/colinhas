@@ -1,4 +1,5 @@
 import {
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -41,6 +42,15 @@ export function editBook(id: string, data: Pick<Book, "name" | "sheets">) {
 
 export function deleteBook(id: string) {
   return deleteDoc(doc(db, booksCollection, id));
+}
+
+export function appendSheetToBook(id: string, sheetId: string) {
+  const docRef = doc(db, booksCollection, id);
+  updateDoc(docRef, {
+    sheets: arrayUnion(sheetId),
+    updatedAt: serverTimestamp(),
+  });
+  return docRef.id;
 }
 
 export const observeBook = (

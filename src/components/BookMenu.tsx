@@ -2,6 +2,7 @@ import { Pressable, Text, View } from "react-native";
 import { auth } from "../auth/auth";
 import { Book } from "../database/types";
 import { PencilIcon } from "../icons/PencilIcon";
+import { PlusIcon } from "../icons/PlusIcon";
 import { ResetIcon } from "../icons/ResetIcon";
 import { ShareIcon } from "../icons/ShareIcon";
 import { TrashIcon } from "../icons/TrashIcon";
@@ -17,6 +18,7 @@ export const BookMenu = ({
   isEditMode,
   setIsEditMode,
   onPressShare,
+  onPressAppend,
   onPressDelete,
 }: {
   book: Book;
@@ -25,6 +27,7 @@ export const BookMenu = ({
   isEditMode: boolean;
   setIsEditMode: (value: boolean) => void;
   onPressShare: () => void;
+  onPressAppend: () => void;
   onPressDelete: () => void;
 }) => {
   if (!isVisible) {
@@ -41,6 +44,12 @@ export const BookMenu = ({
 
   const hasEditPermission = book.userId === auth.currentUser?.uid;
   if (hasEditPermission) {
+    options.push({
+      label: "Adicionar música",
+      icon: <PlusIcon width={18} />,
+      onPress: onPressAppend,
+    });
+
     if (isEditMode) {
       options.push({
         label: "Cancelar edição",
