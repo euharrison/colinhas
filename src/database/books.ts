@@ -31,16 +31,6 @@ export function createBook(data: Pick<Book, "name" | "sheets">) {
   return docRef.id;
 }
 
-export function editBook(id: string, data: Pick<Book, "name" | "sheets">) {
-  const docRef = doc(db, booksCollection, id);
-  updateDoc(docRef, {
-    name: data.name,
-    sheets: data.sheets,
-    updatedAt: serverTimestamp(),
-  });
-  return docRef.id;
-}
-
 export function deleteBook(id: string) {
   return deleteDoc(doc(db, booksCollection, id));
 }
@@ -58,6 +48,15 @@ export function removeSheetFromBook(id: string, sheetId: string) {
   const docRef = doc(db, booksCollection, id);
   updateDoc(docRef, {
     sheets: arrayRemove(sheetId),
+    updatedAt: serverTimestamp(),
+  });
+  return docRef.id;
+}
+
+export function updateBookSheets(id: string, sheets: string[]) {
+  const docRef = doc(db, booksCollection, id);
+  updateDoc(docRef, {
+    sheets,
     updatedAt: serverTimestamp(),
   });
   return docRef.id;

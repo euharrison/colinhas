@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { FlatList, Platform, Pressable, Share } from "react-native";
+import { FlatList, Platform, Pressable, Share, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppendSheetToBookDialog } from "../components/AppendSheetToBookDialog";
 import { BookMenu } from "../components/BookMenu";
@@ -11,9 +11,15 @@ import { Header } from "../components/Header";
 import { LoadingPage } from "../components/LoadingPage";
 import { ShareDialog } from "../components/ShareDialog";
 import { SheetList } from "../components/SheetList";
-import { observeBook, removeSheetFromBook } from "../database/books";
+import {
+  observeBook,
+  removeSheetFromBook,
+  updateBookSheets,
+} from "../database/books";
 import { observeSheetCollection } from "../database/sheets";
 import { Book, Sheet } from "../database/types";
+import { ArrowDownIcon } from "../icons/ArrowDownIcon";
+import { ArrowUpIcon } from "../icons/ArrowUpIcon";
 import { OptionsIcon } from "../icons/OptionsIcons";
 import { PencilIcon } from "../icons/PencilIcon";
 import { TrashIcon } from "../icons/TrashIcon";
@@ -86,7 +92,7 @@ export const BookPage = () => {
                     changeNameDialogRef.current?.open();
                   }}
                 >
-                  {book.name}
+                  <Text>{book.name}</Text>
                   <PencilIcon width={18} />
                 </Pressable>
               </>
@@ -112,11 +118,60 @@ export const BookPage = () => {
       <SheetList
         data={data}
         scrollRef={scrollRef}
+        renderBeforeIcons={
+          isEditMode
+            ? (item, index) => {
+                const upArrowEnabled = index > 0;
+                const downArrowEnabled = index < book.sheets.length - 1;
+                return (
+                  <>
+                    <Pressable
+                      style={{
+                        marginLeft: pagePadding - 8,
+                        paddingHorizontal: 8,
+                        height: "100%",
+                        justifyContent: "center",
+                        opacity: downArrowEnabled ? 1 : 0.1,
+                      }}
+                      disabled={!downArrowEnabled}
+                      onPress={() => {
+                        const sheets = [...book.sheets];
+                        const elem = sheets[index];
+                        sheets[index] = sheets[index + 1];
+                        sheets[index + 1] = elem;
+                        updateBookSheets(book.id, sheets);
+                      }}
+                    >
+                      <ArrowDownIcon width={12} />
+                    </Pressable>
+                    <Pressable
+                      style={{
+                        paddingHorizontal: 8,
+                        height: "100%",
+                        justifyContent: "center",
+                        opacity: upArrowEnabled ? 1 : 0.1,
+                      }}
+                      disabled={!upArrowEnabled}
+                      onPress={() => {
+                        const sheets = [...book.sheets];
+                        const elem = sheets[index];
+                        sheets[index] = sheets[index - 1];
+                        sheets[index - 1] = elem;
+                        updateBookSheets(book.id, sheets);
+                      }}
+                    >
+                      <ArrowUpIcon width={12} />
+                    </Pressable>
+                  </>
+                );
+              }
+            : undefined
+        }
         renderAfterIcons={
           isEditMode
             ? (item) => (
                 <Pressable
-                  style={{ marginRight: pagePadding }}
+                  style={{ padding: pagePadding }}
                   onPress={() => {
                     removeSheetFromBook(book.id, item.id);
                   }}
