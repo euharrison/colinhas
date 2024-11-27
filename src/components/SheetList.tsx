@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { useState } from "react";
+import { RefObject, useState } from "react";
 import { FlatList, Pressable, Text, TextInput, View } from "react-native";
 import { Sheet } from "../database/types";
 import { useFormatSheet } from "../hooks/useFormatSheet";
@@ -9,7 +9,7 @@ import { SearchIcon } from "../icons/SearchIcon";
 import { SyncIcon } from "../icons/SyncIcon";
 import { backgroundGray, borderGray, textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
-import { createUrl, sheetUrl } from "../urls";
+import { sheetUrl } from "../urls";
 
 const itemHeight = 80;
 const separatorHeight = 1;
@@ -40,7 +40,15 @@ const getSearchResult = (data: Sheet[], search: string) => {
     .sort((a, b) => b.score - a.score);
 };
 
-export const SheetList = ({ data }: { data?: Sheet[] }) => {
+export const SheetList = ({
+  data,
+  scrollRef,
+  onPress,
+}: {
+  data?: Sheet[];
+  scrollRef?: RefObject<FlatList>;
+  onPress?: (item: Sheet) => void;
+}) => {
   const formatSheet = useFormatSheet();
   const [search, setSearch] = useState("");
 
@@ -88,6 +96,7 @@ export const SheetList = ({ data }: { data?: Sheet[] }) => {
       </View>
       {dataResult.length ? (
         <FlatList
+          ref={scrollRef}
           style={{ borderTopWidth: 1, borderColor: borderGray }}
           contentContainerStyle={{ paddingBottom: 100 }}
           data={dataResult}
@@ -114,6 +123,14 @@ export const SheetList = ({ data }: { data?: Sheet[] }) => {
                     gap: 4,
                     padding: pagePadding,
                   }}
+                  onPress={
+                    onPress
+                      ? (e) => {
+                          e.preventDefault();
+                          onPress(item);
+                        }
+                      : undefined
+                  }
                 >
                   <Text>{item.name}</Text>
                   <Text style={{ color: textGray }} numberOfLines={1}>

@@ -1,7 +1,8 @@
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { Platform, Pressable, Share } from "react-native";
+import { FlatList, Platform, Pressable, Share } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AppendSheetToBookDialog } from "../components/AppendSheetToBookDialog";
 import { BookMenu } from "../components/BookMenu";
 import { DeleteBookDialog } from "../components/DeleteBookDialog";
 import { DialogRef } from "../components/Dialog";
@@ -26,7 +27,9 @@ export const BookPage = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
+  const scrollRef = useRef<FlatList>(null);
   const shareDialogRef = useRef<DialogRef>(null);
+  const appendDialogRef = useRef<DialogRef>(null);
   const deleteDialogRef = useRef<DialogRef>(null);
 
   const params = useLocalSearchParams();
@@ -84,7 +87,7 @@ export const BookPage = () => {
         </Header>
       </SafeAreaView>
 
-      <SheetList data={data} />
+      <SheetList data={data} scrollRef={scrollRef} />
 
       <BookMenu
         book={book}
@@ -99,10 +102,16 @@ export const BookPage = () => {
             Share.share({ url: shareBookUrl(book) });
           }
         }}
+        onPressAppend={() => appendDialogRef.current?.open()}
         onPressDelete={() => deleteDialogRef.current?.open()}
       />
 
       <ShareDialog ref={shareDialogRef} url={shareBookUrl(book)} />
+      <AppendSheetToBookDialog
+        ref={appendDialogRef}
+        book={book}
+        scrollRef={scrollRef}
+      />
       <DeleteBookDialog ref={deleteDialogRef} book={book} />
     </>
   );
