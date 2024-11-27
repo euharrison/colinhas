@@ -53,6 +53,15 @@ export function appendSheetToBook(id: string, sheetId: string) {
   return docRef.id;
 }
 
+export function changeBookName(id: string, name: string) {
+  const docRef = doc(db, booksCollection, id);
+  updateDoc(docRef, {
+    name,
+    updatedAt: serverTimestamp(),
+  });
+  return docRef.id;
+}
+
 export const observeBook = (
   id: string,
   onUpdate: (book?: Book) => void,

@@ -19,6 +19,7 @@ export const BookMenu = ({
   setIsEditMode,
   onPressShare,
   onPressAppend,
+  onPressChangeName,
   onPressDelete,
 }: {
   book: Book;
@@ -28,6 +29,7 @@ export const BookMenu = ({
   setIsEditMode: (value: boolean) => void;
   onPressShare: () => void;
   onPressAppend: () => void;
+  onPressChangeName: () => void;
   onPressDelete: () => void;
 }) => {
   if (!isVisible) {
@@ -44,35 +46,38 @@ export const BookMenu = ({
 
   const hasEditPermission = book.userId === auth.currentUser?.uid;
   if (hasEditPermission) {
-    options.push({
-      label: "Adicionar música",
-      icon: <PlusIcon width={18} />,
-      onPress: onPressAppend,
-    });
-
-    if (isEditMode) {
-      options.push({
-        label: "Cancelar edição",
-        icon: <ResetIcon width={18} />,
-        onPress: () => {
-          setIsEditMode(false);
-        },
-      });
-    } else {
-      options.push({
-        label: "Editar",
+    options.push(
+      {
+        label: "Adicionar música",
+        icon: <PlusIcon width={18} />,
+        onPress: onPressAppend,
+      },
+      isEditMode
+        ? {
+            label: "Cancelar edição",
+            icon: <ResetIcon width={18} />,
+            onPress: () => {
+              setIsEditMode(false);
+            },
+          }
+        : {
+            label: "Editar",
+            icon: <PencilIcon width={18} />,
+            onPress: () => {
+              setIsEditMode(true);
+            },
+          },
+      {
+        label: "Renomear",
         icon: <PencilIcon width={18} />,
-        onPress: () => {
-          setIsEditMode(true);
-        },
-      });
-    }
-
-    options.push({
-      label: "Apagar",
-      icon: <TrashIcon width={18} />,
-      onPress: onPressDelete,
-    });
+        onPress: onPressChangeName,
+      },
+      {
+        label: "Apagar",
+        icon: <TrashIcon width={18} />,
+        onPress: onPressDelete,
+      },
+    );
   }
 
   return (

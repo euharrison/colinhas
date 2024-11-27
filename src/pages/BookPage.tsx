@@ -4,6 +4,7 @@ import { FlatList, Platform, Pressable, Share } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppendSheetToBookDialog } from "../components/AppendSheetToBookDialog";
 import { BookMenu } from "../components/BookMenu";
+import { ChangeBookNameDialog } from "../components/ChangeBookNameDialog";
 import { DeleteBookDialog } from "../components/DeleteBookDialog";
 import { DialogRef } from "../components/Dialog";
 import { Header } from "../components/Header";
@@ -30,6 +31,7 @@ export const BookPage = () => {
   const scrollRef = useRef<FlatList>(null);
   const shareDialogRef = useRef<DialogRef>(null);
   const appendDialogRef = useRef<DialogRef>(null);
+  const changeNameDialogRef = useRef<DialogRef>(null);
   const deleteDialogRef = useRef<DialogRef>(null);
 
   const params = useLocalSearchParams();
@@ -103,6 +105,7 @@ export const BookPage = () => {
           }
         }}
         onPressAppend={() => appendDialogRef.current?.open()}
+        onPressChangeName={() => changeNameDialogRef.current?.open()}
         onPressDelete={() => deleteDialogRef.current?.open()}
       />
 
@@ -112,6 +115,7 @@ export const BookPage = () => {
         book={book}
         scrollRef={scrollRef}
       />
+      <ChangeBookNameDialog ref={changeNameDialogRef} book={book} />
       <DeleteBookDialog ref={deleteDialogRef} book={book} />
     </>
   );
