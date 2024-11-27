@@ -10,7 +10,7 @@ export const Header = ({
   children,
   onPressBack,
 }: {
-  title?: string;
+  title?: ReactNode;
   children?: ReactNode;
   onPressBack?: () => void;
 }) => {

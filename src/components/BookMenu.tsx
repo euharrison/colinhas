@@ -68,11 +68,6 @@ export const BookMenu = ({
             },
           },
       {
-        label: "Renomear",
-        icon: <PencilIcon width={18} />,
-        onPress: onPressChangeName,
-      },
-      {
         label: "Apagar",
         icon: <TrashIcon width={18} />,
         onPress: onPressDelete,

@@ -15,6 +15,7 @@ import { observeBook } from "../database/books";
 import { observeSheetCollection } from "../database/sheets";
 import { Book, Sheet } from "../database/types";
 import { OptionsIcon } from "../icons/OptionsIcons";
+import { PencilIcon } from "../icons/PencilIcon";
 import { headerHeight, pagePadding } from "../theme/sizes";
 import { shareBookUrl } from "../urls";
 import { NotFoundPage } from "./NotFoundPage";
@@ -74,7 +75,25 @@ export const BookPage = () => {
   return (
     <>
       <SafeAreaView>
-        <Header title={book?.name}>
+        <Header
+          title={
+            isEditMode ? (
+              <>
+                <Pressable
+                  style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+                  onPress={() => {
+                    changeNameDialogRef.current?.open();
+                  }}
+                >
+                  {book.name}
+                  <PencilIcon width={18} />
+                </Pressable>
+              </>
+            ) : (
+              book.name
+            )
+          }
+        >
           <Pressable
             style={{
               height: headerHeight,
