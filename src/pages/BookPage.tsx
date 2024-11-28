@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { FlatList, Platform, Pressable, Share, Text } from "react-native";
+import { FlatList, Platform, Pressable, Share, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppendSheetToBookDialog } from "../components/AppendSheetToBookDialog";
 import { BookMenu } from "../components/BookMenu";
@@ -116,73 +116,82 @@ export const BookPage = () => {
         </Header>
       </SafeAreaView>
 
-      <SheetList
-        data={data}
-        scrollRef={scrollRef}
-        renderBeforeIcons={
-          isEditMode
-            ? (item, index) => {
-                const upArrowEnabled = index > 0;
-                const downArrowEnabled = index < book.sheets.length - 1;
-                return (
-                  <>
-                    <Pressable
-                      style={{
-                        marginLeft: pagePadding - 8,
-                        paddingHorizontal: 8,
-                        height: "100%",
-                        justifyContent: "center",
-                        opacity: downArrowEnabled ? 1 : 0.1,
-                      }}
-                      disabled={!downArrowEnabled}
-                      onPress={() => {
-                        const sheets = [...book.sheets];
-                        const elem = sheets[index];
-                        sheets[index] = sheets[index + 1];
-                        sheets[index + 1] = elem;
-                        updateBookSheets(book.id, sheets);
-                      }}
-                    >
-                      <ArrowDownIcon width={12} />
-                    </Pressable>
-                    <Pressable
-                      style={{
-                        paddingHorizontal: 8,
-                        height: "100%",
-                        justifyContent: "center",
-                        opacity: upArrowEnabled ? 1 : 0.1,
-                      }}
-                      disabled={!upArrowEnabled}
-                      onPress={() => {
-                        const sheets = [...book.sheets];
-                        const elem = sheets[index];
-                        sheets[index] = sheets[index - 1];
-                        sheets[index - 1] = elem;
-                        updateBookSheets(book.id, sheets);
-                      }}
-                    >
-                      <ArrowUpIcon width={12} />
-                    </Pressable>
-                  </>
-                );
-              }
-            : undefined
-        }
-        renderAfterIcons={
-          isEditMode
-            ? (item) => (
-                <Pressable
-                  style={{ padding: pagePadding }}
-                  onPress={() => {
-                    removeSheetFromBook(book.id, item.id);
-                  }}
-                >
-                  <TrashIcon width={18} />
-                </Pressable>
-              )
-            : undefined
-        }
-      />
+      {data.length ? (
+        <SheetList
+          data={data}
+          scrollRef={scrollRef}
+          renderBeforeIcons={
+            isEditMode
+              ? (item, index) => {
+                  const upArrowEnabled = index > 0;
+                  const downArrowEnabled = index < book.sheets.length - 1;
+                  return (
+                    <>
+                      <Pressable
+                        style={{
+                          marginLeft: pagePadding - 8,
+                          paddingHorizontal: 8,
+                          height: "100%",
+                          justifyContent: "center",
+                          opacity: downArrowEnabled ? 1 : 0.1,
+                        }}
+                        disabled={!downArrowEnabled}
+                        onPress={() => {
+                          const sheets = [...book.sheets];
+                          const elem = sheets[index];
+                          sheets[index] = sheets[index + 1];
+                          sheets[index + 1] = elem;
+                          updateBookSheets(book.id, sheets);
+                        }}
+                      >
+                        <ArrowDownIcon width={12} />
+                      </Pressable>
+                      <Pressable
+                        style={{
+                          paddingHorizontal: 8,
+                          height: "100%",
+                          justifyContent: "center",
+                          opacity: upArrowEnabled ? 1 : 0.1,
+                        }}
+                        disabled={!upArrowEnabled}
+                        onPress={() => {
+                          const sheets = [...book.sheets];
+                          const elem = sheets[index];
+                          sheets[index] = sheets[index - 1];
+                          sheets[index - 1] = elem;
+                          updateBookSheets(book.id, sheets);
+                        }}
+                      >
+                        <ArrowUpIcon width={12} />
+                      </Pressable>
+                    </>
+                  );
+                }
+              : undefined
+          }
+          renderAfterIcons={
+            isEditMode
+              ? (item) => (
+                  <Pressable
+                    style={{ padding: pagePadding }}
+                    onPress={() => {
+                      removeSheetFromBook(book.id, item.id);
+                    }}
+                  >
+                    <TrashIcon width={18} />
+                  </Pressable>
+                )
+              : undefined
+          }
+        />
+      ) : (
+        <View style={{ padding: 40 }}>
+          <Text style={{ fontSize: 18, lineHeight: 30, textAlign: "center" }}>
+            Para adicionar músicas na lista, utilize o botão de opções{" "}
+            <OptionsIcon width={16} height={16} /> acima.
+          </Text>
+        </View>
+      )}
 
       <BookMenu
         book={book}
