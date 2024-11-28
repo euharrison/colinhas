@@ -13,7 +13,7 @@ export const profileUrl = "/profile";
 
 export const createUrl = "/create";
 export const sheetUrl = (sheet: { id: string; name: string }) =>
-  `/${sheet.id}/${slugify(sheet.name)}`;
+  `/musica/${sheet.id}/${slugify(sheet.name)}`;
 
 export const bookUrl = (book: { id: string; name: string }) =>
   `/lista/${book.id}/${slugify(book.name)}`;
