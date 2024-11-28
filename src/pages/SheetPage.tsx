@@ -32,7 +32,7 @@ export const SheetPage = () => {
   const deleteDialogRef = useRef<DialogRef>(null);
 
   const params = useLocalSearchParams();
-  const id = String(params.sheet);
+  const id = String(params.id);
   useEffect(() => {
     return observeSheet(
       id,
