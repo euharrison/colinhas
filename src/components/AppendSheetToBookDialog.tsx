@@ -3,7 +3,7 @@ import { FlatList, useWindowDimensions, View } from "react-native";
 import { closeDialog, Dialog, DialogRef } from "./Dialog";
 import { appendSheetToBook } from "../database/books";
 import { Book, Sheet } from "../database/types";
-import { useQuerySheetCollecion } from "../hooks/useSheetCollection";
+import { useQuerySheets } from "../hooks/useQuerySheets";
 import { LoadingPage } from "./LoadingPage";
 import { SheetList } from "./SheetList";
 
@@ -14,7 +14,7 @@ type Props = {
 
 export const AppendSheetToBookDialog = forwardRef<DialogRef, Props>(
   ({ book, scrollRef }, ref) => {
-    const { data, isLoading } = useQuerySheetCollecion();
+    const { data, isLoading } = useQuerySheets();
     const { height } = useWindowDimensions();
 
     if (isLoading) {

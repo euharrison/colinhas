@@ -1,6 +1,6 @@
 import { forwardRef, useState } from "react";
 import { Text, TextInput, View } from "react-native";
-import { changeBookName } from "../database/books";
+import { renameBook } from "../database/books";
 import { Book } from "../database/types";
 import { alert } from "../services/alert";
 import { borderGray } from "../theme/colors";
@@ -11,7 +11,7 @@ type Props = {
   book: Book;
 };
 
-export const ChangeBookNameDialog = forwardRef<DialogRef, Props>(
+export const RenameBookDialog = forwardRef<DialogRef, Props>(
   ({ book }, ref) => {
     const [name, setName] = useState(book.name);
 
@@ -40,7 +40,7 @@ export const ChangeBookNameDialog = forwardRef<DialogRef, Props>(
                 if (!name) {
                   throw new Error("Dê um nome para sua lista");
                 }
-                changeBookName(book.id, name);
+                renameBook(book.id, name);
                 closeDialog(ref);
               } catch (error) {
                 alert(String(error));

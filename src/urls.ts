@@ -9,12 +9,15 @@ export const termsUrl = `${appUrl}/legal/termos-de-uso.html`;
 export const privacyPolicyUrl = `${appUrl}/legal/politica-de-privacidade.html`;
 
 export const homeUrl = "/";
-export const createUrl = "/create";
 export const profileUrl = "/profile";
+
+export const createUrl = "/create";
 export const sheetUrl = (sheet: { id: string; name: string }) =>
   `/${sheet.id}/${slugify(sheet.name)}`;
+
 export const bookUrl = (book: { id: string; name: string }) =>
   `/lista/${book.id}/${slugify(book.name)}`;
+export const mySheetsUrl = "/lista/minhas";
 
 export const shareSheetUrl = (sheet: Sheet) => `${appUrl}${sheetUrl(sheet)}`;
 export const shareBookUrl = (book: Book) => `${appUrl}${bookUrl(book)}`;

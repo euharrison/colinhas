@@ -1,28 +1,28 @@
 import { Link } from "expo-router";
-import { useState } from "react";
-import { Image, Pressable, Text, View } from "react-native";
+import { useRef } from "react";
+import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { auth } from "../auth/auth";
-import { FAB } from "../components/FAB";
+import { CreateBookDialog } from "../components/CreateBookDialog";
+import { CreateSheetFAB } from "../components/CreateSheetFAB";
+import { DialogRef } from "../components/Dialog";
 import { LoadingPage } from "../components/LoadingPage";
 import { SheetList } from "../components/SheetList";
-import { useQuerySheetCollecion } from "../hooks/useSheetCollection";
+import { useQueryMyBooks } from "../hooks/useQueryMyBooks";
+import { useQuerySheets } from "../hooks/useQuerySheets";
 import { useUser } from "../hooks/useUser";
 import { LogoIcon } from "../icons/LogoIcon";
-import { PencilIcon } from "../icons/PencilIcon";
+import { PlusIcon } from "../icons/PlusIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
-import { backgroundGray, black, borderGray, textGray } from "../theme/colors";
+import { backgroundGray, black } from "../theme/colors";
 import { headerHeight, pagePadding } from "../theme/sizes";
-import { createUrl, profileUrl } from "../urls";
+import { bookUrl, mySheetsUrl, profileUrl } from "../urls";
 
 export const HomePage = () => {
   const user = useUser();
-  const [filterMyOwn, setFilterMyOwn] = useState(false);
-  const { data, isLoading } = useQuerySheetCollecion();
+  const { data, isLoading } = useQuerySheets();
+  const { data: books } = useQueryMyBooks();
 
-  const filteredData = filterMyOwn
-    ? data.filter((i) => i.userId === auth.currentUser?.uid)
-    : data;
+  const createBookDialogRef = useRef<DialogRef>(null);
 
   if (isLoading) {
     return <LoadingPage />;
@@ -66,64 +66,65 @@ export const HomePage = () => {
         </View>
       </SafeAreaView>
 
-      <View
-        style={{
-          flexDirection: "row",
-          marginHorizontal: pagePadding,
-          marginBottom: 20,
-          borderColor: backgroundGray,
-          borderWidth: 1,
-          borderRadius: 8,
-          overflow: "hidden",
-        }}
-      >
-        {[
-          { label: "Todas as colas", value: false },
-          { label: "Minhas colas", value: true },
-        ].map(({ label, value }) => {
-          const selected = filterMyOwn === value;
-          return (
-            <Pressable
-              key={label}
-              onPress={() => setFilterMyOwn(value)}
-              style={{
-                flex: 1,
-                padding: 4,
-                alignItems: "center",
-                justifyContent: "center",
-                borderColor: borderGray,
-                backgroundColor: selected ? backgroundGray : undefined,
-              }}
-            >
-              <Text
-                style={{ fontSize: 12, color: selected ? black : textGray }}
+      <View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginBottom: 8 }}
+          contentContainerStyle={{ paddingHorizontal: pagePadding, gap: 4 }}
+        >
+          {[
+            { name: "Minhas colas", url: mySheetsUrl },
+            ...books.map((b) => ({ name: b.name, url: bookUrl(b) })),
+          ].map(({ name, url }) => (
+            <Link key={url} href={url} asChild>
+              <Pressable
+                style={{
+                  height: 40,
+                  paddingHorizontal: 16,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderColor: backgroundGray,
+                  borderWidth: 1,
+                  borderRadius: 8,
+                }}
               >
-                {label}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
-
-      <SheetList data={filteredData} />
-
-      <Link href={createUrl} asChild>
-        <FAB>
-          <View
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: black,
+                    textAlign: "center",
+                  }}
+                >
+                  {name}
+                </Text>
+              </Pressable>
+            </Link>
+          ))}
+          <Pressable
             style={{
-              flexDirection: "row",
+              height: 40,
+              width: 40,
               alignItems: "center",
-              gap: 4,
-              marginHorizontal: 8,
+              justifyContent: "center",
+              borderColor: backgroundGray,
+              borderWidth: 1,
+              borderRadius: 8,
+            }}
+            onPress={() => {
+              createBookDialogRef.current?.open();
             }}
           >
-            <Text style={{ fontWeight: "700", textTransform: "uppercase" }}>
-              Nova cola
-            </Text>
-            <PencilIcon width={18} />
-          </View>
-        </FAB>
-      </Link>
+            <PlusIcon height={12} width={12} />
+          </Pressable>
+        </ScrollView>
+      </View>
+
+      <SheetList data={data} />
+
+      <CreateSheetFAB />
+
+      <CreateBookDialog ref={createBookDialogRef} />
     </>
   );
 };
