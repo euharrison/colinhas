@@ -4,11 +4,11 @@ import { FlatList, Platform, Pressable, Share, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppendSheetToBookDialog } from "../components/AppendSheetToBookDialog";
 import { BookMenu } from "../components/BookMenu";
-import { ChangeBookNameDialog } from "../components/ChangeBookNameDialog";
 import { DeleteBookDialog } from "../components/DeleteBookDialog";
 import { DialogRef } from "../components/Dialog";
 import { Header } from "../components/Header";
 import { LoadingPage } from "../components/LoadingPage";
+import { RenameBookDialog } from "../components/RenameBookDialog";
 import { ShareDialog } from "../components/ShareDialog";
 import { SheetList } from "../components/SheetList";
 import {
@@ -208,7 +208,7 @@ export const BookPage = () => {
         book={book}
         scrollRef={scrollRef}
       />
-      <ChangeBookNameDialog ref={changeNameDialogRef} book={book} />
+      <RenameBookDialog ref={changeNameDialogRef} book={book} />
       <DeleteBookDialog ref={deleteDialogRef} book={book} />
     </>
   );

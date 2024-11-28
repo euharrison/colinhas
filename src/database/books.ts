@@ -19,11 +19,11 @@ import { getMillis } from "./utils";
 
 const booksCollection = "books";
 
-export function createBook(data: Pick<Book, "name" | "sheets">) {
+export function createBook(name: string) {
   const docRef = doc(collection(db, booksCollection));
   setDoc(docRef, {
-    name: data.name,
-    sheets: data.sheets,
+    name,
+    sheets: [],
     userId: auth.currentUser?.uid,
     updatedAt: serverTimestamp(),
     createdAt: serverTimestamp(),
@@ -62,7 +62,7 @@ export function updateBookSheets(id: string, sheets: string[]) {
   return docRef.id;
 }
 
-export function changeBookName(id: string, name: string) {
+export function renameBook(id: string, name: string) {
   const docRef = doc(db, booksCollection, id);
   updateDoc(docRef, {
     name,
