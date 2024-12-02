@@ -11,6 +11,7 @@ import { getInstrumentOffset } from "../services/getInstrumentOffset";
 import { black, blue, darkBlue, textGray } from "../theme/colors";
 import { DialogRef } from "./Dialog";
 import { InstrumentDialog } from "./InstrumentDialog";
+import { XmlViewer } from "./XmlViewer";
 
 const formatLyrics = (element: ReactNode): ReactNode[] =>
   typeof element !== "string"
@@ -24,17 +25,24 @@ const formatLyrics = (element: ReactNode): ReactNode[] =>
 const formatUrls = (element: ReactNode): ReactNode[] =>
   typeof element !== "string"
     ? [element]
-    : reactStringReplace(element, /(http.*)/g, (match, i) => (
-        <Link key={i} href={match} target="_blank" rel="noreferrer" asChild>
-          <Pressable>
-            {({ pressed }) => (
-              <Text style={{ fontSize: 14, color: pressed ? darkBlue : blue }}>
-                {match}
-              </Text>
-            )}
-          </Pressable>
-        </Link>
-      ));
+    : reactStringReplace(element, /(http.*)/g, (match, i) => {
+        if (match.includes(".mxl")) {
+          return <XmlViewer key={i} url={match} />;
+        }
+        return (
+          <Link key={i} href={match} target="_blank" rel="noreferrer" asChild>
+            <Pressable>
+              {({ pressed }) => (
+                <Text
+                  style={{ fontSize: 14, color: pressed ? darkBlue : blue }}
+                >
+                  {match}
+                </Text>
+              )}
+            </Pressable>
+          </Link>
+        );
+      });
 
 export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
   const formatSheet = useFormatSheet();
