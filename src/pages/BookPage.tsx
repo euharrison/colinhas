@@ -1,73 +1,41 @@
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useRef, useState } from "react";
-import { FlatList, Platform, Pressable, Share, Text, View } from "react-native";
+import { useRef, useState } from "react";
+import { FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppendSheetToBookDialog } from "../components/AppendSheetToBookDialog";
 import { BookMenu } from "../components/BookMenu";
-import { DeleteBookDialog } from "../components/DeleteBookDialog";
-import { DialogRef } from "../components/Dialog";
+import { DialogRef, openDialog } from "../components/Dialog";
 import { Header } from "../components/Header";
+import { HeaderMenu } from "../components/HeaderMenu";
+import { ListMenuRef } from "../components/ListMenu";
 import { LoadingPage } from "../components/LoadingPage";
 import { RenameBookDialog } from "../components/RenameBookDialog";
-import { ShareDialog } from "../components/ShareDialog";
 import { SheetList } from "../components/SheetList";
-import {
-  observeBook,
-  removeSheetFromBook,
-  updateBookSheets,
-} from "../database/books";
-import { observeSheetCollection } from "../database/sheets";
-import { Book, Sheet } from "../database/types";
+import { removeSheetFromBook, updateBookSheets } from "../database/books";
+import { Sheet } from "../database/types";
+import { useQueryBook } from "../hooks/useQueryBook";
+import { useQuerySheets } from "../hooks/useQuerySheets";
 import { ArrowDownIcon } from "../icons/ArrowDownIcon";
 import { ArrowUpIcon } from "../icons/ArrowUpIcon";
 import { OptionsIcon } from "../icons/OptionsIcons";
 import { PencilIcon } from "../icons/PencilIcon";
 import { TrashIcon } from "../icons/TrashIcon";
-import { headerHeight, pagePadding } from "../theme/sizes";
-import { shareBookUrl } from "../urls";
+import { pagePadding } from "../theme/sizes";
 import { NotFoundPage } from "./NotFoundPage";
 
 export const BookPage = () => {
-  const [sheetMap, setSheetMap] = useState<Record<string, Sheet>>({});
-
-  const [book, setBook] = useState<Book | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
-
-  const scrollRef = useRef<FlatList>(null);
-  const shareDialogRef = useRef<DialogRef>(null);
-  const appendDialogRef = useRef<DialogRef>(null);
-  const changeNameDialogRef = useRef<DialogRef>(null);
-  const deleteDialogRef = useRef<DialogRef>(null);
-
   const params = useLocalSearchParams();
   const id = String(params.id);
 
-  useEffect(() => {
-    return observeBook(
-      id,
-      (data) => {
-        setBook(data);
-        setIsLoading(false);
-      },
-      (error) => alert(error.message),
-    );
-  }, [id]);
+  const { data: book, isLoading } = useQueryBook(id);
+  const { data: sheets } = useQuerySheets();
 
-  useEffect(() => {
-    return observeSheetCollection(
-      (data) => {
-        const map: Record<string, Sheet> = {};
-        data.forEach((item) => {
-          map[item.id] = item;
-        });
-        setSheetMap(map);
-      },
-      (error) => alert(error.message),
-    );
-  }, []);
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const listMenuRef = useRef<ListMenuRef>(null);
+  const scrollRef = useRef<FlatList>(null);
+  const appendDialogRef = useRef<DialogRef>(null);
+  const changeNameDialogRef = useRef<DialogRef>(null);
 
   if (isLoading) {
     return <LoadingPage />;
@@ -77,6 +45,11 @@ export const BookPage = () => {
     return <NotFoundPage />;
   }
 
+  const sheetMap: Record<string, Sheet> = {};
+  sheets.forEach((item) => {
+    sheetMap[item.id] = item;
+  });
+
   const data = book.sheets.map((id) => sheetMap[id]).filter(Boolean);
 
   return (
@@ -85,34 +58,29 @@ export const BookPage = () => {
         <Header
           title={
             isEditMode ? (
-              <>
-                <Pressable
-                  style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-                  onPress={() => {
-                    changeNameDialogRef.current?.open();
-                  }}
-                >
-                  <Text>{book.name}</Text>
-                  <PencilIcon width={18} />
-                </Pressable>
-              </>
+              <Pressable
+                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+                onPress={() => {
+                  openDialog(changeNameDialogRef);
+                }}
+              >
+                <Text>{book.name}</Text>
+                <PencilIcon width={18} />
+              </Pressable>
             ) : (
               book.name
             )
           }
           onPressBack={isEditMode ? () => setIsEditMode(false) : undefined}
         >
-          <Pressable
-            style={{
-              height: headerHeight,
-              paddingHorizontal: pagePadding,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            onPress={() => setIsMenuVisible((v) => !v)}
-          >
-            <OptionsIcon />
-          </Pressable>
+          <HeaderMenu listMenuRef={listMenuRef} />
+          <BookMenu
+            ref={listMenuRef}
+            book={book}
+            isEditMode={isEditMode}
+            setIsEditMode={setIsEditMode}
+            onPressAppend={() => openDialog(appendDialogRef)}
+          />
         </Header>
       </SafeAreaView>
 
@@ -193,32 +161,12 @@ export const BookPage = () => {
         </View>
       )}
 
-      <BookMenu
-        book={book}
-        isVisible={isMenuVisible}
-        setIsVisible={setIsMenuVisible}
-        isEditMode={isEditMode}
-        setIsEditMode={setIsEditMode}
-        onPressShare={() => {
-          if (Platform.OS === "web") {
-            shareDialogRef.current?.open();
-          } else {
-            Share.share({ url: shareBookUrl(book) });
-          }
-        }}
-        onPressAppend={() => appendDialogRef.current?.open()}
-        onPressChangeName={() => changeNameDialogRef.current?.open()}
-        onPressDelete={() => deleteDialogRef.current?.open()}
-      />
-
-      <ShareDialog ref={shareDialogRef} url={shareBookUrl(book)} />
       <AppendSheetToBookDialog
         ref={appendDialogRef}
         book={book}
         scrollRef={scrollRef}
       />
       <RenameBookDialog ref={changeNameDialogRef} book={book} />
-      <DeleteBookDialog ref={deleteDialogRef} book={book} />
     </>
   );
 };
