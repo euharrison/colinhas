@@ -1,19 +1,10 @@
 import { OpenSheetMusicDisplay } from "opensheetmusicdisplay";
 import { startTransition, useEffect, useRef, useState } from "react";
-import {
-  Pressable,
-  PressableProps,
-  ScrollView,
-  Text,
-  TextStyle,
-  View,
-} from "react-native";
+import { Pressable, PressableProps, Text, TextStyle, View } from "react-native";
 import { backgroundGray, borderGray, white } from "../theme/colors";
 
 const defaultSpacing = 100;
-const defaultZoom = 50;
-
-const divRenderId = "osmdContainer";
+const defaultZoom = 70;
 
 export const Button = ({
   children,
@@ -48,11 +39,8 @@ export const Button = ({
 };
 
 export const XmlViewer = ({ url }: { url: string }) => {
-  const [spacing, setSpacing] = useState(defaultZoom);
+  const [spacing, setSpacing] = useState(defaultSpacing);
   const [zoom, setZoom] = useState(defaultZoom);
-
-  const scrollViewRef = useRef<ScrollView>(null);
-  const scrollPosRef = useRef<number>(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const osmdRef = useRef<OpenSheetMusicDisplay>();
@@ -74,13 +62,13 @@ export const XmlViewer = ({ url }: { url: string }) => {
 
       osmd.setOptions({
         backend: "svg",
-        drawingParameters: "compacttight",
+        drawingParameters: "compact",
         drawMeasureNumbers: false,
       });
 
       // margem geral
-      osmd.EngravingRules.PageLeftMargin = 1.0;
-      osmd.EngravingRules.PageRightMargin = 1.0;
+      osmd.EngravingRules.PageLeftMargin = 0;
+      osmd.EngravingRules.PageRightMargin = 0;
 
       // zoom
       osmd.Zoom = defaultZoom / 100;
@@ -90,13 +78,13 @@ export const XmlViewer = ({ url }: { url: string }) => {
 
       // espaçamento entre notas (beams)
       // osmd.EngravingRules.VoiceSpacingAddend = 5; // default 3.0, 2.0 in compacttight mode
-      osmd.EngravingRules.VoiceSpacingMultiplierVexflow = defaultSpacing / 100; // default 0.85, 0.65 in compacttight mode
+      // osmd.EngravingRules.VoiceSpacingMultiplierVexflow = defaultSpacing / 100; // default 0.85, 0.65 in compacttight mode
 
       // fixa a largura do compasso
       osmd.EngravingRules.FixedMeasureWidth = true;
 
       // influencia o espaçamento "line break"
-      osmd.EngravingRules.MinSkyBottomDistBetweenSystems = 3.0; // default 5.0, 1.0 in compacttight mode
+      // osmd.EngravingRules.MinSkyBottomDistBetweenSystems = 3.0; // default 5.0, 1.0 in compacttight mode
 
       const instrumentId = Number(
         decodeURI(new URL(url).search.split("instrumentId=")[1]),
@@ -153,7 +141,7 @@ export const XmlViewer = ({ url }: { url: string }) => {
   };
 
   return (
-    <View style={{ width: "100%" }}>
+    <>
       <View>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
           <Text style={{ fontSize: 12 }}>Espaçamento: {spacing}%</Text>
@@ -166,17 +154,7 @@ export const XmlViewer = ({ url }: { url: string }) => {
           <Button onPress={() => onChangeZoom(+10)}>+</Button>
         </View>
       </View>
-
-      <ScrollView
-        ref={scrollViewRef}
-        scrollEventThrottle={16}
-        onScroll={(e) => {
-          scrollPosRef.current = e.nativeEvent.contentOffset.y;
-        }}
-        contentContainerStyle={{ flex: 1 }}
-      >
-        <View ref={containerRef as any} />
-      </ScrollView>
-    </View>
+      <View style={{ width: "100%" }} ref={containerRef as any} />
+    </>
   );
 };
