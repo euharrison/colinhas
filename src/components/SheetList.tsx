@@ -9,7 +9,7 @@ import { SearchIcon } from "../icons/SearchIcon";
 import { SyncIcon } from "../icons/SyncIcon";
 import { backgroundGray, borderGray, textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
-import { sheetUrl } from "../urls";
+import { viewSheetUrl } from "../urls";
 
 const itemHeight = 80;
 const separatorHeight = 1;
@@ -121,7 +121,7 @@ export const SheetList = ({
               }}
             >
               {renderBeforeIcons?.(item, index)}
-              <Link href={sheetUrl(item)} asChild>
+              <Link href={viewSheetUrl(item)} asChild>
                 <Pressable
                   style={{
                     flex: 1,

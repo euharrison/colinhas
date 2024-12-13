@@ -12,14 +12,17 @@ export const homeUrl = "/";
 export const profileUrl = "/profile";
 
 export const createUrl = "/create";
-export const sheetUrl = (sheet: { id: string; name: string }) =>
+export const viewSheetUrl = (sheet: { id: string; name: string }) =>
   `/musica/${sheet.id}/${slugify(sheet.name)}`;
+export const updateSheetUrl = (sheet: { id: string; name: string }) =>
+  `/musica/${sheet.id}/${slugify(sheet.name)}/update`;
 
 export const bookUrl = (book: { id: string; name: string }) =>
   `/lista/${book.id}/${slugify(book.name)}`;
 export const mySheetsUrl = "/lista/minhas";
 
-export const shareSheetUrl = (sheet: Sheet) => `${appUrl}${sheetUrl(sheet)}`;
+export const shareSheetUrl = (sheet: Sheet) =>
+  `${appUrl}${viewSheetUrl(sheet)}`;
 export const shareBookUrl = (book: Book) => `${appUrl}${bookUrl(book)}`;
 
 export const supportEmail = "contato@colinhas.com";

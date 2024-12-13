@@ -5,7 +5,7 @@ import { createSheet, editSheet } from "../database/sheets";
 import { Key, Sheet } from "../database/types";
 import { alert } from "../services/alert";
 import { borderGray } from "../theme/colors";
-import { sheetUrl, termsUrl } from "../urls";
+import { termsUrl, viewSheetUrl } from "../urls";
 import { AuthGate } from "./AuthGate";
 import { Button } from "./Button";
 import { Dialog, DialogRef } from "./Dialog";
@@ -75,7 +75,9 @@ const SaveSheetForm = ({ id, defaultValues }: Props) => {
             const redirectId = id
               ? editSheet(id, payload)
               : createSheet(payload);
-            router.replace(sheetUrl({ id: redirectId, name: payload.name }));
+            router.replace(
+              viewSheetUrl({ id: redirectId, name: payload.name }),
+            );
           } catch (error) {
             alert(String(error));
           }

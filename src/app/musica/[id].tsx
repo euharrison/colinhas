@@ -1,3 +1,3 @@
-import { SheetPage } from "../../pages/SheetPage";
+import { ViewSheetPage } from "../../pages/ViewSheetPage";
 
-export default SheetPage;
+export default ViewSheetPage;

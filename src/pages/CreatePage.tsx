@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import { DialogRef } from "../components/Dialog";
 import { DiscardDialog } from "../components/DiscardDialog";
-import { EditSheet } from "../components/EditSheet";
 import { Header } from "../components/Header";
 import { KeyboardLayout } from "../components/KeyboardLayout";
+import { SheetWriter } from "../components/SheetWriter";
 import { goBack } from "../services/navigation";
 
 export const CreatePage = () => {
@@ -17,7 +17,7 @@ export const CreatePage = () => {
           discardDialogRef.current?.open();
         }}
       />
-      <EditSheet />
+      <SheetWriter />
       <DiscardDialog ref={discardDialogRef} onConfirm={() => goBack()} />
     </KeyboardLayout>
   );

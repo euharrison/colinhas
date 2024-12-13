@@ -13,7 +13,7 @@ import { FAB } from "./FAB";
 import { NotesKeyboard, specialChars } from "./NotesKeyboard";
 import { SaveSheetDialog } from "./SaveSheetDialog";
 
-export const EditSheet = ({ sheet }: { sheet?: Sheet }) => {
+export const SheetWriter = ({ sheet }: { sheet?: Sheet }) => {
   const { settings } = useLocalSettings();
   const formatSheet = useFormatSheet();
   const formatKey = useFormatKey();

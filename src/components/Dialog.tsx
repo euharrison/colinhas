@@ -21,9 +21,15 @@ export type DialogProps = {
   children: ReactNode;
 };
 
+export const openDialog = (ref: ForwardedRef<DialogRef>) => {
+  if (ref && "current" in ref) {
+    ref.current?.open();
+  }
+};
+
 export const closeDialog = (ref: ForwardedRef<DialogRef>) => {
   if (ref && "current" in ref) {
-    ref?.current?.close();
+    ref.current?.close();
   }
 };
 
