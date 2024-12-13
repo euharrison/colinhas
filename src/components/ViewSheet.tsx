@@ -1,3 +1,4 @@
+import { useKeepAwake } from "expo-keep-awake";
 import { Link } from "expo-router";
 import { ReactNode, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
@@ -51,6 +52,8 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
   const [instrument, setInstrument] = useState(settings.instrument);
 
   const instrumentDialogRef = useRef<DialogRef>(null);
+
+  useKeepAwake();
 
   const needsAutoTransposition =
     getInstrumentOffset(instrument) !== getInstrumentOffset(sheet.instrument);
