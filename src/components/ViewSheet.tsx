@@ -1,6 +1,6 @@
 import { useKeepAwake } from "expo-keep-awake";
 import { Link } from "expo-router";
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import reactStringReplace from "react-string-replace";
 import { Sheet } from "../database/types";
@@ -8,9 +8,12 @@ import { useFormatKey } from "../hooks/useFormatKey";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useLocalSettings } from "../hooks/useLocalSettings";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
+import { PauseIcon } from "../icons/PauseIcon";
+import { PlayIcon } from "../icons/PlayIcon";
 import { getInstrumentOffset } from "../services/getInstrumentOffset";
 import { black, blue, darkBlue, textGray } from "../theme/colors";
 import { DialogRef } from "./Dialog";
+import { FAB } from "./FAB";
 import { InstrumentDialog } from "./InstrumentDialog";
 import { XmlViewer } from "./XmlViewer";
 
@@ -45,22 +48,50 @@ const formatUrls = (element: ReactNode): ReactNode[] =>
         );
       });
 
+const defaultAutoScrollPx = 100;
+const defaultAutoScrollTick = 10;
+
 export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
   const formatSheet = useFormatSheet();
   const formatKey = useFormatKey();
   const { settings } = useLocalSettings();
   const [instrument, setInstrument] = useState(settings.instrument);
+  const [isPlayMode, setIsPlayMode] = useState(false);
 
   const instrumentDialogRef = useRef<DialogRef>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollPosRef = useRef<number>(0);
 
   useKeepAwake();
 
   const needsAutoTransposition =
     getInstrumentOffset(instrument) !== getInstrumentOffset(sheet.instrument);
 
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isPlayMode) {
+      interval = setInterval(() => {
+        if (scrollViewRef.current) {
+          scrollViewRef.current.scrollTo({
+            y: scrollPosRef.current + defaultAutoScrollPx,
+            animated: true,
+          });
+        }
+      }, defaultAutoScrollTick * 1000);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isPlayMode]);
+
   return (
     <>
       <ScrollView
+        ref={scrollViewRef}
+        scrollEventThrottle={16}
+        onScroll={(e) => {
+          scrollPosRef.current = e.nativeEvent.contentOffset.y;
+        }}
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 100 }}
       >
         <View style={{ marginTop: 8, marginBottom: 20, gap: 8 }}>
@@ -115,6 +146,13 @@ export const ViewSheet = ({ sheet }: { sheet: Sheet }) => {
           {formatLyrics(formatSheet(sheet, instrument)).map(formatUrls)}
         </Text>
       </ScrollView>
+
+      <FAB
+        onPress={() => setIsPlayMode((v) => !v)}
+        style={{ opacity: isPlayMode ? 0.2 : undefined }}
+      >
+        {isPlayMode ? <PauseIcon height={16} /> : <PlayIcon height={16} />}
+      </FAB>
 
       <InstrumentDialog
         ref={instrumentDialogRef}

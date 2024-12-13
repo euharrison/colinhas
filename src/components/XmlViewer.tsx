@@ -100,7 +100,8 @@ export const XmlViewer = ({ url }: { url: string }) => {
     };
 
     if (url) {
-      load().catch(() => {
+      load().catch((e) => {
+        console.error(e);
         clear();
         setTimeout(() => {
           alert("Erro ao exibir a música");

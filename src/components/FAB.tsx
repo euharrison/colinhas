@@ -21,6 +21,7 @@ export const FAB = forwardRef<View, PressableProps>((props, ref) => {
         justifyContent: "center",
         backgroundColor: pressed ? backgroundGray : white,
         ...dropShadow,
+        ...(typeof props.style === "object" ? props.style : {}),
       })}
     />
   );
