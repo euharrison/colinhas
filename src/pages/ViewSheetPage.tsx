@@ -1,7 +1,7 @@
 import { useKeepAwake } from "expo-keep-awake";
 import { Link, useLocalSearchParams } from "expo-router";
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import reactStringReplace from "react-string-replace";
 import { DialogRef } from "../components/Dialog";
 import { FAB } from "../components/FAB";
@@ -21,56 +21,34 @@ import { InstrumentIcon } from "../icons/InstrumentIcon";
 import { PauseIcon } from "../icons/PauseIcon";
 import { PlayIcon } from "../icons/PlayIcon";
 import { getInstrumentOffset } from "../services/getInstrumentOffset";
-import { black, blue, darkBlue, textGray } from "../theme/colors";
+import { black, blue, textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
 import { NotFoundPage } from "./NotFoundPage";
 
 const defaultAutoScrollPx = 100;
 const defaultAutoScrollTick = 10;
 
-const formatLyrics = (element: ReactNode): ReactNode[] =>
-  typeof element !== "string"
-    ? [element]
-    : reactStringReplace(element, /["|http](.*?)"/g, (match, i) => (
-        <Text key={`lyrics_${i}`} style={{ fontSize: 16, color: textGray }}>
-          {match}
-        </Text>
-      ));
+type ElementToFormat = string | ReactNode[] | undefined;
 
-const formatUrls = (element: ReactNode): ReactNode[] =>
-  typeof element !== "string"
-    ? [element]
-    : reactStringReplace(element, /(http.*)/g, (match, i) => {
-        const key = `url_${i}`;
-        if (match.includes(".mxl")) {
-          return <XmlViewer key={key} url={match} />;
-        }
-        return (
-          <Link key={key} href={match} target="_blank" rel="noreferrer" asChild>
-            <Pressable>
-              {({ pressed }) => (
-                <Text
-                  style={{ fontSize: 14, color: pressed ? darkBlue : blue }}
-                >
-                  {match}
-                </Text>
-              )}
-            </Pressable>
-          </Link>
-        );
-      });
+const formatLyrics = (element: ElementToFormat): ElementToFormat =>
+  reactStringReplace(element, /["|http](.*?)"/g, (match, i) => (
+    <Text key={`lyrics_${i}`} style={{ fontSize: 16, color: textGray }}>
+      {match}
+    </Text>
+  ));
 
-const formatNotes = (element: ReactNode, i: number): ReactNode[] =>
-  typeof element !== "string"
-    ? [element]
-    : [
-        <Text
-          key={`note_${i}`}
-          style={{ fontSize: 20, fontWeight: "500", color: black }}
-        >
-          {element}
-        </Text>,
-      ];
+const formatUrls = (element: ElementToFormat): ElementToFormat =>
+  reactStringReplace(element, /(http.*)/g, (match, i) => {
+    const key = `url_${i}`;
+    if (match.includes(".mxl")) {
+      return <XmlViewer key={key} url={match} />;
+    }
+    return (
+      <Link key={key} href={match} target="_blank" rel="noreferrer" asChild>
+        <Text style={{ fontSize: 14, color: blue }}>{match}</Text>
+      </Link>
+    );
+  });
 
 export const ViewSheetPage = () => {
   const params = useLocalSearchParams();
@@ -116,10 +94,8 @@ export const ViewSheetPage = () => {
     return <NotFoundPage />;
   }
 
-  const sheet = data;
-
   const needsAutoTransposition =
-    getInstrumentOffset(instrument) !== getInstrumentOffset(sheet.instrument);
+    getInstrumentOffset(instrument) !== getInstrumentOffset(data.instrument);
 
   return (
     <>
@@ -147,10 +123,10 @@ export const ViewSheetPage = () => {
         >
           <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
             <Text style={{ color: textGray }}>
-              Escrito para {sheet.instrument}
+              Escrito para {data.instrument}
             </Text>
             <InstrumentIcon
-              instrument={sheet.instrument}
+              instrument={data.instrument}
               width={18}
               height={18}
               fill={textGray}
@@ -163,15 +139,14 @@ export const ViewSheetPage = () => {
             >
               <Text style={{ color: textGray }}>
                 Visualizando para{" "}
-                <Pressable
+                <Text
+                  style={{ textDecorationLine: "underline" }}
                   onPress={() => {
                     instrumentDialogRef.current?.open();
                   }}
                 >
-                  <Text style={{ textDecorationLine: "underline" }}>
-                    {instrument}
-                  </Text>
-                </Pressable>
+                  {instrument}
+                </Text>
               </Text>
               <InstrumentIcon
                 instrument={instrument}
@@ -188,18 +163,14 @@ export const ViewSheetPage = () => {
           </View>
 
           <Text style={{ color: textGray }}>
-            Tom: {formatKey(sheet, instrument) ?? "Desconhecido"}
+            Tom: {formatKey(data, instrument) ?? "Desconhecido"}
           </Text>
         </View>
 
         <View style={{ paddingHorizontal: pagePadding, paddingBottom: 100 }}>
-          {[formatSheet(sheet, instrument)]
-            .map(formatLyrics)
-            .flat()
-            .map(formatUrls)
-            .flat()
-            .map(formatNotes)
-            .flat()}
+          <Text style={{ fontSize: 20, fontWeight: "500", color: black }}>
+            {formatUrls(formatLyrics(formatSheet(data, instrument)))}
+          </Text>
         </View>
       </ScrollView>
 
