@@ -17,8 +17,6 @@ export const ResponsiveImage = ({ ...props }: ImageProps) => {
       style={{
         width: window.width,
         aspectRatio: imageRatio ? 1 / imageRatio : undefined,
-        borderWidth: 1,
-        borderColor: "red",
       }}
       onLoad={(e) => {
         const { width, height } = e.source;
