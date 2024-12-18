@@ -40,3 +40,4 @@ ios/
 
 # custom
 backups/
+.env
