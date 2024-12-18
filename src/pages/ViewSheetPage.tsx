@@ -48,7 +48,11 @@ const formatUrls = (element: ElementToFormat): ElementToFormat =>
       return <XmlViewer key={key} url={match} />;
     }
     if (match.includes(".png") || match.includes(".jpg")) {
-      return <ResponsiveImage key={key} source={match} />;
+      return (
+        <View key={key} style={{ marginHorizontal: -pagePadding }}>
+          <ResponsiveImage source={match} />
+        </View>
+      );
     }
     return (
       <Link key={key} href={match} target="_blank" rel="noreferrer" asChild>
