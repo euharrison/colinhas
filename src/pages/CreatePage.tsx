@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { DialogRef } from "../components/Dialog";
+import { DialogRef, openDialog } from "../components/Dialog";
 import { DiscardDialog } from "../components/DiscardDialog";
 import { Header } from "../components/Header";
 import { KeyboardLayout } from "../components/KeyboardLayout";
@@ -14,7 +14,7 @@ export const CreatePage = () => {
       <Header
         title="Nova cola"
         onPressBack={() => {
-          discardDialogRef.current?.open();
+          openDialog(discardDialogRef);
         }}
       />
       <SheetWriter />

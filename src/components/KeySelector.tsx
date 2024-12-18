@@ -2,7 +2,7 @@ import { ReactNode, useRef } from "react";
 import { Pressable, Text, View } from "react-native";
 import { Key, KeySignature, MajorKey, MinorKey } from "../database/types";
 import { backgroundGray, borderGray, white } from "../theme/colors";
-import { Dialog, DialogRef } from "./Dialog";
+import { Dialog, DialogRef, openDialog } from "./Dialog";
 
 export const keySignatureMap: [KeySignature, MajorKey, MinorKey][] = [
   ["♭♭♭♭♭♭♭", "Do♭ Maior", "La♭ menor"],
@@ -63,7 +63,7 @@ export const KeySelector = ({
     <>
       <Pressable
         onPress={() => {
-          dialogRef.current?.open();
+          openDialog(dialogRef);
         }}
       >
         {children}

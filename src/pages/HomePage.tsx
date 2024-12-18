@@ -4,7 +4,7 @@ import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CreateBookDialog } from "../components/CreateBookDialog";
 import { CreateSheetFAB } from "../components/CreateSheetFAB";
-import { DialogRef } from "../components/Dialog";
+import { DialogRef, openDialog } from "../components/Dialog";
 import { LoadingPage } from "../components/LoadingPage";
 import { SheetList } from "../components/SheetList";
 import { useQueryMyBooks } from "../hooks/useQueryMyBooks";
@@ -112,7 +112,7 @@ export const HomePage = () => {
               borderRadius: 8,
             }}
             onPress={() => {
-              createBookDialogRef.current?.open();
+              openDialog(createBookDialogRef);
             }}
           >
             <PlusIcon height={12} width={12} />

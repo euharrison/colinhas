@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Key, KeySignature } from "../database/types";
 import { backgroundGray, keyboardBackground, white } from "../theme/colors";
+import { FileUploadButton } from "./FileUploadButton";
 import { KeySelector, keySignatureMap } from "./KeySelector";
 
 export const specialChars = ['"', "/", "_", "♯", "♭"];
@@ -92,6 +93,7 @@ export const NotesKeyboard = ({
             <Text>{keyValue ?? "Tom"}</Text>
           </View>
         </KeySelector>
+        <FileUploadButton onPress={(url) => onPressNote(url)} />
         <View style={{ flexDirection: "row", gap: 2 }}>
           {specialChars.map((key) => (
             <Pressable

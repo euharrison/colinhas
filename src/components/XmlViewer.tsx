@@ -3,8 +3,8 @@ import { startTransition, useEffect, useRef, useState } from "react";
 import { Pressable, PressableProps, Text, TextStyle, View } from "react-native";
 import { backgroundGray, borderGray, white } from "../theme/colors";
 
-const defaultSpacing = 100;
-const defaultZoom = 70;
+const defaultSpacing = 70;
+const defaultZoom = 100;
 
 export const Button = ({
   children,
@@ -77,8 +77,8 @@ export const XmlViewer = ({ url }: { url: string }) => {
       osmd.DrawingParameters.Rules.RenderClefsAtBeginningOfStaffline = false;
 
       // espaçamento entre notas (beams)
-      // osmd.EngravingRules.VoiceSpacingAddend = 5; // default 3.0, 2.0 in compacttight mode
-      // osmd.EngravingRules.VoiceSpacingMultiplierVexflow = defaultSpacing / 100; // default 0.85, 0.65 in compacttight mode
+      osmd.EngravingRules.VoiceSpacingAddendVexflow = 2.0; // default 3.0, 2.0 in compacttight mode
+      osmd.EngravingRules.VoiceSpacingMultiplierVexflow = defaultSpacing / 100; // default 0.85, 0.65 in compacttight mode
 
       // fixa a largura do compasso
       osmd.EngravingRules.FixedMeasureWidth = true;

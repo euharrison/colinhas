@@ -3,7 +3,7 @@ import { Link, useLocalSearchParams } from "expo-router";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import reactStringReplace from "react-string-replace";
-import { DialogRef } from "../components/Dialog";
+import { DialogRef, openDialog } from "../components/Dialog";
 import { FAB } from "../components/FAB";
 import { Header } from "../components/Header";
 import { HeaderMenu } from "../components/HeaderMenu";
@@ -11,6 +11,7 @@ import { InstrumentDialog } from "../components/InstrumentDialog";
 import { ListMenuRef } from "../components/ListMenu";
 import { LoadingPage } from "../components/LoadingPage";
 import { OgTags } from "../components/OgTags";
+import { ResponsiveImage } from "../components/ResponsiveImage";
 import { ViewSheetMenu } from "../components/ViewSheetMenu";
 import { XmlViewer } from "../components/XmlViewer";
 import { useFormatKey } from "../hooks/useFormatKey";
@@ -32,16 +33,22 @@ type ElementToFormat = string | ReactNode[] | undefined;
 
 const formatLyrics = (element: ElementToFormat): ElementToFormat =>
   reactStringReplace(element, /["|http](.*?)"/g, (match, i) => (
-    <Text key={`lyrics_${i}`} style={{ fontSize: 16, color: textGray }}>
+    <Text
+      key={`lyrics_${match}_${i}`}
+      style={{ fontSize: 16, color: textGray }}
+    >
       {match}
     </Text>
   ));
 
 const formatUrls = (element: ElementToFormat): ElementToFormat =>
-  reactStringReplace(element, /(http.*)/g, (match, i) => {
-    const key = `url_${i}`;
+  reactStringReplace(element, /(http.*)/g, (match, i, offset) => {
+    const key = `url_${match}_${i}_${offset}`;
     if (match.includes(".mxl")) {
       return <XmlViewer key={key} url={match} />;
+    }
+    if (match.includes(".png") || match.includes(".jpg")) {
+      return <ResponsiveImage key={key} source={match} />;
     }
     return (
       <Link key={key} href={match} target="_blank" rel="noreferrer" asChild>
@@ -142,7 +149,7 @@ export const ViewSheetPage = () => {
                 <Text
                   style={{ textDecorationLine: "underline" }}
                   onPress={() => {
-                    instrumentDialogRef.current?.open();
+                    openDialog(instrumentDialogRef);
                   }}
                 >
                   {instrument}

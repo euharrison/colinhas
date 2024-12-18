@@ -8,7 +8,7 @@ import { ArrowForwardIcon } from "../icons/ArrowForwardIcon";
 import { alert } from "../services/alert";
 import { textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
-import { DialogRef } from "./Dialog";
+import { DialogRef, openDialog } from "./Dialog";
 import { FAB } from "./FAB";
 import { NotesKeyboard, specialChars } from "./NotesKeyboard";
 import { SaveSheetDialog } from "./SaveSheetDialog";
@@ -95,7 +95,7 @@ export const SheetWriter = ({ sheet }: { sheet?: Sheet }) => {
             if (!value) {
               alert("Escreva sua cola antes de salvar");
             } else {
-              saveDialogRef.current?.open();
+              openDialog(saveDialogRef);
             }
           }}
         >
