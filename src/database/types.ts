@@ -70,6 +70,7 @@ export type Sheet = {
   data: string;
   instrument: Instrument;
   key?: Key;
+  unlisted?: boolean;
   userId: string;
   updatedAt: number;
   createdAt: number;

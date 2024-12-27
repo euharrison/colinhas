@@ -2,6 +2,7 @@ import { Link } from "expo-router";
 import { useRef } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { auth } from "../auth/auth";
 import { CreateBookDialog } from "../components/CreateBookDialog";
 import { CreateSheetFAB } from "../components/CreateSheetFAB";
 import { DialogRef, openDialog } from "../components/Dialog";
@@ -120,7 +121,11 @@ export const HomePage = () => {
         </ScrollView>
       </View>
 
-      <SheetList data={data} />
+      <SheetList
+        data={data.filter(
+          (i) => !i.unlisted || i.userId === auth.currentUser?.uid,
+        )}
+      />
 
       <CreateSheetFAB />
 

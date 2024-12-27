@@ -4,10 +4,11 @@ import { Text, TextInput, View } from "react-native";
 import { createSheet, editSheet } from "../database/sheets";
 import { Key, Sheet } from "../database/types";
 import { alert } from "../services/alert";
-import { borderGray } from "../theme/colors";
+import { borderGray, textGray } from "../theme/colors";
 import { termsUrl, viewSheetUrl } from "../urls";
 import { AuthGate } from "./AuthGate";
 import { Button } from "./Button";
+import { Checkbox } from "./Checkbox";
 import { Dialog, DialogRef } from "./Dialog";
 import { Disclaimer } from "./Disclaimer";
 import { KeySelector } from "./KeySelector";
@@ -20,6 +21,7 @@ type Props = {
 const SaveSheetForm = ({ id, defaultValues }: Props) => {
   const [name, setName] = useState(defaultValues.name);
   const [key, setKey] = useState<Key | undefined>(defaultValues.key);
+  const [unlisted, setUnlisted] = useState<boolean>(false);
 
   return (
     <View style={{ gap: 16 }}>
@@ -39,6 +41,7 @@ const SaveSheetForm = ({ id, defaultValues }: Props) => {
           onChangeText={setName}
         />
       </View>
+
       <View>
         <Text>Tom:</Text>
         <KeySelector onChange={(v) => setKey(v)}>
@@ -54,13 +57,38 @@ const SaveSheetForm = ({ id, defaultValues }: Props) => {
           </Text>
         </KeySelector>
       </View>
+
+      <View>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Checkbox
+            label="Não listado"
+            value={unlisted}
+            onChange={(v) => setUnlisted(v)}
+          />
+        </View>
+        <Text
+          style={{
+            color: textGray,
+            fontStyle: "italic",
+            fontSize: 12,
+            marginTop: 2,
+            marginLeft: 2,
+          }}
+        >
+          Músicas serão visíveis para todos, a menos que você marque "Não
+          listado". Nesse caso, só serão visíveis para você e quem possuir o
+          link de compartilhamento.
+        </Text>
+      </View>
+
       <Disclaimer>
-        Todas as colas são públicas e visíveis por todos. Não viole os{" "}
+        Não viole os{" "}
         <Link href={termsUrl} target="_blank">
           <Text style={{ textDecorationLine: "underline" }}>termos de uso</Text>
         </Link>
         .
       </Disclaimer>
+
       <Button
         onPress={async () => {
           try {
@@ -71,6 +99,7 @@ const SaveSheetForm = ({ id, defaultValues }: Props) => {
               ...defaultValues,
               name,
               key,
+              unlisted,
             };
             const redirectId = id
               ? editSheet(id, payload)

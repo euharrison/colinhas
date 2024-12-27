@@ -35,7 +35,7 @@ export const getSheetsCollectionName = () => {
 };
 
 export function createSheet(
-  data: Pick<Sheet, "name" | "data" | "instrument" | "key">,
+  data: Pick<Sheet, "name" | "data" | "instrument" | "key" | "unlisted">,
 ) {
   const docRef = doc(collection(db, sheetsCollection));
   setDoc(docRef, {
@@ -43,6 +43,7 @@ export function createSheet(
     data: data.data,
     instrument: data.instrument,
     key: data.key ?? "",
+    unlisted: data.unlisted ?? "",
     userId: auth.currentUser?.uid,
     updatedAt: serverTimestamp(),
     createdAt: serverTimestamp(),
@@ -52,7 +53,7 @@ export function createSheet(
 
 export function editSheet(
   id: string,
-  data: Pick<Sheet, "name" | "data" | "instrument" | "key">,
+  data: Pick<Sheet, "name" | "data" | "instrument" | "key" | "unlisted">,
 ) {
   const docRef = doc(db, sheetsCollection, id);
   updateDoc(docRef, {
@@ -60,6 +61,7 @@ export function editSheet(
     data: data.data,
     instrument: data.instrument,
     key: data.key ?? "",
+    unlisted: data.unlisted ?? "",
     updatedAt: serverTimestamp(),
   });
   return docRef.id;
@@ -109,6 +111,7 @@ const docToSheet = (snapshot: DocumentSnapshot): Sheet | undefined => {
     data: data.data ?? "",
     instrument: data.instrument ?? "",
     key: data.key ?? "",
+    unlisted: data.unlisted ?? "",
     userId: data.userId ?? "",
     updatedAt: getMillis(data.updatedAt),
     createdAt: getMillis(data.createdAt),
