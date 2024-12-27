@@ -1,10 +1,14 @@
 import { useKeepAwake } from "expo-keep-awake";
 import { Link, useLocalSearchParams } from "expo-router";
-import { ReactNode, useEffect, useRef, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { ScrollView, Text, useWindowDimensions, View } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import reactStringReplace from "react-string-replace";
+import {
+  ControllerFeedback,
+  ControllerFeedbackRef,
+} from "../components/ControllerFeedback";
 import { DialogRef, openDialog } from "../components/Dialog";
-import { FAB } from "../components/FAB";
 import { Header } from "../components/Header";
 import { HeaderMenu } from "../components/HeaderMenu";
 import { InstrumentDialog } from "../components/InstrumentDialog";
@@ -12,22 +16,22 @@ import { ListMenuRef } from "../components/ListMenu";
 import { LoadingPage } from "../components/LoadingPage";
 import { OgTags } from "../components/OgTags";
 import { ResponsiveImage } from "../components/ResponsiveImage";
+import { TimerBar, TimerBarRef } from "../components/TimerBar";
 import { ViewSheetMenu } from "../components/ViewSheetMenu";
 import { XmlViewer } from "../components/XmlViewer";
 import { useFormatKey } from "../hooks/useFormatKey";
 import { useFormatSheet } from "../hooks/useFormatSheet";
 import { useLocalSettings } from "../hooks/useLocalSettings";
 import { useQuerySheet } from "../hooks/useQuerySheet";
+import { ArrowDownIcon } from "../icons/ArrowDownIcon";
+import { ArrowUpIcon } from "../icons/ArrowUpIcon";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
-import { PauseIcon } from "../icons/PauseIcon";
-import { PlayIcon } from "../icons/PlayIcon";
+import { RabbitIcon } from "../icons/RabbitIcon";
+import { SnailIcon } from "../icons/SnailIcon";
 import { getInstrumentOffset } from "../services/getInstrumentOffset";
 import { black, blue, textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
 import { NotFoundPage } from "./NotFoundPage";
-
-const defaultAutoScrollPx = 100;
-const defaultAutoScrollTick = 10;
 
 type ElementToFormat = string | ReactNode[] | undefined;
 
@@ -62,6 +66,7 @@ const formatUrls = (element: ElementToFormat): ElementToFormat =>
   });
 
 export const ViewSheetPage = () => {
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const params = useLocalSearchParams();
   const id = String(params.id);
 
@@ -71,31 +76,53 @@ export const ViewSheetPage = () => {
   const formatKey = useFormatKey();
   const { settings } = useLocalSettings();
   const [instrument, setInstrument] = useState(settings.instrument);
-  const [isPlayMode, setIsPlayMode] = useState(false);
+  const [scrollSpeed, setScrollSpeed] = useState(0);
 
   const listMenuRef = useRef<ListMenuRef>(null);
   const instrumentDialogRef = useRef<DialogRef>(null);
+  const controllerFeedbackRef = useRef<ControllerFeedbackRef>(null);
+  const timerBarRef = useRef<TimerBarRef>(null);
   const scrollViewRef = useRef<ScrollView>(null);
-  const scrollPosRef = useRef<number>(0);
+
+  const scrollPosRef = useRef(0);
+  const timerPercentRef = useRef(0);
 
   useKeepAwake();
 
+  const scroll = useCallback((amount: number) => {
+    scrollViewRef.current?.scrollTo({
+      y: scrollPosRef.current + amount,
+    });
+  }, []);
+
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isPlayMode) {
-      interval = setInterval(() => {
-        if (scrollViewRef.current) {
-          scrollViewRef.current.scrollTo({
-            y: scrollPosRef.current + defaultAutoScrollPx,
-            animated: true,
-          });
+    let running = true;
+    let lastNow: number;
+    const timeToScroll = 10_000 / scrollSpeed;
+    const tick = (now: number) => {
+      if (lastNow === undefined) {
+        lastNow = now;
+      }
+      if (scrollSpeed) {
+        const elapsed = now - lastNow;
+        const increment = elapsed / timeToScroll;
+        timerPercentRef.current += increment;
+        if (timerPercentRef.current > 1) {
+          timerPercentRef.current = 0;
+          scroll(screenHeight * 0.5);
         }
-      }, defaultAutoScrollTick * 1000);
-    }
-    return () => {
-      clearInterval(interval);
+        timerBarRef.current?.update(timerPercentRef.current);
+      }
+      lastNow = now;
+      if (running) {
+        requestAnimationFrame(tick);
+      }
     };
-  }, [isPlayMode]);
+    requestAnimationFrame(tick);
+    return () => {
+      running = false;
+    };
+  }, [scrollSpeed, scroll, screenHeight]);
 
   if (isLoading) {
     return <LoadingPage />;
@@ -107,6 +134,43 @@ export const ViewSheetPage = () => {
 
   const needsAutoTransposition =
     getInstrumentOffset(instrument) !== getInstrumentOffset(data.instrument);
+
+  const singleTap = Gesture.Tap()
+    .maxDuration(250)
+    .onEnd((e) => {
+      const { absoluteX: x, absoluteY: y } = e;
+      const limit = 50;
+      if (y < limit) {
+        scroll(-screenHeight * 0.8);
+        controllerFeedbackRef.current?.flash(
+          <ArrowUpIcon height={50} width={50} />,
+        );
+      }
+      if (y > screenHeight - limit) {
+        scroll(screenHeight * 0.8);
+        controllerFeedbackRef.current?.flash(
+          <ArrowDownIcon height={50} width={50} />,
+        );
+      }
+      if (x < limit) {
+        setScrollSpeed((v) => {
+          const newValue = Math.max(0, v - 1);
+          if (newValue === 0) {
+            timerPercentRef.current = 0;
+          }
+          return newValue;
+        });
+        controllerFeedbackRef.current?.flash(
+          <SnailIcon height={100} width={100} />,
+        );
+      }
+      if (x > screenWidth - limit) {
+        setScrollSpeed((v) => Math.min(10, v + 1));
+        controllerFeedbackRef.current?.flash(
+          <RabbitIcon height={100} width={100} />,
+        );
+      }
+    });
 
   return (
     <>
@@ -178,19 +242,18 @@ export const ViewSheetPage = () => {
           </Text>
         </View>
 
-        <View style={{ paddingHorizontal: pagePadding, paddingBottom: 100 }}>
-          <Text style={{ fontSize: 20, fontWeight: "500", color: black }}>
-            {formatUrls(formatLyrics(formatSheet(data, instrument)))}
-          </Text>
-        </View>
+        <GestureDetector gesture={singleTap} touchAction="pan-y">
+          <View style={{ paddingHorizontal: pagePadding, paddingBottom: 100 }}>
+            <Text style={{ fontSize: 20, fontWeight: "500", color: black }}>
+              {formatUrls(formatLyrics(formatSheet(data, instrument)))}
+            </Text>
+          </View>
+        </GestureDetector>
       </ScrollView>
 
-      <FAB
-        onPress={() => setIsPlayMode((v) => !v)}
-        style={{ opacity: isPlayMode ? 0.2 : undefined }}
-      >
-        {isPlayMode ? <PauseIcon height={16} /> : <PlayIcon height={16} />}
-      </FAB>
+      <ControllerFeedback ref={controllerFeedbackRef} />
+
+      <TimerBar ref={timerBarRef} />
 
       <InstrumentDialog
         ref={instrumentDialogRef}
