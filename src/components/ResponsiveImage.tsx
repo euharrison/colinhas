@@ -1,21 +1,13 @@
 import { Image, ImageProps, useImage } from "expo-image";
-import { useWindowDimensions, View } from "react-native";
-import { backgroundGray } from "../theme/colors";
+import { useWindowDimensions } from "react-native";
+import { FileLoading } from "./FileLoading";
 
 export const ResponsiveImage = ({ ...props }: ImageProps) => {
   const window = useWindowDimensions();
   const image = useImage(props.source);
 
   if (!image) {
-    return (
-      <View
-        style={{
-          width: window.width,
-          height: 50,
-          backgroundColor: backgroundGray,
-        }}
-      />
-    );
+    return <FileLoading />;
   }
 
   return (

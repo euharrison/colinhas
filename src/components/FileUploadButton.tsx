@@ -24,10 +24,6 @@ export const FileUploadButton = ({
       if (result.canceled || !file) {
         return;
       }
-      if (file.mimeType === "application/pdf") {
-        alert("PDF ainda não suportado 🥲");
-        return;
-      }
       const { uri, name } = file;
       const response = await fetch(uri);
       const blob = await response.blob();

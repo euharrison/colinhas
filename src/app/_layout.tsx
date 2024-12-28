@@ -1,3 +1,4 @@
+import { Worker } from "@react-pdf-viewer/core";
 import { Stack } from "expo-router/stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AuthProvider } from "../components/AuthProvider";
@@ -13,14 +14,14 @@ export default function Layout() {
       <AuthProvider>
         <LocalSettingsProvider>
           <OnboardingGate>
-            <Stack
-              screenOptions={{
-                headerShown: false,
-                contentStyle: {
-                  backgroundColor: white,
-                },
-              }}
-            />
+            <Worker workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js">
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  contentStyle: { backgroundColor: white },
+                }}
+              />
+            </Worker>
           </OnboardingGate>
         </LocalSettingsProvider>
       </AuthProvider>

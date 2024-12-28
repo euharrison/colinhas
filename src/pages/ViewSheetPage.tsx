@@ -15,6 +15,7 @@ import { InstrumentDialog } from "../components/InstrumentDialog";
 import { ListMenuRef } from "../components/ListMenu";
 import { LoadingPage } from "../components/LoadingPage";
 import { OgTags } from "../components/OgTags";
+import { PdfViewer } from "../components/PdfViewer";
 import { ResponsiveImage } from "../components/ResponsiveImage";
 import { TimerBar, TimerBarRef } from "../components/TimerBar";
 import { ViewSheetMenu } from "../components/ViewSheetMenu";
@@ -31,36 +32,38 @@ import { SnailIcon } from "../icons/SnailIcon";
 import { getInstrumentOffset } from "../services/getInstrumentOffset";
 import { black, blue, textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
+import { getExtensionFromUrl } from "../utils";
 import { NotFoundPage } from "./NotFoundPage";
 
 type ElementToFormat = string | ReactNode[] | undefined;
 
 const formatLyrics = (element: ElementToFormat): ElementToFormat =>
-  reactStringReplace(element, /["|http](.*?)"/g, (match, i) => (
-    <Text
-      key={`lyrics_${match}_${i}`}
-      style={{ fontSize: 16, color: textGray }}
-    >
-      {match}
+  reactStringReplace(element, /["|http](.*?)"/g, (text, i) => (
+    <Text key={`lyrics_${text}_${i}`} style={{ fontSize: 16, color: textGray }}>
+      {text}
     </Text>
   ));
 
 const formatUrls = (element: ElementToFormat): ElementToFormat =>
-  reactStringReplace(element, /(http.*)/g, (match, i, offset) => {
-    const key = `url_${match}_${i}_${offset}`;
-    if (match.includes(".mxl")) {
-      return <XmlViewer key={key} url={match} />;
+  reactStringReplace(element, /(http.*)/g, (url, i, offset) => {
+    const key = `url_${url}_${i}_${offset}`;
+    const extension = getExtensionFromUrl(url);
+    if (extension === ".pdf") {
+      return <PdfViewer key={key} url={url} />;
     }
-    if (match.includes(".png") || match.includes(".jpg")) {
+    if (extension === ".mxl") {
+      return <XmlViewer key={key} url={url} />;
+    }
+    if (extension === ".png" || extension === ".jpg") {
       return (
         <View key={key} style={{ marginHorizontal: -pagePadding }}>
-          <ResponsiveImage source={match} />
+          <ResponsiveImage source={url} />
         </View>
       );
     }
     return (
-      <Link key={key} href={match} target="_blank" rel="noreferrer" asChild>
-        <Text style={{ fontSize: 14, color: blue }}>{match}</Text>
+      <Link key={key} href={url} target="_blank" rel="noreferrer">
+        <Text style={{ fontSize: 14, color: blue }}>{url}</Text>
       </Link>
     );
   });
