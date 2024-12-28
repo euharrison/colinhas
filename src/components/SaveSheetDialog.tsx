@@ -15,13 +15,15 @@ import { KeySelector } from "./KeySelector";
 
 type Props = {
   id?: string;
-  defaultValues: Pick<Sheet, "name" | "data" | "instrument" | "key">;
+  defaultValues: Partial<Sheet>;
 };
 
 const SaveSheetForm = ({ id, defaultValues }: Props) => {
   const [name, setName] = useState(defaultValues.name);
   const [key, setKey] = useState<Key | undefined>(defaultValues.key);
-  const [unlisted, setUnlisted] = useState<boolean>(false);
+  const [unlisted, setUnlisted] = useState<boolean>(
+    defaultValues.unlisted ?? false,
+  );
 
   return (
     <View style={{ gap: 16 }}>

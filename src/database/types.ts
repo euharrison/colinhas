@@ -69,8 +69,8 @@ export type Sheet = {
   name: string;
   data: string;
   instrument: Instrument;
-  key?: Key;
-  unlisted?: boolean;
+  key: Key;
+  unlisted: boolean;
   userId: string;
   updatedAt: number;
   createdAt: number;

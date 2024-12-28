@@ -34,38 +34,33 @@ export const getSheetsCollectionName = () => {
   return sheetsCollection;
 };
 
-export function createSheet(
-  data: Pick<Sheet, "name" | "data" | "instrument" | "key" | "unlisted">,
-) {
+export const createSheet = (data: Partial<Sheet>) => {
   const docRef = doc(collection(db, sheetsCollection));
   setDoc(docRef, {
     name: data.name,
     data: data.data,
     instrument: data.instrument,
     key: data.key ?? "",
-    unlisted: data.unlisted ?? "",
+    unlisted: data.unlisted ?? false,
     userId: auth.currentUser?.uid,
     updatedAt: serverTimestamp(),
     createdAt: serverTimestamp(),
   });
   return docRef.id;
-}
+};
 
-export function editSheet(
-  id: string,
-  data: Pick<Sheet, "name" | "data" | "instrument" | "key" | "unlisted">,
-) {
+export const editSheet = (id: string, data: Partial<Sheet>) => {
   const docRef = doc(db, sheetsCollection, id);
   updateDoc(docRef, {
     name: data.name,
     data: data.data,
     instrument: data.instrument,
     key: data.key ?? "",
-    unlisted: data.unlisted ?? "",
+    unlisted: data.unlisted ?? false,
     updatedAt: serverTimestamp(),
   });
   return docRef.id;
-}
+};
 
 export function deleteSheet(id: string) {
   return deleteDoc(doc(db, sheetsCollection, id));
@@ -111,7 +106,7 @@ const docToSheet = (snapshot: DocumentSnapshot): Sheet | undefined => {
     data: data.data ?? "",
     instrument: data.instrument ?? "",
     key: data.key ?? "",
-    unlisted: data.unlisted ?? "",
+    unlisted: data.unlisted ?? false,
     userId: data.userId ?? "",
     updatedAt: getMillis(data.updatedAt),
     createdAt: getMillis(data.createdAt),

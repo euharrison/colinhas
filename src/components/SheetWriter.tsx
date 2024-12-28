@@ -115,6 +115,7 @@ export const SheetWriter = ({ sheet }: { sheet?: Sheet }) => {
           data: value,
           instrument: settings.instrument!, // TODO
           key,
+          unlisted: sheet?.unlisted,
         }}
       />
     </>
