@@ -10,7 +10,7 @@ export const Button = ({
   return (
     <Pressable
       {...props}
-      style={({ pressed }) => [
+      style={(state) => [
         {
           borderWidth: 1,
           borderColor: borderGray,
@@ -18,9 +18,9 @@ export const Button = ({
           borderRadius: 8,
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: pressed ? backgroundGray : white,
+          backgroundColor: state.pressed ? backgroundGray : white,
         },
-        typeof style === "function" ? style({ pressed }) : style,
+        typeof style === "function" ? style(state) : style,
       ]}
     >
       {typeof children === "string" ? (

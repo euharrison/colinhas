@@ -1,6 +1,6 @@
 import * as DocumentPicker from "expo-document-picker";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Pressable } from "react-native";
 import { LoadingIcon } from "../icons/LoadingIcon";
 import { SheetIcon } from "../icons/SheetIcon";

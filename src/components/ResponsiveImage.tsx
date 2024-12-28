@@ -1,5 +1,5 @@
 import { Image, ImageProps } from "expo-image";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useWindowDimensions } from "react-native";
 
 export const ResponsiveImage = ({ ...props }: ImageProps) => {

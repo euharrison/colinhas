@@ -9,7 +9,7 @@ import { Button } from "./Button";
 import { closeDialog, Dialog, DialogRef } from "./Dialog";
 import { Disclaimer } from "./Disclaimer";
 
-export const CreateBookDialog = forwardRef<DialogRef, {}>((props, ref) => {
+export const CreateBookDialog = forwardRef<DialogRef, object>((props, ref) => {
   const [name, setName] = useState("");
 
   return (
