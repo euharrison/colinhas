@@ -4,7 +4,6 @@ import {
   LocalSettings,
   LocalSettingsContext,
 } from "../contexts/LocalSettingsContext";
-import { updateDbEnv } from "../database/sheets";
 import { LoadingPage } from "./LoadingPage";
 
 const storageKey = "colinhas:localSettings";
@@ -35,7 +34,8 @@ export const LocalSettingsProvider = ({
 
         if (json) {
           setSettings(json);
-          updateDbEnv(json.env);
+          // TODO
+          // updateEnv(json.env);
         }
       } catch {}
       setReady(true);

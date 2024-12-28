@@ -15,24 +15,7 @@ import { db } from "./db";
 import { Sheet } from "./types";
 import { getMillis } from "./utils";
 
-const prodCollection = "sheets";
-const devCollection = "sheets-dev";
-
-let sheetsCollection =
-  process.env.NODE_ENV === "development" ? devCollection : prodCollection;
-
-export const updateDbEnv = (env?: "prod" | "dev") => {
-  if (env === "prod") {
-    sheetsCollection = prodCollection;
-  }
-  if (env === "dev") {
-    sheetsCollection = devCollection;
-  }
-};
-
-export const getSheetsCollectionName = () => {
-  return sheetsCollection;
-};
+const sheetsCollection = "sheets";
 
 export const createSheet = (data: Partial<Sheet>) => {
   const docRef = doc(collection(db, sheetsCollection));

@@ -1,9 +1,6 @@
 import { Text, View } from "react-native";
 import { Button } from "../components/Button";
-import {
-  getSheetsCollectionName,
-  observeSheetCollection,
-} from "../database/sheets";
+import { observeSheetCollection } from "../database/sheets";
 import { useLocalSettings } from "../hooks/useLocalSettings";
 import { useUser } from "../hooks/useUser";
 
@@ -64,7 +61,7 @@ export const AdminSettings = () => {
                 downloadAnchorNode.setAttribute("href", dataStr);
                 downloadAnchorNode.setAttribute(
                   "download",
-                  `${getSheetsCollectionName()}_${new Date().toISOString()}.json`,
+                  `sheets_${new Date().toISOString()}.json`,
                 );
                 downloadAnchorNode.click();
                 unsubscribe();
