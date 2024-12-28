@@ -1,26 +1,30 @@
-import { Image, ImageProps } from "expo-image";
-import { useState } from "react";
-import { useWindowDimensions } from "react-native";
+import { Image, ImageProps, useImage } from "expo-image";
+import { useWindowDimensions, View } from "react-native";
+import { backgroundGray } from "../theme/colors";
 
 export const ResponsiveImage = ({ ...props }: ImageProps) => {
   const window = useWindowDimensions();
-  const [image, setImage] = useState<{
-    width: number;
-    height: number;
-  }>();
+  const image = useImage(props.source);
 
-  const imageRatio = image ? image.height / image.width : undefined;
+  if (!image) {
+    return (
+      <View
+        style={{
+          width: window.width,
+          height: 50,
+          backgroundColor: backgroundGray,
+        }}
+      />
+    );
+  }
 
   return (
     <Image
       {...props}
+      source={image}
       style={{
         width: window.width,
-        aspectRatio: imageRatio ? 1 / imageRatio : undefined,
-      }}
-      onLoad={(e) => {
-        const { width, height } = e.source;
-        setImage({ width, height });
+        aspectRatio: image.width / image.height,
       }}
     />
   );
