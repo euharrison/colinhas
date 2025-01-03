@@ -1,12 +1,21 @@
 export const nonNullable = <T>(value: T): value is NonNullable<T> =>
   value !== null && value !== undefined;
 
+/**
+ * Remove accents from a string
+ */
+export function removeAccents(string = "") {
+  // https://stackoverflow.com/a/37511463/1288541
+  return string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+/**
+ * Create a slug to used as friednly url
+ */
 export const slugify = (value: string) => {
-  return value
+  return removeAccents(value)
     .toLowerCase()
     .trim()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9\s-]/g, " ")
     .trim()
     .replace(/[\s-]+/g, "-");

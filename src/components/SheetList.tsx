@@ -10,6 +10,7 @@ import { SyncIcon } from "../icons/SyncIcon";
 import { backgroundGray, borderGray, textGray } from "../theme/colors";
 import { pagePadding } from "../theme/sizes";
 import { viewSheetUrl } from "../urls";
+import { removeAccents } from "../utils";
 
 const itemHeight = 80;
 const separatorHeight = 1;
@@ -26,13 +27,17 @@ const getSearchResult = (data: Sheet[], search: string) => {
   const computeValue = (value: string, regex: RegExp, points: number) =>
     value.match(regex) ? points : 0;
 
-  const computeScore = (item: Sheet) =>
-    computeValue(item.name, startsWithRegex, 1000) +
-    computeValue(item.name, containRegex, 100) +
-    computeValue(item.name, anyWordRegex, 10) +
-    computeValue(item.data, anyWordRegex, 5) +
-    computeValue(item.instrument, anyWordRegex, 2) +
-    (item.key ? computeValue(item.key, anyWordRegex, 1) : 0);
+  const computeScore = (item: Sheet) => {
+    const itemName = removeAccents(item.name);
+    return (
+      computeValue(itemName, startsWithRegex, 1000) +
+      computeValue(itemName, containRegex, 100) +
+      computeValue(itemName, anyWordRegex, 10) +
+      computeValue(item.data, anyWordRegex, 5) +
+      computeValue(item.instrument, anyWordRegex, 2) +
+      (item.key ? computeValue(item.key, anyWordRegex, 1) : 0)
+    );
+  };
 
   return data
     .map((item) => ({ ...item, score: computeScore(item) }))
