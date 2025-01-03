@@ -23,12 +23,25 @@ import { TrashIcon } from "../icons/TrashIcon";
 import { pagePadding } from "../theme/sizes";
 import { NotFoundPage } from "./NotFoundPage";
 
+const getMockSheet = (id: string): Sheet => ({
+  id,
+  name: "🗑️ Música apagada",
+  data: `🗑️ ${id}`,
+  instrument: "Trombone", // TODO Piano
+  key: "Do Maior",
+  unlisted: true,
+  userId: "",
+  updatedAt: Date.now(),
+  createdAt: Date.now(),
+  syncing: false,
+});
+
 export const BookPage = () => {
   const params = useLocalSearchParams();
   const id = String(params.id);
 
-  const { data: book, isLoading } = useQueryBook(id);
-  const { data: sheets } = useQuerySheets();
+  const { data: book, isLoading: isLoadingBook } = useQueryBook(id);
+  const { data: sheets, isLoading: isLoadingSheets } = useQuerySheets();
 
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -37,7 +50,7 @@ export const BookPage = () => {
   const appendDialogRef = useRef<DialogRef>(null);
   const changeNameDialogRef = useRef<DialogRef>(null);
 
-  if (isLoading) {
+  if (isLoadingBook || isLoadingSheets) {
     return <LoadingPage />;
   }
 
@@ -50,7 +63,7 @@ export const BookPage = () => {
     sheetMap[item.id] = item;
   });
 
-  const data = book.sheets.map((id) => sheetMap[id]).filter(Boolean);
+  const data = book.sheets.map((id) => sheetMap[id] ?? getMockSheet(id));
 
   return (
     <>
