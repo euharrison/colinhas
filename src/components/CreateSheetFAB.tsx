@@ -1,12 +1,12 @@
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
-import { FAB } from "./FAB";
 import { PencilIcon } from "../icons/PencilIcon";
-import { createUrl } from "../urls";
+import { createSheetUrl } from "../urls";
+import { FAB } from "./FAB";
 
 export const CreateSheetFAB = () => {
   return (
-    <Link href={createUrl} asChild>
+    <Link href={createSheetUrl} asChild>
       <FAB>
         <View
           style={{

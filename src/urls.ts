@@ -9,20 +9,26 @@ export const termsUrl = `${appUrl}/legal/termos-de-uso.html`;
 export const privacyPolicyUrl = `${appUrl}/legal/politica-de-privacidade.html`;
 
 export const homeUrl = "/";
+
 export const profileUrl = "/profile";
 
-export const createUrl = "/create";
-export const viewSheetUrl = (sheet: { id: string; name: string }) =>
+export const createSheetUrl = "/musica/nova";
+
+export const viewSheetUrl = (sheet: Partial<Sheet>) =>
   `/musica/${sheet.id}/${slugify(sheet.name)}`;
-export const updateSheetUrl = (sheet: { id: string; name: string }) =>
+
+export const updateSheetUrl = (sheet: Partial<Sheet>) =>
   `/musica/${sheet.id}/${slugify(sheet.name)}/update`;
 
-export const bookUrl = (book: { id: string; name: string }) =>
+export const bookUrl = (book: Partial<Book>) =>
   `/lista/${book.id}/${slugify(book.name)}`;
+
 export const mySheetsUrl = "/lista/minhas";
 
-export const shareSheetUrl = (sheet: Sheet) =>
+export const shareSheetUrl = (sheet: Partial<Sheet>) =>
   `${appUrl}${viewSheetUrl(sheet)}`;
-export const shareBookUrl = (book: Book) => `${appUrl}${bookUrl(book)}`;
+
+export const shareBookUrl = (book: Partial<Book>) =>
+  `${appUrl}${bookUrl(book)}`;
 
 export const supportEmail = "contato@colinhas.com";

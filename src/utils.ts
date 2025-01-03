@@ -12,7 +12,7 @@ export function removeAccents(string = "") {
 /**
  * Create a slug to used as friednly url
  */
-export const slugify = (value: string) => {
+export const slugify = (value: string = "") => {
   return removeAccents(value)
     .toLowerCase()
     .trim()
