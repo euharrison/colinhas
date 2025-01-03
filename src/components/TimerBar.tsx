@@ -20,13 +20,13 @@ export const TimerBar = forwardRef<TimerBarRef>((_, ref) => {
       pointerEvents="none"
       style={{
         position: "absolute",
-        bottom: 0,
+        top: 0,
         left: 0,
         right: 0,
         height: 5,
         width: `${percent * 100}%`,
         backgroundColor: black,
-        opacity: 0.2,
+        opacity: 0.4,
       }}
     />
   );

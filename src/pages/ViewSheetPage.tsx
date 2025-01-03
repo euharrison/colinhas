@@ -27,6 +27,7 @@ import { useQuerySheet } from "../hooks/useQuerySheet";
 import { ArrowDownIcon } from "../icons/ArrowDownIcon";
 import { ArrowUpIcon } from "../icons/ArrowUpIcon";
 import { InstrumentIcon } from "../icons/InstrumentIcon";
+import { PauseIcon } from "../icons/PauseIcon";
 import { RabbitIcon } from "../icons/RabbitIcon";
 import { SnailIcon } from "../icons/SnailIcon";
 import { getInstrumentOffset } from "../services/getInstrumentOffset";
@@ -36,6 +37,17 @@ import { getExtensionFromUrl } from "../utils";
 import { NotFoundPage } from "./NotFoundPage";
 
 type ElementToFormat = string | ReactNode[] | undefined;
+
+const maxSpeed = 4;
+
+// vel 1 = 12s
+// vel 2 = 6s
+// vel 3 = 3s
+// vel 4 = 1.5s
+const getTimeToScroll = (speed: number) => {
+  const scrollScale = 1 / Math.pow(2, speed - 1);
+  return 12_000 * scrollScale;
+};
 
 const formatLyrics = (element: ElementToFormat): ElementToFormat =>
   reactStringReplace(element, /["|http](.*?)"/g, (text, i) => (
@@ -101,7 +113,7 @@ export const ViewSheetPage = () => {
   useEffect(() => {
     let running = true;
     let lastNow: number;
-    const timeToScroll = 10_000 / scrollSpeed;
+    const timeToScroll = getTimeToScroll(scrollSpeed);
     const tick = (now: number) => {
       if (lastNow === undefined) {
         lastNow = now;
@@ -141,37 +153,55 @@ export const ViewSheetPage = () => {
   const singleTap = Gesture.Tap()
     .maxDuration(250)
     .onEnd((e) => {
-      const { absoluteX: x, absoluteY: y } = e;
-      const limit = 50;
-      if (y < limit) {
-        scroll(-screenHeight * 0.8);
+      const doScroll = (direction: number) => {
+        scroll(direction * screenHeight * 0.8);
         controllerFeedbackRef.current?.flash(
-          <ArrowUpIcon height={50} width={50} />,
+          direction > 0 ? (
+            <ArrowDownIcon height={50} width={50} />
+          ) : (
+            <ArrowUpIcon height={50} width={50} />
+          ),
         );
-      }
-      if (y > screenHeight - limit) {
-        scroll(screenHeight * 0.8);
-        controllerFeedbackRef.current?.flash(
-          <ArrowDownIcon height={50} width={50} />,
-        );
-      }
-      if (x < limit) {
+      };
+
+      const changeSpeed = (increment: number) => {
         setScrollSpeed((v) => {
-          const newValue = Math.max(0, v - 1);
-          if (newValue === 0) {
-            timerPercentRef.current = 0;
-          }
-          return newValue;
+          const newSpeed = Math.max(0, Math.min(maxSpeed, v + increment));
+          controllerFeedbackRef.current?.flash(
+            newSpeed === 0 ? (
+              <PauseIcon height={100} width={100} />
+            ) : (
+              <>
+                {increment > 0 ? (
+                  <RabbitIcon height={100} width={100} />
+                ) : (
+                  <SnailIcon height={100} width={100} />
+                )}
+                <Text style={{ textAlign: "center", fontSize: 32 }}>
+                  {newSpeed}x
+                </Text>
+              </>
+            ),
+          );
+          return newSpeed;
         });
-        controllerFeedbackRef.current?.flash(
-          <SnailIcon height={100} width={100} />,
-        );
+      };
+
+      const { absoluteX: x, absoluteY: y } = e;
+      const edgeY = screenHeight * 0.15;
+      const edgeX = screenWidth * 0.15;
+
+      if (y < edgeY) {
+        doScroll(-1);
       }
-      if (x > screenWidth - limit) {
-        setScrollSpeed((v) => Math.min(10, v + 1));
-        controllerFeedbackRef.current?.flash(
-          <RabbitIcon height={100} width={100} />,
-        );
+      if (y > screenHeight - edgeY) {
+        doScroll(+1);
+      }
+      if (x < edgeX) {
+        changeSpeed(-1);
+      }
+      if (x > screenWidth - edgeX) {
+        changeSpeed(+1);
       }
     });
 
