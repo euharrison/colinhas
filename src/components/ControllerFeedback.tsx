@@ -75,7 +75,7 @@ export const ControllerFeedback = forwardRef<ControllerFeedbackRef>(
 
     useImperativeHandle(ref, () => ({
       flash: (children: ReactNode) => {
-        const key = Date.now();
+        const key = Math.random();
         const item = (
           <Feedback
             key={key}
