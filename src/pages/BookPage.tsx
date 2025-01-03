@@ -100,6 +100,7 @@ export const BookPage = () => {
       {data.length ? (
         <SheetList
           data={data}
+          bookId={id}
           scrollRef={scrollRef}
           renderBeforeIcons={
             isEditMode

@@ -9,6 +9,7 @@ import { HeaderMenu } from "../components/HeaderMenu";
 import { InstrumentDialog } from "../components/InstrumentDialog";
 import { ListMenuRef } from "../components/ListMenu";
 import { LoadingPage } from "../components/LoadingPage";
+import { NextMusicButton } from "../components/NextMusicButton";
 import { OgTags } from "../components/OgTags";
 import { PdfViewer } from "../components/PdfViewer";
 import { ResponsiveImage } from "../components/ResponsiveImage";
@@ -62,6 +63,7 @@ const formatUrls = (element: ElementToFormat): ElementToFormat =>
 export const ViewSheetPage = () => {
   const params = useLocalSearchParams();
   const id = String(params.id);
+  const bookId = params.bookId && String(params.bookId);
 
   const { data, isLoading } = useQuerySheet(id);
 
@@ -155,6 +157,8 @@ export const ViewSheetPage = () => {
             {formatUrls(formatLyrics(formatSheet(data, instrument)))}
           </Text>
         </View>
+
+        {bookId && <NextMusicButton sheetId={id} bookId={bookId} />}
       </SheetScrollView>
 
       <InstrumentDialog

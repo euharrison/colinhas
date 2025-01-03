@@ -47,12 +47,14 @@ const getSearchResult = (data: Sheet[], search: string) => {
 
 export const SheetList = ({
   data,
+  bookId,
   scrollRef,
   renderBeforeIcons,
   renderAfterIcons,
   onPress,
 }: {
   data?: Sheet[];
+  bookId?: string;
   scrollRef?: RefObject<FlatList>;
   renderBeforeIcons?: (item: Sheet, index: number) => ReactNode;
   renderAfterIcons?: (item: Sheet, index: number) => ReactNode;
@@ -126,7 +128,7 @@ export const SheetList = ({
               }}
             >
               {renderBeforeIcons?.(item, index)}
-              <Link href={viewSheetUrl(item)} asChild>
+              <Link href={viewSheetUrl(item, bookId)} asChild>
                 <Pressable
                   style={{
                     flex: 1,

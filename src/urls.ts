@@ -14,8 +14,8 @@ export const profileUrl = "/profile";
 
 export const createSheetUrl = "/musica/nova";
 
-export const viewSheetUrl = (sheet: Partial<Sheet>) =>
-  `/musica/${sheet.id}/${slugify(sheet.name)}`;
+export const viewSheetUrl = (sheet: Partial<Sheet>, bookId?: string) =>
+  `/musica/${sheet.id}/${slugify(sheet.name)}${bookId ? `?bookId=${bookId}` : ""}`;
 
 export const updateSheetUrl = (sheet: Partial<Sheet>) =>
   `/musica/${sheet.id}/${slugify(sheet.name)}/update`;
