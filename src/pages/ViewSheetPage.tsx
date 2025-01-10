@@ -153,7 +153,10 @@ export const ViewSheetPage = () => {
         </View>
 
         <View style={{ paddingHorizontal: pagePadding, paddingBottom: 100 }}>
-          <Text style={{ fontSize: 20, fontWeight: "500", color: black }}>
+          <Text
+            style={{ fontSize: 20, fontWeight: "500", color: black }}
+            selectable
+          >
             {formatUrls(formatLyrics(formatSheet(data, instrument)))}
           </Text>
         </View>
