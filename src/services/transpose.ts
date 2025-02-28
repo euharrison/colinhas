@@ -1,7 +1,6 @@
 import { Accidental } from "../database/types";
 
 const inputMap = {
-  // starting on 15 means the note C2 saving space for future low octaves
   15: ["do"],
   16: ["do♯", "do#", "re♭", "reb"],
   17: ["re"],
@@ -14,6 +13,7 @@ const inputMap = {
   24: ["la"],
   25: ["la♯", "la#", "si♭", "sib"],
   26: ["si", "Do♭", "Dob"],
+  //
   27: ["Do", "si♯", "si#"],
   28: ["Do♯", "Do#", "Re♭", "Reb"],
   29: ["Re"],
@@ -26,6 +26,7 @@ const inputMap = {
   36: ["La"],
   37: ["La♯", "La#", "Si♭", "Sib"],
   38: ["Si", "DO♭", "DOb", "DOB"],
+  //
   39: ["DO", "Si♯", "Si#"],
   40: ["DO♯", "DO#", "RE♭", "REb", "REB"],
   41: ["RE"],
@@ -68,6 +69,10 @@ const buildDictionaries = () => {
 };
 buildDictionaries();
 
+const allIndexes = Object.keys(inputMap);
+const firstIndex = Number(allIndexes[0]);
+const lastIndex = Number(allIndexes.at(-1));
+
 export const transpose = (
   data: string,
   offset: number,
@@ -80,7 +85,15 @@ export const transpose = (
   const transposeNote = (note: string) => {
     const index = inputDictionary[note];
     if (index) {
-      const outputIndex = index + offset;
+      let outputIndex = index + offset;
+      // se o output index for fora do dicionário, sobe ou desce
+      // uma oitava para pelo menos indicar a transposição certa
+      if (outputIndex < firstIndex) {
+        outputIndex += 12;
+      }
+      if (outputIndex > lastIndex) {
+        outputIndex -= 12;
+      }
       const output = outputDictionary[accidental][outputIndex];
       return output ?? `{${note}?}`;
     }
